@@ -303,7 +303,7 @@ void ScreenieControl::rotate(int angle, ScreenieModelInterface *screenieModel)
     }
 }
 
-void ScreenieControl::setDistance(int distance, ScreenieModelInterface *screenieModel)
+void ScreenieControl::setDistance(qreal distance, ScreenieModelInterface *screenieModel)
 {
     updateEditRenderQuality();
     QList<ScreenieModelInterface *> screenieModels = getEditableModels(screenieModel);
@@ -312,7 +312,7 @@ void ScreenieControl::setDistance(int distance, ScreenieModelInterface *screenie
     }
 }
 
-void ScreenieControl::addDistance(int distance, ScreenieModelInterface *screenieModel)
+void ScreenieControl::addDistance(qreal distance, ScreenieModelInterface *screenieModel)
 {
     updateEditRenderQuality();
     QList<ScreenieModelInterface *> screenieModels = getEditableModels(screenieModel);
@@ -457,6 +457,30 @@ void ScreenieControl::convertItemsToTemplate(ScreenieScene &screenieScene)
     }
 }
 
+void ScreenieControl::setRenderQuality(RenderQuality renderQuality)
+{
+    QList<ScreeniePixmapItem *> items = getScreeniePixmapItems();
+    switch (renderQuality) {
+    case LowQuality:
+        foreach (ScreeniePixmapItem *item, items) {
+            item->setTransformationMode(Qt::FastTransformation);
+        }
+        foreach (QGraphicsView *view, d->screenieGraphicsScene.views()) {
+            view->setRenderHints(QPainter::NonCosmeticDefaultPen);
+        }
+        break;
+    case MaximumQuality:
+        foreach (ScreeniePixmapItem *item, items) {
+            item->setTransformationMode(Qt::SmoothTransformation);
+        }
+        foreach (QGraphicsView *view, d->screenieGraphicsScene.views()) {
+            view->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing);
+        }
+    default:
+        break;
+    }
+}
+
 // private
 
 void ScreenieControl::frenchConnection()
@@ -475,8 +499,8 @@ void ScreenieControl::frenchConnection()
             this, SLOT(handleFilePathsDrop(QStringList, QPointF)));
     connect(&d->screenieGraphicsScene, SIGNAL(rotate(int)),
             this, SLOT(rotate(int)));
-    connect(&d->screenieGraphicsScene, SIGNAL(addDistance(int)),
-            this, SLOT(addDistance(int)));
+    connect(&d->screenieGraphicsScene, SIGNAL(addDistance(qreal)),
+            this, SLOT(addDistance(qreal)));
     connect(&d->screenieGraphicsScene, SIGNAL(translate(qreal, qreal)),
             this, SLOT(translate(qreal, qreal)));
     connect(&d->qualityTimer, SIGNAL(timeout()),
@@ -511,30 +535,7 @@ void ScreenieControl::updateEditRenderQuality()
 #ifdef DEBUG
        qCritical("ScreenieControl::updateRenderQuality: UNSUPPORTED render quality: %d", Settings::getInstance().getEditRenderQuality());
 #endif
-    }
-}
-
-void ScreenieControl::setRenderQuality(RenderQuality renderQuality)
-{
-    QList<ScreeniePixmapItem *> items = getScreeniePixmapItems();
-    switch (renderQuality) {
-    case LowQuality:
-        foreach (ScreeniePixmapItem *item, items) {
-            item->setTransformationMode(Qt::FastTransformation);
-        }
-        foreach (QGraphicsView *view, d->screenieGraphicsScene.views()) {
-            view->setRenderHints(QPainter::NonCosmeticDefaultPen);
-        }
-        break;
-    case MaximumQuality:
-        foreach (ScreeniePixmapItem *item, items) {
-            item->setTransformationMode(Qt::SmoothTransformation);
-        }
-        foreach (QGraphicsView *view, d->screenieGraphicsScene.views()) {
-            view->setRenderHints(QPainter::Antialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing);
-        }
-    default:
-        break;
+       break;
     }
 }
 
