@@ -398,10 +398,6 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
     QRect availableGeometry = desktopWidget->availableGeometry(d->propertyDialog);
     d->propertyDialog->adjustSize();
     QSize dialogSize = d->propertyDialog->size();
-#ifdef DEBUG
-    qDebug("ScreeniePixmapItem::calculateDialogPosition: dialog size w: %d, h: %d",
-           dialogSize.width(), dialogSize.height());
-#endif
     if (mousePosition.x() + dialogSize.width() < availableGeometry.right()) {
         result.setX(mousePosition.x());
     } else {
