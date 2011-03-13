@@ -132,7 +132,8 @@ bool ScreenieGraphicsScene::gestureEvent(const QGestureEvent *event)
 {
     bool result = false;
     if (selectedItems().size() > 0) {
-        if (QGesture *pinch = event->gesture(Qt::PinchGesture)) {
+        QGesture *pinch = event->gesture(Qt::PinchGesture);
+        if (pinch != 0) {
             result = pinchTriggered(static_cast<QPinchGesture *>(pinch));
         }
     } else {

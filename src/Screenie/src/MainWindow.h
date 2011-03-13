@@ -160,6 +160,8 @@ private slots:
     void handleFileSaveAsTemplateSelected(const QString &filePath);
     void handleFileSaveAsBeforeCloseSelected(const QString &filePath);
 
+    void handleExportFilePathSelected(const QString &filePath);
+
     void handleAskBeforeClose(int answer);
 };
 

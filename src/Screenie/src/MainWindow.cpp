@@ -646,18 +646,16 @@ void MainWindow::on_exportAction_triggered()
     Settings &settings = Settings::getInstance();
     QString lastExportDirectoryPath = settings.getLastExportDirectoryPath();
     QString filter = FileUtils::getSaveImageFileFilter();
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Export Image"), lastExportDirectoryPath, filter);
-    if (!filePath.isNull()) {
-        ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
-        bool ok = exportImage.exportImage(filePath);
-        if (ok) {
-            lastExportDirectoryPath = QFileInfo(filePath).absolutePath();
-            settings.setLastExportDirectoryPath(lastExportDirectoryPath);
-        } else {
-            showError(tr("Could not export iamge to file %1!")
-                      .arg(filePath));
-        }
-    }
+
+    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    fileDialog->setNameFilter(filter);
+    fileDialog->setDefaultSuffix(FileUtils::PngExtension);
+    fileDialog->setWindowTitle(tr("Export Image"));
+    fileDialog->setDirectory(lastExportDirectoryPath);
+    fileDialog->setWindowModality(Qt::WindowModal);
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    fileDialog->open(this, SLOT(handleExportFilePathSelected(const QString &)));
 }
 
 void MainWindow::on_closeAction_triggered()
@@ -977,6 +975,22 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
         } else {
             showWriteError(DocumentManager::getInstance().getDocumentName(*this),
                            QDir::toNativeSeparators(filePath));
+        }
+    }
+}
+
+void MainWindow::handleExportFilePathSelected(const QString &filePath)
+{
+   Settings &settings = Settings::getInstance();
+   if (!filePath.isNull()) {
+        ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
+        bool ok = exportImage.exportImage(filePath);
+        if (ok) {
+            QString lastExportDirectoryPath = QFileInfo(filePath).absolutePath();
+            settings.setLastExportDirectoryPath(lastExportDirectoryPath);
+        } else {
+            showError(tr("Could not export image to file %1!")
+                      .arg(filePath));
         }
     }
 }

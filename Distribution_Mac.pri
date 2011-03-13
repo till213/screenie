@@ -2,10 +2,10 @@
 
 CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/debug/$${APP_NAME}.app
-    message(Distributing $$APP_NAME in DEBUG mode)
+    message(Distributing $$APP_NAME in DEBUG mode Qt: $$[QT_INSTALL_BINS] Qt: $$[QT_INSTALL_PLUGINS])
 } else {
     APP_BUNDLE = bin/release/$${APP_NAME}.app
-    message(Distributing $$APP_NAME in RELEASE mode)
+    message(Distributing $$APP_NAME in RELEASE mode Qt: $${QT_INSTALL_BINS} Qt Plugins: $${QT_INSTALL_PLUGINS})
 }
 DIST_APP_BUNDLE = dist/$${APP_NAME}.app
 FRAMEWORKS_DIR = $${DIST_APP_BUNDLE}/Contents/Frameworks

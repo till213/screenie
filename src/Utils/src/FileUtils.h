@@ -31,6 +31,7 @@ public:
 
     UTILS_API static const QString SceneExtension;
     UTILS_API static const QString TemplateExtension;
+    UTILS_API static const QString PngExtension;
 
     UTILS_API QString static getOpenImageFileFilter();
     UTILS_API QString static getSaveImageFileFilter();
