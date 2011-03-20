@@ -53,3 +53,10 @@ void DefaultPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow 
     AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F11));
 }
+
+// protected
+
+void DefaultPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+{
+    Q_UNUSED(mainWindowUi);
+}
