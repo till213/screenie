@@ -35,7 +35,7 @@ if (macx) {
     HEADERS += $$PWD/src/PlatformManager/WindowsPlatformManager.h
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Windows.cpp \
                $$PWD/src/PlatformManager/WindowsPlatformManager.cpp
-} else:linux {
+} else:linux-* {
     HEADERS += $$PWD/src/PlatformManager/LinuxPlatformManager.h
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Linux.cpp \
                $$PWD/src/PlatformManager/LinuxPlatformManager.cpp

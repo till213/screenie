@@ -11,6 +11,5 @@
         <file>img/edit-cut.png</file>
         <file>img/edit-delete.png</file>
         <file>img/insert-template.png</file>
-        <file>img/document-new.png</file>
     </qresource>
 </RCC>
