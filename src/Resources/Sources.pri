@@ -2,6 +2,8 @@ DEPENDPATH += $$PWD/../Utils/src \
               $$PWD/GeneratedFiles \
               $$PWD/src
 
+RESOURCES += $$PWD/Resources.qrc
+
 if (macx) {
     RESOURCES += $$PWD/Mac/Resources.qrc
 } else:win32 {

@@ -59,5 +59,6 @@ void LinuxPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &m
 
 void LinuxPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
-
+    QIcon openIcon(":/img/document-open.png");
+    mainWindowUi.openAction->setIcon(QIcon::fromTheme("document-open"), openIcon);
 }
