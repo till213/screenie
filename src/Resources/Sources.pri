@@ -9,5 +9,5 @@ if (macx) {
 } else:linux {
     RESOURCES += $$PWD/Linux/Resources.qrc
 } else {
-    RESOURCES += $$PWD/Resources_Generic.qrc
+    RESOURCES += $$PWD/Linux/Resources.qrc
 }
