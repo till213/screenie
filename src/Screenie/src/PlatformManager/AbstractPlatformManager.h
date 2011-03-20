@@ -33,6 +33,12 @@ class AbstractPlatformManager : public PlatformManager
 {
 public:
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+
+protected:
+    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi) = 0;
+
+private:
+    void intializeIcons(Ui::MainWindow &mainWindowUi);
 };
 
 #endif // ABSTRACTPLATFORMMANAGER_H

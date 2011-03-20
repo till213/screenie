@@ -39,6 +39,9 @@ public:
 
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
 
+protected:
+    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
+
 private:
     WindowsPlatformManagerPrivate *d;
 };

@@ -42,8 +42,10 @@ public:
     virtual ~MacPlatformManager();
 
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
-
     virtual bool eventFilter(QObject *object, QEvent *event);
+
+protected:
+    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
 
 private:
     MacPlatformManagerPrivate *d;

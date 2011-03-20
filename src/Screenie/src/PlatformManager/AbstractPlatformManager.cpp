@@ -53,4 +53,19 @@ void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow
     QObject::connect(shortcut, SIGNAL(activated()),
                      mainWindowUi.deleteAction, SIGNAL(triggered()));
 
+    intializeIcons(mainWindowUi);
+}
+
+// protected
+
+void AbstractPlatformManager::intializeIcons(Ui::MainWindow &mainWindowUi)
+{
+    QIcon addImageIcon(":/img/insert-image.png");
+    mainWindowUi.addImageAction->setIcon(addImageIcon);
+    QIcon addTemplateIcon(":/img/insert-template.png");
+    mainWindowUi.addTemplateAction->setIcon(addTemplateIcon);
+    QIcon toggleFullScreenIcon(":/img/view-fullscreen.png");
+    mainWindowUi.toggleFullScreenAction->setIcon(toggleFullScreenIcon);
+
+    initializePlatformIcons(mainWindowUi);
 }

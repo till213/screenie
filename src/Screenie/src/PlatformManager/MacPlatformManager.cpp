@@ -20,6 +20,7 @@
 
 #include <QtGui/QAction>
 #include <QtGui/QKeySequence>
+#include <QtGui/QIcon>
 
 #include "ui_MainWindow.h"
 #include "MacPlatformManager.h"
@@ -73,6 +74,13 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
         result = QObject::eventFilter(object, event);
     }
     return result;
+}
+
+// protected
+
+void MacPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+{
+    Q_UNUSED(mainWindowUi);
 }
 
 // private

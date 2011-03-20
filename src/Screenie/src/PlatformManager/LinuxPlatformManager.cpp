@@ -54,3 +54,10 @@ void LinuxPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &m
     AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_11));
 }
+
+// protected
+
+void LinuxPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+{
+
+}
