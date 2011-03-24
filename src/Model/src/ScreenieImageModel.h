@@ -60,6 +60,15 @@ public:
     virtual QString getOverlayText() const;
 
     QImage getImage() const;
+
+    /*!
+     * Sets the \p image data. Scales the image data as not to exceed
+     * the maximum image size.
+     *
+     * \param image
+     *        the QImage to be set
+     * \sa Settings::getMaximumImageSize()
+     */
     void setImage(QImage image);
 
 private:

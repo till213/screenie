@@ -553,8 +553,12 @@ void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterfa
     if (!actualImage.isNull()) {
         ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(&screenieModel);
         if (screenieImageModel != 0) {
-            QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieImageModel->getPosition(), screenieImageModel->getSize(), actualImage.size());
+            // First set the image; this also makes sure that the actualImage
+            // does not exceed maximum size...
             screenieImageModel->setImage(actualImage);
+            actualImage = screenieImageModel->getImage();
+            // ... only then calculate the final position to place the actualImage
+            QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieImageModel->getPosition(), screenieImageModel->getSize(), actualImage.size());
             screenieImageModel->setPosition(itemPosition);
         } else {
             // convert to ScreenieImageModel

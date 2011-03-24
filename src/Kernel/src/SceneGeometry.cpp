@@ -37,6 +37,11 @@ QPointF SceneGeometry::calculateItemPosition(const ScreenieModelInterface &scree
 {
     QPointF result;
     QSize itemSize = screenieModel.getSize();
+#ifdef DEBUG
+    qDebug("SceneGeometry::calculateItemPosition: item size: %d, %d, center pos: %f, %f",
+           itemSize.width(), itemSize.height(),
+           centerPosition.x(), centerPosition.y());
+#endif
     result.setX(centerPosition.x() - itemSize.width()  / 2.0);
     result.setY(centerPosition.y() - itemSize.height() / 2.0);
     return result;
