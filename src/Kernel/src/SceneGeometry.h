@@ -18,12 +18,29 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "PlatformManager.h"
-#include "LinuxPlatformManager.h"
-#include "PlatformManagerFactory.h"
+#ifndef SCENEGEOMETRY_H
+#define SCENEGEOMETRY_H
 
-PlatformManager *PlatformManagerFactory::create()
+#include <QtCore/QPointF>
+#include <QtGui/QImage>
+
+class QSize;
+
+class ScreenieModelInterface;
+class ScreenieTemplateModel;
+
+/*!
+ * Geometry calculation methods for scene items.
+ */
+class SceneGeometry
 {
-    PlatformManager *result = new LinuxPlatformManager();
-    return result;
-}
+public:
+    SceneGeometry();
+
+    static QPointF calculateItemPosition(const ScreenieModelInterface &screenieModel, const QPointF &centerPosition);
+    static QImage scaleToTemplate(const ScreenieTemplateModel &templateModel, const QImage &image);
+    static QPointF calculateItemPosition(const QPointF &sourcePosition, const QSize &sourceSize, const QSize &targetSize);
+    static bool needsClipping(const QSize &originalSize, const QSize &clippedSize);
+};
+
+#endif // SCENEGEOMETRY_H

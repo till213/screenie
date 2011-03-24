@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@
 #include <QtGui/QSlider>
 
 #include "../../Utils/src/PaintTools.h"
-#include "../../Utils/src/SizeFitter.h"
 #include "../../Utils/src/Settings.h"
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/ScreenieModelInterface.h"
@@ -49,7 +48,7 @@
 #include "Reflection.h"
 #include "ScreenieGraphicsScene.h"
 #include "ScreeniePixmapItem.h"
-
+#include "SceneGeometry.h"
 #include "ScreenieControl.h"
 
 namespace
@@ -195,7 +194,7 @@ void ScreenieControl::addImages(QStringList filePaths, QPointF centerPosition)
     foreach (QString filePath, filePaths) {
         ScreenieModelInterface *screenieModel = new ScreenieFilePathModel(filePath);
         applyDefaultValues(*screenieModel);
-        QPointF itemPosition = calculateItemPosition(*screenieModel, position);
+        QPointF itemPosition = SceneGeometry::calculateItemPosition(*screenieModel, position);
         position += QPointF(20.0, 20.0);
         screenieModel->setPosition(itemPosition);
         d->screenieScene.addModel(screenieModel);
@@ -215,7 +214,7 @@ void ScreenieControl::addImages(QList<QImage> images, QPointF centerPosition)
     foreach (QImage image, images) {
         ScreenieImageModel *screenieModel = new ScreenieImageModel(image);
         applyDefaultValues(*screenieModel);
-        QPointF itemPosition = calculateItemPosition(*screenieModel, position);
+        QPointF itemPosition = SceneGeometry::calculateItemPosition(*screenieModel, position);
         position += QPointF(20.0, 20.0);
         screenieModel->setPosition(itemPosition);
         d->screenieScene.addModel(screenieModel);
@@ -548,61 +547,23 @@ void ScreenieControl::applyDefaultValues(ScreenieModelInterface &screenieModelIn
     screenieModelInterface.setReflectionOpacity(d->defaultScreenieModel.getReflectionOpacity());
 }
 
-QPointF ScreenieControl::calculateItemPosition(const ScreenieModelInterface &screenieModel, const QPointF &centerPosition)
-{
-    QPointF result;
-    QSize itemSize = screenieModel.getSize();
-    result.setX(centerPosition.x() - itemSize.width()  / 2.0);
-    result.setY(centerPosition.y() - itemSize.height() / 2.0);
-    return result;
-}
-
-QImage ScreenieControl::scaleToTemplate(const ScreenieTemplateModel &templateModel, const QImage &image)
-{
-    QImage result;
-    const SizeFitter &sizeFitter = templateModel.getSizeFitter();
-    QSize fittedSize;
-    QRect clippedRect;
-    bool doResize = sizeFitter.fit(image.size(), fittedSize, &clippedRect);
-    if (doResize) {
-        if (needsClipping(image.size(), clippedRect.size())) {
-            result = image.copy(clippedRect);
-            result = result.scaled(fittedSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        }
-        else {
-            result = image.scaled(fittedSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        }
-    } else {
-        result = image;
-    }
-    return result;
-}
-
-QPointF ScreenieControl::calculateItemPosition(const QPointF &sourcePosition, const QSize &sourceSize, const QSize &targetSize)
-{
-    QPointF result;
-    result.setX(sourcePosition.x() + sourceSize.width()  / 2.0 - targetSize.width()  / 2.0);
-    result.setY(sourcePosition.y() + sourceSize.height() / 2.0 - targetSize.height() / 2.0);
-    return result;
-}
-
 void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterface &screenieModel)
 {
     QImage actualImage = image;
     if (!actualImage.isNull()) {
         ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(&screenieModel);
         if (screenieImageModel != 0) {
-            QPointF itemPosition = calculateItemPosition(screenieImageModel->getPosition(), screenieImageModel->getSize(), actualImage.size());
+            QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieImageModel->getPosition(), screenieImageModel->getSize(), actualImage.size());
             screenieImageModel->setImage(actualImage);
             screenieImageModel->setPosition(itemPosition);
         } else {
             // convert to ScreenieImageModel
             ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
             if (screenieTemplateModel != 0) {
-                actualImage = scaleToTemplate(*screenieTemplateModel, actualImage);
+                actualImage = SceneGeometry::scaleToTemplate(*screenieTemplateModel, actualImage);
             }
             ScreenieImageModel *screenieImageModel = new ScreenieImageModel(actualImage);
-            QPointF itemPosition = calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), actualImage.size());
+            QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), actualImage.size());
             screenieImageModel->convert(screenieModel);
             screenieImageModel->setPosition(itemPosition);
             d->screenieScene.removeModel(&screenieModel);
@@ -617,7 +578,7 @@ void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModel
     if (filePathModel != 0) {
         QSize oldSize = filePathModel->getSize();
         filePathModel->setFilePath(filePath);
-        QPointF itemPosition = calculateItemPosition(filePathModel->getPosition(), oldSize, filePathModel->getSize());
+        QPointF itemPosition = SceneGeometry::calculateItemPosition(filePathModel->getPosition(), oldSize, filePathModel->getSize());
         filePathModel->setPosition(itemPosition);
     } else {
         SizeFitter sizeFitter;
@@ -630,28 +591,12 @@ void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModel
             screenieFilePathModel = new ScreenieFilePathModel(filePath);
         }
         QSize size = screenieFilePathModel->getSize();
-        QPointF itemPosition = calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), size);
+        QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), size);
         screenieFilePathModel->convert(screenieModel);
         screenieFilePathModel->setPosition(itemPosition);
         d->screenieScene.removeModel(&screenieModel);
         d->screenieScene.addModel(screenieFilePathModel);
     }
-}
-
-bool ScreenieControl::needsClipping(const QSize &originalSize, const QSize &clippedSize)
-{
-    int dw, dh;  // difference of original and clipped size (width/height)
-    float pw, ph; // percentage of original size (width/height)
-    bool result;
-
-    dw = originalSize.width()  - clippedSize.width();
-    dh = originalSize.height() - clippedSize.height();
-    pw = (100.0f * dw) / originalSize.width();
-    ph = (100.0f * dh) / originalSize.height();
-
-    /*!\todo Make threshold (currently 2%) an (advanced) user setting? */
-    result = qMax(pw, ph) > 2.0;
-    return result;
 }
 
 QList<ScreenieModelInterface *> ScreenieControl::getEditableModels(ScreenieModelInterface *screenieModel)

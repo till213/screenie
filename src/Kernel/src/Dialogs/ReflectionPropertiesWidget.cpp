@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -103,7 +103,6 @@ void ReflectionPropertiesWidget::updateUi()
     ui->opacitySlider->setEnabled(enableReflection);
 }
 
-/*!\todo Use ScreenieControl to manipulate the model values! */
 void ReflectionPropertiesWidget::on_reflectionCheckBox_toggled(bool checked)
 {
     d->screenieControl.setReflectionEnabled(checked, &d->screenieModel);
