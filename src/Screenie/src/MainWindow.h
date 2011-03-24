@@ -163,6 +163,7 @@ private slots:
     void handleExportFilePathSelected(const QString &filePath);
 
     void handleAskBeforeClose(int answer);
+    void handleErrorClosed();
 };
 
 #endif // MAINWINDOW_H

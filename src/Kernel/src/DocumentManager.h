@@ -72,6 +72,9 @@ public:
     KERNEL_API void setSaveStrategy(const QMainWindow &mainWindow, DocumentInfo::SaveStrategy saveStrategy);
     KERNEL_API void setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrategy);
 
+    KERNEL_API void setRecentActiveDialogMainWindow(QMainWindow *mainWindow);
+    KERNEL_API QMainWindow *getRecentActiveDialogMainWindow() const;
+
     virtual bool eventFilter(QObject *object, QEvent *event);
 
     KERNEL_API static CloseRequest getCloseRequest();

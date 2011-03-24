@@ -86,7 +86,6 @@ void TemplateModelPropertiesWidget::frenchConnection()
 
 // private slots
 
-/*!\todo Use ScreenieControl to manipulate the model values! */
 void TemplateModelPropertiesWidget::updateUi()
 {
     int width = d->screenieTemplateModel.getSize().width();

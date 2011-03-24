@@ -35,7 +35,8 @@ class DocumentManagerPrivate
 {
 public:
     DocumentManagerPrivate()
-        : windowActionGroup(new QActionGroup(0))
+        : windowActionGroup(new QActionGroup(0)),
+          recentActiveDialogMainWindow(0)
     {
         windowActionGroup->setExclusive(true);
     }
@@ -48,6 +49,7 @@ public:
     QList<DocumentInfo *> documentInfos;
     QActionGroup *windowActionGroup;
     QSignalMapper windowMapper;
+    QMainWindow *recentActiveDialogMainWindow;
     static DocumentManager *instance;
     static int nextWindowId;
     static DocumentManager::CloseRequest closeRequest;
@@ -171,6 +173,16 @@ void DocumentManager::setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrat
     foreach (DocumentInfo *documentInfo, d->documentInfos) {
        documentInfo->saveStrategy = saveStrategy;
     }
+}
+
+void DocumentManager::setRecentActiveDialogMainWindow(QMainWindow *mainWindow)
+{
+    d->recentActiveDialogMainWindow = mainWindow;
+}
+
+QMainWindow *DocumentManager::getRecentActiveDialogMainWindow() const
+{
+    return d->recentActiveDialogMainWindow;
 }
 
 DocumentManager::CloseRequest DocumentManager::getCloseRequest()
