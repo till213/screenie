@@ -35,8 +35,7 @@ class DocumentManagerPrivate
 {
 public:
     DocumentManagerPrivate()
-        : windowActionGroup(new QActionGroup(0)),
-          recentActiveDialogMainWindow(0)
+        : windowActionGroup(new QActionGroup(0))
     {
         windowActionGroup->setExclusive(true);
     }
@@ -47,9 +46,9 @@ public:
     }
 
     QList<DocumentInfo *> documentInfos;
+    QList<QMainWindow *> activeDialogWindows;
     QActionGroup *windowActionGroup;
     QSignalMapper windowMapper;
-    QMainWindow *recentActiveDialogMainWindow;
     static DocumentManager *instance;
     static int nextWindowId;
     static DocumentManager::CloseRequest closeRequest;
@@ -175,14 +174,27 @@ void DocumentManager::setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrat
     }
 }
 
-void DocumentManager::setRecentActiveDialogMainWindow(QMainWindow *mainWindow)
+void DocumentManager::addActiveDialogMainWindow(QMainWindow *mainWindow)
 {
-    d->recentActiveDialogMainWindow = mainWindow;
+    d->activeDialogWindows.append(mainWindow);
+}
+
+void DocumentManager::removeActiveDialogMainWindow(QMainWindow *mainWindow)
+{
+    if (d->activeDialogWindows.contains(mainWindow)) {
+        d->activeDialogWindows.removeOne(mainWindow);
+    }
 }
 
 QMainWindow *DocumentManager::getRecentActiveDialogMainWindow() const
 {
-    return d->recentActiveDialogMainWindow;
+    QMainWindow *result;
+    if (!d->activeDialogWindows.isEmpty()) {
+        result = d->activeDialogWindows.last();
+    } else {
+        result = 0;
+    }
+    return result;
 }
 
 DocumentManager::CloseRequest DocumentManager::getCloseRequest()

@@ -72,7 +72,32 @@ public:
     KERNEL_API void setSaveStrategy(const QMainWindow &mainWindow, DocumentInfo::SaveStrategy saveStrategy);
     KERNEL_API void setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrategy);
 
-    KERNEL_API void setRecentActiveDialogMainWindow(QMainWindow *mainWindow);
+    /*!
+     * Adds the \p mainWindow to the list of windows with an active dialog open which
+     * requires user-interaction. For example a Save As or Save Before dialog.
+     *
+     * \param mainWindow
+     *        the QMainWindow to be registered
+     */
+    KERNEL_API void addActiveDialogMainWindow(QMainWindow *mainWindow);
+
+    /*!
+     * Removes the \p mainWindow from the list of windows with an active dialog open which
+     * requires user-interaction, for example a Save As or Save Before dialog.
+     *
+     * \param mainWindow
+     *        the QMainWindow to be removed
+     */
+    KERNEL_API void removeActiveDialogMainWindow(QMainWindow *mainWindow);
+
+    /*!
+     * Returns the last registered main window with an active dialog.
+     * Focus should be passed to that instance if Quit was called from another
+     * main window, as to draw the user's attention to that instance.
+     *
+     * \return the QMainWindow which was last registered with an active dialog;
+     *         0 if no main window has an active dialog
+     */
     KERNEL_API QMainWindow *getRecentActiveDialogMainWindow() const;
 
     virtual bool eventFilter(QObject *object, QEvent *event);

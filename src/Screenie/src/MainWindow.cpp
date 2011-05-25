@@ -434,7 +434,7 @@ void MainWindow::askBeforeClose()
     messageBox->addButton(QMessageBox::Discard);
     messageBox->addButton(QMessageBox::Cancel);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     messageBox->open(this, SLOT(handleAskBeforeClose(int)));
 }
 
@@ -470,7 +470,7 @@ void MainWindow::saveAsBeforeClose()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsBeforeCloseSelected(const QString &)));
 }
 
@@ -544,7 +544,7 @@ void MainWindow::showError(const QString &message)
                                               QMessageBox::Ok,
                                               this);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     messageBox->open(this, SLOT(handleErrorClosed()));
 }
 
@@ -625,7 +625,7 @@ void MainWindow::on_saveAsAction_triggered()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsSelected(const QString &)));
 }
 
@@ -642,7 +642,7 @@ void MainWindow::on_saveAsTemplateAction_triggered()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsTemplateSelected(const QString &)));
 }
 
@@ -660,7 +660,7 @@ void MainWindow::on_exportAction_triggered()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(this);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleExportFilePathSelected(const QString &)));
 }
 
@@ -933,7 +933,7 @@ void MainWindow::updateWindowMenu()
 void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -952,7 +952,7 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(true);
         ok = writeTemplate(filePath);
@@ -971,7 +971,7 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -994,7 +994,7 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
 
 void MainWindow::handleExportFilePathSelected(const QString &filePath)
 {
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     Settings &settings = Settings::getInstance();
     if (!filePath.isNull()) {
         ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
@@ -1011,7 +1011,7 @@ void MainWindow::handleExportFilePathSelected(const QString &filePath)
 
 void MainWindow::handleAskBeforeClose(int answer)
 {
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     switch (answer) {
     case QMessageBox::Save:
         saveBeforeClose();
@@ -1036,6 +1036,6 @@ void MainWindow::handleAskBeforeClose(int answer)
 
 void MainWindow::handleErrorClosed()
 {
-    DocumentManager::getInstance().setRecentActiveDialogMainWindow(0);
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
 }
 
