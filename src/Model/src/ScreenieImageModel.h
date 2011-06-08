@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -60,6 +60,15 @@ public:
     virtual QString getOverlayText() const;
 
     QImage getImage() const;
+
+    /*!
+     * Sets the \p image data. Scales the image data as not to exceed
+     * the maximum image size.
+     *
+     * \param image
+     *        the QImage to be set
+     * \sa Settings::getMaximumImageSize()
+     */
     void setImage(QImage image);
 
 private:

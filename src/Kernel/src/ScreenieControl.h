@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -132,15 +132,9 @@ private:
     QList<ScreeniePixmapItem *> getScreeniePixmapItems() const;
     void updateEditRenderQuality();
     void applyDefaultValues(ScreenieModelInterface &screenieModelInterface);
-    /*!\todo Put these methods in some Kernel "Geometry" class or somewhere */
-    QPointF calculateItemPosition(const ScreenieModelInterface &screenieModel, const QPointF &centerPosition);
-    QImage scaleToTemplate(const ScreenieTemplateModel &templateModel, const QImage &image);
-    QPointF calculateItemPosition(const QPointF &sourcePosition, const QSize &sourceSize, const QSize &targetSize);
 
     void updateImageModel(const QImage &image, ScreenieModelInterface &screenieModel);
     void updateFilePathModel(const QString &filePath, ScreenieModelInterface &screenieModel);
-
-    bool needsClipping(const QSize &originalSize, const QSize &clippedSize);
 
     // returns 'screenieModel' in the list if set to != 0, otherwise all selected models are returned in the list
     QList<ScreenieModelInterface *> getEditableModels(ScreenieModelInterface *screenieModel = 0);

@@ -18,6 +18,7 @@ HEADERS += $$PWD/src/KernelLib.h \
            $$PWD/src/PropertyDialogFactory.h \
            $$PWD/src/DocumentManager.h \
            $$PWD/src/DocumentInfo.h \
+           $$PWD/src/SceneGeometry.h \
            $$PWD/src/Dialogs/ScreenieModelPropertiesDialog.h \
            $$PWD/src/Dialogs/GeometryPropertiesWidget.h \
            $$PWD/src/Dialogs/TemplateModelPropertiesWidget.h \
@@ -26,7 +27,7 @@ HEADERS += $$PWD/src/KernelLib.h \
            $$PWD/src/Dialogs/FilePathModelPropertiesDialog.h \
            $$PWD/src/Dialogs/FilePathModelPropertiesWidget.h \
            $$PWD/src/Dialogs/ImageModelPropertiesDialog.h \
-    src/Dialogs/PropertyValidatorWidget.h
+           $$PWD/src/Dialogs/PropertyValidatorWidget.h
 
 SOURCES += $$PWD/src/ExportImage.cpp \
            $$PWD/src/Reflection.cpp \
@@ -39,6 +40,7 @@ SOURCES += $$PWD/src/ExportImage.cpp \
            $$PWD/src/Clipboard/MimeHelper.cpp \
            $$PWD/src/PropertyDialogFactory.cpp \
            $$PWD/src/DocumentManager.cpp \
+           $$PWD/src/SceneGeometry.cpp \
            $$PWD/src/Dialogs/ScreenieModelPropertiesDialog.cpp \
            $$PWD/src/Dialogs/GeometryPropertiesWidget.cpp \
            $$PWD/src/Dialogs/TemplateModelPropertiesWidget.cpp \
@@ -47,7 +49,7 @@ SOURCES += $$PWD/src/ExportImage.cpp \
            $$PWD/src/Dialogs/FilePathModelPropertiesDialog.cpp \
            $$PWD/src/Dialogs/FilePathModelPropertiesWidget.cpp \
            $$PWD/src/Dialogs/ImageModelPropertiesDialog.cpp \
-    src/Dialogs/PropertyValidatorWidget.cpp
+           $$PWD/src/Dialogs/PropertyValidatorWidget.cpp
 
 FORMS += $$PWD/ui/ScreenieModelPropertiesDialog.ui \
          $$PWD/ui/GeometryPropertiesWidget.ui \
