@@ -41,7 +41,7 @@ unix:linux* {
     QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -O
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
 
-    QMAKE_LFLAGS += -Wl,--rpath=\'\$\$ORIGIN\'
+    QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
 }
 
 win32-g++ {
