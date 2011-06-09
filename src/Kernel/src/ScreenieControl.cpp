@@ -696,7 +696,7 @@ void ScreenieControl::handleDistanceChanged()
 
 void ScreenieControl::handleModelAdded(ScreenieModelInterface &screenieModel)
 {
-    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, *d->reflection);
+    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, d->screenieScene, *d->reflection);
     screeniePixmapItem->setPos(screenieModel.getPosition());
     d->screenieGraphicsScene.clearSelection();
     screeniePixmapItem->setSelected(true);

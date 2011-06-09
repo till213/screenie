@@ -45,7 +45,7 @@ Reflection::~Reflection() {
     delete d;
 }
 
-QPixmap Reflection::addReflection(const QPixmap &pixmap, int opacityPercent, int offsetPercent)
+QPixmap Reflection::addReflection(const QPixmap &pixmap, int opacityPercent, int offsetPercent) const
 {
     QPixmap result(pixmap.width(), pixmap.height() * 2);
     result.fill(Qt::transparent);
@@ -61,7 +61,7 @@ QPixmap Reflection::addReflection(const QPixmap &pixmap, int opacityPercent, int
 
 // private
 
-QPixmap Reflection::reflect(const QPixmap &pixmap, int offset)
+QPixmap Reflection::reflect(const QPixmap &pixmap, int offset) const
 {
     QLinearGradient gradient(QPoint(0, 0), QPoint(0, pixmap.height()));
     if (offset <= 0) {

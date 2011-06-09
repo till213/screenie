@@ -48,12 +48,12 @@ public:
      * \param offset
      *        the offset of the gradient in percent [1, 100] of the \c pixmap's height
      */
-    KERNEL_API QPixmap addReflection(const QPixmap &pixmap, int opacity, int offset);
+    KERNEL_API QPixmap addReflection(const QPixmap &pixmap, int opacity, int offset) const;
 
 private:
     ReflectionPrivate *d;
 
-    QPixmap reflect(const QPixmap &pixmap, int offset);
+    QPixmap reflect(const QPixmap &pixmap, int offset) const;
 };
 
 #endif // PAINTTOOLS_H

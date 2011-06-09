@@ -40,6 +40,7 @@
 
 #include "../../Utils/src/PaintTools.h"
 #include "../../Model/src/ScreenieModelInterface.h"
+#include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/SceneLimits.h"
 #include "Clipboard/MimeHelper.h"
 #include "Reflection.h"
@@ -52,9 +53,10 @@ const int ScreeniePixmapItem::ScreeniePixmapType = QGraphicsItem::UserType + 1;
 class ScreeniePixmapItemPrivate
 {
 public:
-    ScreeniePixmapItemPrivate(ScreenieModelInterface &theScreenieModel, ScreenieControl &theScreenieControl, Reflection &theReflection)
+    ScreeniePixmapItemPrivate(ScreenieModelInterface &theScreenieModel, ScreenieControl &theScreenieControl, const ScreenieScene &scene, const Reflection &theReflection)
         : screenieModel(theScreenieModel),
           screenieControl(theScreenieControl),
+          screenieScene(scene),
           reflection(theReflection),
           transformPixmap(true),
           ignoreUpdates(false),
@@ -70,7 +72,8 @@ public:
 
     ScreenieModelInterface &screenieModel;
     ScreenieControl &screenieControl;
-    Reflection &reflection;
+    const ScreenieScene &screenieScene;
+    const Reflection &reflection;
     bool transformPixmap;
     bool ignoreUpdates;
     bool itemTransformed;
@@ -88,9 +91,9 @@ const int ScreeniePixmapItemPrivate::ContextActionThreshold = 2;
 
 // public
 
-ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, Reflection &reflection)
+ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const  ScreenieScene &screenieScene, const Reflection &reflection)
     : QGraphicsPixmapItem(),
-      d(new ScreeniePixmapItemPrivate(screenieModel, screenieControl, reflection))
+      d(new ScreeniePixmapItemPrivate(screenieModel, screenieControl, screenieScene, reflection))
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -240,10 +243,24 @@ QVariant ScreeniePixmapItem::itemChange(GraphicsItemChange change, const QVarian
 
 void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    QRectF rect = boundingRect();
+    if (d->screenieModel.isReflectionEnabled()) {
+        QRectF backgroundRect = rect;
+        backgroundRect.setTop(rect.bottom() - rect.height() / 2.0);
+        /*!\todo Fix background fill borders */
+        if (d->screenieScene.isBackgroundEnabled()) {
+            painter->fillRect(backgroundRect, d->screenieScene.getBackgroundColor());
+        } else {
+            QPainter::CompositionMode compositionMode = painter->compositionMode();
+            painter->setCompositionMode(QPainter::CompositionMode_Source);
+            /*!\todo Draw proper checker background */
+            painter->fillRect(backgroundRect, QColor(0, 0, 0, 0));
+            painter->setCompositionMode(compositionMode);
+        }
+    }
     QGraphicsPixmapItem::paint(painter, option, widget);
     QString overlayText = d->screenieModel.getOverlayText();
     if (!overlayText.isNull()) {
-        QRectF rect = boundingRect();
         /*!\todo Optimise this; cache the font, re-calculate when overlay text changes (add signal) */
         if (rect.width() > 100 && rect.height() > 48) {
             rect.adjust(10.0, 10.0, -10.0, -10.0);
@@ -428,17 +445,17 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
 void ScreeniePixmapItem::updateReflection()
 {
     QPixmap pixmap = this->pixmap();
-    if (d->screenieModel.isReflectionEnabled()) {
-        if (d->screenieModel.getSize() != pixmap.size()) {
-            // the pixmap already has a reflection (height must be 2x original height),
-            // so just take the upper half (the original pixmap)
-            pixmap = PaintTools::upperHalf(pixmap);
+    if (d->screenieModel.getSize().height() != pixmap.size().height()) {
+        // the pixmap already has a reflection (height must be 2x original height),
+        // so just take the upper half (the original pixmap)
+        pixmap = PaintTools::upperHalf(pixmap);
+
+        // update the reflection, if necessary
+        if (d->screenieModel.isReflectionEnabled()) {
+            pixmap = d->reflection.addReflection(pixmap, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
         }
+    } else if (d->screenieModel.isReflectionEnabled()) {
         pixmap = d->reflection.addReflection(pixmap, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
-    } else {
-        if (d->screenieModel.getSize() != pixmap.size()) {
-            pixmap = PaintTools::upperHalf(pixmap);
-        }
     }
     setPixmap(pixmap);
 }

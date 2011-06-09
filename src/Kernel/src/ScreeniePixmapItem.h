@@ -35,6 +35,7 @@ class QImage;
 #include "KernelLib.h"
 
 class ScreenieModelInterface;
+class ScreenieScene;
 class ScreenieControl;
 class Reflection;
 class ScreeniePixmapItemPrivate;
@@ -53,7 +54,7 @@ public:
      */
     KERNEL_API static const int ScreeniePixmapType;
 
-    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, Reflection &reflection);
+    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const ScreenieScene &screenieScene, const Reflection &reflection);
     KERNEL_API virtual ~ScreeniePixmapItem();
 
     KERNEL_API ScreenieModelInterface &getScreenieModel() const;
