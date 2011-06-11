@@ -24,12 +24,14 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QUrl>
 #include <QtCore/QEvent>
+#include <QtCore/QRectF>
 #include <QtGui/QGraphicsPixmapItem>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsView>
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
+#include <QtGui/QBrush>
 #include <QtGui/QPixmap>
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
@@ -62,7 +64,8 @@ public:
           ignoreUpdates(false),
           itemTransformed(false),
           propertyDialogFactory(new PropertyDialogFactory(screenieControl)),
-          propertyDialog(0)
+          propertyDialog(0),
+          checkerPattern(PaintTools::createCheckerPattern())
     {}
 
     ~ScreeniePixmapItemPrivate()
@@ -74,12 +77,14 @@ public:
     ScreenieControl &screenieControl;
     const ScreenieScene &screenieScene;
     const Reflection &reflection;
+    QRectF reflectionBoundingRect;
     bool transformPixmap;
     bool ignoreUpdates;
     bool itemTransformed;
     PropertyDialogFactory *propertyDialogFactory;
     QPoint initialPoint;
     QDialog *propertyDialog;
+    QBrush checkerPattern;
 
     static const int ContextActionThreshold;
 };
@@ -243,27 +248,28 @@ QVariant ScreeniePixmapItem::itemChange(GraphicsItemChange change, const QVarian
 
 void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QRectF rect = boundingRect();
     if (d->screenieModel.isReflectionEnabled()) {
-        QRectF backgroundRect = rect;
-        backgroundRect.setTop(rect.bottom() - rect.height() / 2.0);
         /*!\todo Fix background fill borders */
         if (d->screenieScene.isBackgroundEnabled()) {
-            painter->fillRect(backgroundRect, d->screenieScene.getBackgroundColor());
+            painter->fillRect(d->reflectionBoundingRect, d->screenieScene.getBackgroundColor());
         } else {
             QPainter::CompositionMode compositionMode = painter->compositionMode();
             painter->setCompositionMode(QPainter::CompositionMode_Source);
             /*!\todo Draw proper checker background */
-            painter->fillRect(backgroundRect, QColor(0, 0, 0, 0));
+            painter->fillRect(d->reflectionBoundingRect, d->checkerPattern);
             painter->setCompositionMode(compositionMode);
         }
+        // todo: Remove this, testing only
+        //painter->setPen(Qt::red);
+        //painter->drawRect(d->reflectionBoundingRect);
     }
     QGraphicsPixmapItem::paint(painter, option, widget);
     QString overlayText = d->screenieModel.getOverlayText();
     if (!overlayText.isNull()) {
+        QRectF boundingRect = this->boundingRect();
         /*!\todo Optimise this; cache the font, re-calculate when overlay text changes (add signal) */
-        if (rect.width() > 100 && rect.height() > 48) {
-            rect.adjust(10.0, 10.0, -10.0, -10.0);
+        if (boundingRect.width() > 100 && boundingRect.height() > 48) {
+            boundingRect.adjust(10.0, 10.0, -10.0, -10.0);
             int length = overlayText.length();
             QFont font("Arial");
             if (length > 10) {
@@ -272,10 +278,10 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
                 font.setPixelSize(24);
             }
             QFontMetrics fontMetrics(font);
-            overlayText = fontMetrics.elidedText(overlayText, Qt::ElideMiddle, rect.width());
+            overlayText = fontMetrics.elidedText(overlayText, Qt::ElideMiddle, boundingRect.width());
             painter->setPen(Qt::white);
             painter->setFont(font);
-            painter->drawText(rect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, overlayText);
+            painter->drawText(boundingRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, overlayText);
         }
     }
 }
@@ -458,6 +464,24 @@ void ScreeniePixmapItem::updateReflection()
         pixmap = d->reflection.addReflection(pixmap, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
     }
     setPixmap(pixmap);
+    updateReflectionBoundingRect();
+}
+
+void ScreeniePixmapItem::updateReflectionBoundingRect()
+{
+    QPointF topLeft;
+    QPointF bottomRight;
+    if (d->screenieModel.isReflectionEnabled()) {
+    QSize size = d->screenieModel.getSize();
+        topLeft.setX(1.0);
+        topLeft.setY(size.height());
+        bottomRight.setX(size.width() - 1.0);
+        bottomRight.setY(size.height() + size.height() * d->screenieModel.getReflectionOffset() / 100.0 - 1.0);
+        d->reflectionBoundingRect.setTopLeft(topLeft);
+        d->reflectionBoundingRect.setBottomRight(bottomRight);
+    } else {
+        d->reflectionBoundingRect = QRectF();
+    }
 }
 
 void ScreeniePixmapItem::updatePixmap(const QImage &image)
