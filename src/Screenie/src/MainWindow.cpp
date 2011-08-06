@@ -83,7 +83,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_ignoreUpdateSignals(false)
 {
+#ifdef Q_OS_MAC
     m_isFullScreenPreviously = false;
+#endif
     ui->setupUi(this);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
@@ -144,11 +146,17 @@ bool MainWindow::isFullScreen() const
 void MainWindow::showFullScreen()
 {
     m_platformManager->showFullScreen();
+#ifndef Q_OS_MAC
+    updateViewActions();
+#endif
 }
 
 void MainWindow::showNormal()
 {
     m_platformManager->showNormal();
+#ifndef Q_OS_MAC
+    updateViewActions();
+#endif
 }
 
 // protected
@@ -181,11 +189,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
+#ifdef Q_OS_MAC
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
 
-    if (this->m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
+    if (m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
         m_isFullScreenPreviously = true;
         updateViewActions();
 #ifdef DEBUG
@@ -199,9 +208,13 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 #endif
     }
 #ifdef DEBUG
-    qDebug("MainWindow::resizeEvent: ToolBar visible: %d", ui->toolBar->isVisible());
+    qDebug("MainWindow::resizeEvent: ToolBar visible: %d isFullScreen: %d FullScreen Previously: %d"
+           , ui->toolBar->isVisible(),
+           m_platformManager->isFullScreen(),
+           m_isFullScreenPreviously);
 #endif
 }
+#endif
 
 // private
 
@@ -544,7 +557,6 @@ void MainWindow::restoreWindowGeometry()
 #endif
     } else {
         resize(windowGeometry.size);
-        m_isFullScreenPreviously = false;
         if (!windowGeometry.position.isNull()) {
             move(windowGeometry.position);
         }

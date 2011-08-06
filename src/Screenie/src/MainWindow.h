@@ -62,7 +62,9 @@ public slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+#ifdef Q_OS_MAC
     virtual void resizeEvent(QResizeEvent *event);
+#endif
 
 private:
     Q_DISABLE_COPY(MainWindow)
@@ -78,7 +80,9 @@ private:
     RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
+#ifdef Q_OS_MAC
     bool m_isFullScreenPreviously;
+#endif
 
     void frenchConnection();
 

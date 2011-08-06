@@ -85,15 +85,6 @@ void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow
 void AbstractPlatformManager::showFullScreen()
 {
     if (d != 0) {
-        /*!\todo Settings which control what becomes invisible in fullscreen mode */
-        d->mainWindowUi.toolBar->setVisible(false);
-        d->mainWindowUi.sidePanel->setVisible(false);
-        // Note: Qt crashes when we don't disable the unified toolbar before going
-        // fullscreen (when we switch back to normal view, that is)!
-        // But since for now we hide it anyway that does not make any visible difference.
-        // The Qt documentation recommends anyway to do so.
-        // Also refer to: http://bugreports.qt.nokia.com/browse/QTBUG-16274
-        d->mainWindow.setUnifiedTitleAndToolBarOnMac(false);
         d->mainWindow.showFullScreen();
     }
 #ifdef DEBUG
@@ -108,9 +99,6 @@ void AbstractPlatformManager::showNormal()
     qDebug("AbstractPlatformManager::showNormal: called.");
     if (d != 0) {
         d->mainWindow.showNormal();
-        d->mainWindowUi.toolBar->setVisible(true);
-        d->mainWindowUi.sidePanel->setVisible(true);
-        d->mainWindow.setUnifiedTitleAndToolBarOnMac(true);
     }
 #ifdef DEBUG
     else {
@@ -127,9 +115,12 @@ bool AbstractPlatformManager::isFullScreen() const
     } else {
         result = false;
 #ifdef DEBUG
-        qWarning("AbstractPlatformManager::showFullScreen: Private data not initialised! Call initialise() first.");
+        qWarning("AbstractPlatformManager::isFullScreen: Private data not initialised! Call initialise() first.");
 #endif
     }
+#ifdef DEBUG
+        qWarning("AbstractPlatformManager::isFullScreen: %d", result);
+#endif
     return result;
 }
 
