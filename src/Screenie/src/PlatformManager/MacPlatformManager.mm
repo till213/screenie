@@ -116,8 +116,9 @@ bool MacPlatformManager::isFullScreen() const
 bool MacPlatformManager::isFullScreenAPISupported()
 {
     bool result;
-    result == [NSWindow respondsToSelector: @selector(toggleFullScreen:)];
-    qDebug("MacPlatformManager::isFullScreenAPISupported: %d", result);
+    NSWindow *nswin = [[NSWindow alloc] init];
+    result = (YES == [nswin respondsToSelector: @selector(toggleFullScreen:)]);
+    [nswin release];
     return result;
 }
 
