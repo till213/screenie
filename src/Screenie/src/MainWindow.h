@@ -32,6 +32,7 @@ class QWidget;
 class QCloseEvent;
 class QEvent;
 class QAction;
+class QResizeEvent;
 
 class ScreenieModelInterface;
 class ScreenieScene;
@@ -53,6 +54,7 @@ public:
     virtual ~MainWindow();
 
     bool read(const QString &filePath);
+    bool isFullScreen() const;
 
 public slots:
     virtual void showFullScreen();
@@ -60,6 +62,7 @@ public slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
     Q_DISABLE_COPY(MainWindow)
@@ -75,6 +78,7 @@ private:
     RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
+    bool m_isFullScreenPreviously;
 
     void frenchConnection();
 
@@ -87,6 +91,7 @@ private:
     void updateReflectionUi();
     void updateColorUi();
     void updateEditActions();
+    void updateViewActions();
     void updateTitle();
 
     void createScene();
@@ -130,6 +135,8 @@ private slots:
     void on_addTemplateAction_triggered();
 
     // View
+    void on_showToolBarAction_toggled(bool enable);
+    void on_showSidePanelAction_toggled(bool enable);
     void on_toggleFullScreenAction_triggered();
 
     // About

@@ -35,7 +35,7 @@ public:
     QImage image;
 };
 
-ScreenieImageModel::ScreenieImageModel(QImage image)
+ScreenieImageModel::ScreenieImageModel(const QImage image)
     : d(new ScreenieImageModelPrivate())
 {
     d->image = fitToMaximumSize(image);
@@ -81,7 +81,7 @@ QString ScreenieImageModel::getOverlayText() const
     return QString();
 }
 
-void ScreenieImageModel::setImage(QImage image)
+void ScreenieImageModel::setImage(const QImage image)
 {
     if (d->image.cacheKey() != image.cacheKey()) {
         d->image = fitToMaximumSize(image);

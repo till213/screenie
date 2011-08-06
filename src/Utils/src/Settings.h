@@ -127,14 +127,28 @@ public:
      */
     UTILS_API void setMaxRecentFiles(int maxRecentFiles);
 
+    UTILS_API EditRenderQuality getEditRenderQuality() const;
+
     /*!
      * \sa #changed()
      */
     UTILS_API void setEditRenderQuality(EditRenderQuality editRenderQuality);
 
-    UTILS_API EditRenderQuality getEditRenderQuality() const;
-
     UTILS_API WindowGeometry getWindowGeometry() const;
+
+    UTILS_API bool isToolBarVisible() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setToolBarVisible(bool enable);
+
+    UTILS_API bool isSidePanelVisible() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setSidePanelVisible(bool enable);
 
     /*!
      * Sets the \p windowGeometry. This method does \em not emit the signal

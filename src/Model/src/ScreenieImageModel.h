@@ -69,7 +69,7 @@ public:
      *        the QImage to be set
      * \sa Settings::getMaximumImageSize()
      */
-    void setImage(QImage image);
+    void setImage(const QImage image);
 
 private:
     ScreenieImageModelPrivate *d;

@@ -33,9 +33,9 @@
 #include <QtGui/QPainter>
 #include <QtGui/QBrush>
 #include <QtGui/QPixmap>
+#include <QtGui/QImage>
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
-#include <QtGui/QImage>
 #include <QtGui/QDialog>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
@@ -55,11 +55,11 @@ const int ScreeniePixmapItem::ScreeniePixmapType = QGraphicsItem::UserType + 1;
 class ScreeniePixmapItemPrivate
 {
 public:
-    ScreeniePixmapItemPrivate(ScreenieModelInterface &theScreenieModel, ScreenieControl &theScreenieControl, const ScreenieScene &scene, const Reflection &theReflection)
+    ScreeniePixmapItemPrivate(ScreenieModelInterface &theScreenieModel, ScreenieControl &theScreenieControl, const ScreenieScene &scene)
         : screenieModel(theScreenieModel),
           screenieControl(theScreenieControl),
           screenieScene(scene),
-          reflection(theReflection),
+          reflection(new Reflection()),
           transformPixmap(true),
           ignoreUpdates(false),
           itemTransformed(false),
@@ -70,13 +70,15 @@ public:
 
     ~ScreeniePixmapItemPrivate()
     {
+        delete reflection;
         delete propertyDialogFactory;
     }
 
     ScreenieModelInterface &screenieModel;
     ScreenieControl &screenieControl;
     const ScreenieScene &screenieScene;
-    const Reflection &reflection;
+    Reflection *reflection;
+    QSizeF imageSize;
     QRectF reflectionBoundingRect;
     bool transformPixmap;
     bool ignoreUpdates;
@@ -85,6 +87,7 @@ public:
     QPoint initialPoint;
     QDialog *propertyDialog;
     QBrush checkerPattern;
+    QImage alphaChannel;
 
     static const int ContextActionThreshold;
 };
@@ -96,9 +99,9 @@ const int ScreeniePixmapItemPrivate::ContextActionThreshold = 2;
 
 // public
 
-ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const  ScreenieScene &screenieScene, const Reflection &reflection)
+ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const  ScreenieScene &screenieScene)
     : QGraphicsPixmapItem(),
-      d(new ScreeniePixmapItemPrivate(screenieModel, screenieControl, screenieScene, reflection))
+      d(new ScreeniePixmapItemPrivate(screenieModel, screenieControl, screenieScene))
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -249,15 +252,19 @@ QVariant ScreeniePixmapItem::itemChange(GraphicsItemChange change, const QVarian
 void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if (d->screenieModel.isReflectionEnabled()) {
-        /*!\todo Fix background fill borders */
         if (d->screenieScene.isBackgroundEnabled()) {
-            painter->fillRect(d->reflectionBoundingRect, d->screenieScene.getBackgroundColor());
+            //painter->
+            //if (d->alphaChannel.isNull()) {
+                //painter->fillRect(d->reflectionBoundingRect, d->screenieScene.getBackgroundColor());
+            //} else {
+            //    painter->drawImage(d->reflectionBoundingRect.topLeft(), d->alphaChannel);
+            //}
+            //QImage alpha = d->screenieModel.get
         } else {
-            QPainter::CompositionMode compositionMode = painter->compositionMode();
-            painter->setCompositionMode(QPainter::CompositionMode_Source);
-            /*!\todo Draw proper checker background */
-            painter->fillRect(d->reflectionBoundingRect, d->checkerPattern);
-            painter->setCompositionMode(compositionMode);
+//            QPainter::CompositionMode compositionMode = painter->compositionMode();
+//            painter->setCompositionMode(QPainter::CompositionMode_Source);
+//            painter->fillRect(d->reflectionBoundingRect, d->checkerPattern);
+//            painter->setCompositionMode(compositionMode);
         }
         // todo: Remove this, testing only
         //painter->setPen(Qt::red);
@@ -284,6 +291,19 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
             painter->drawText(boundingRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, overlayText);
         }
     }
+}
+
+QRectF ScreeniePixmapItem::boundingRect() const
+{
+    QRectF result;
+    if (d->screenieModel.isReflectionEnabled()) {
+        result.setWidth(d->imageSize.width());
+        result.setHeight(d->imageSize.height() * 2.0);
+    } else {
+        result.setWidth(d->imageSize.width());
+        result.setHeight(d->imageSize.height());
+    }
+    return result;
 }
 
 // private
@@ -450,19 +470,13 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
 
 void ScreeniePixmapItem::updateReflection()
 {
-    QPixmap pixmap = this->pixmap();
-    if (d->screenieModel.getSize().height() != pixmap.size().height()) {
-        // the pixmap already has a reflection (height must be 2x original height),
-        // so just take the upper half (the original pixmap)
-        pixmap = PaintTools::upperHalf(pixmap);
+    QImage image = d->screenieModel.readImage();
 
-        // update the reflection, if necessary
-        if (d->screenieModel.isReflectionEnabled()) {
-            pixmap = d->reflection.addReflection(pixmap, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
-        }
-    } else if (d->screenieModel.isReflectionEnabled()) {
-        pixmap = d->reflection.addReflection(pixmap, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
+    if (d->screenieModel.isReflectionEnabled()) {
+        image = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
     }
+    QPixmap pixmap;
+    pixmap.convertFromImage(image);
     setPixmap(pixmap);
     updateReflectionBoundingRect();
 }
@@ -487,7 +501,15 @@ void ScreeniePixmapItem::updateReflectionBoundingRect()
 void ScreeniePixmapItem::updatePixmap(const QImage &image)
 {
     QPixmap pixmap;
+
+    d->imageSize.setWidth(image.width());
+    d->imageSize.setHeight(image.height());
     pixmap.convertFromImage(image);
+    if (image.hasAlphaChannel()) {
+        d->alphaChannel = image.mirrored().alphaChannel();
+    } else {
+        d->alphaChannel = QImage();
+    }
     setPixmap(pixmap);
     updateReflection();
     updateItemGeometry();
@@ -507,13 +529,12 @@ void ScreeniePixmapItem::updateItemGeometry()
     qreal centerScale = 1.0 - 0.9 * d->screenieModel.getDistance() / SceneLimits::MaxDistance;
     scale = QTransform().scale(centerScale, centerScale);
 
-    QPixmap pixmap = this->pixmap();
-    qreal dx = pixmap.width() / 2.0;
+    qreal dx = d->imageSize.width() / 2.0;
     qreal dy;
     if (d->screenieModel.isReflectionEnabled()) {
-        dy =  pixmap.height() / 4.0;
+        dy =  d->imageSize.height() / 2.0;
     } else {
-        dy = pixmap.height() / 2.0;
+        dy = d->imageSize.height();
     }
     transform.translate(dx, dy);
     transform.rotate(d->screenieModel.getRotation(), Qt::YAxis);

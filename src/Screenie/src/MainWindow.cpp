@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_ignoreUpdateSignals(false)
 {
+    m_isFullScreenPreviously = false;
     ui->setupUi(this);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
@@ -97,10 +98,11 @@ MainWindow::MainWindow(QWidget *parent) :
     initializeUi();
     m_platformManager = PlatformManagerFactory::getInstance().create();
     m_platformManager->initialize(*this, *ui);
-    updateUi();
+
     restoreWindowGeometry();
     // call unified toolbar AFTER restoring window geometry!
     setUnifiedTitleAndToolBarOnMac(true);
+    updateUi();
     m_screenieControl->setRenderQuality(ScreenieControl::MaximumQuality);
     frenchConnection();
 }
@@ -129,28 +131,21 @@ bool MainWindow::read(const QString &filePath)
     return result;
 }
 
+bool MainWindow::isFullScreen() const
+{
+    return m_platformManager->isFullScreen();
+}
+
 // public slots
 
 void MainWindow::showFullScreen()
 {
-    /*!\todo Settings which control what becomes invisible in fullscreen mode */
-    ui->toolBar->setVisible(false);
-    ui->sidePanel->setVisible(false);
-    // Note: Qt crashes when we don't disable the unified toolbar before going
-    // fullscreen (when we switch back to normal view, that is)!
-    // But since for now we hide it anyway that does not make any visible difference.
-    // The Qt documentation recommends anyway to do so.
-    // Also refer to: http://bugreports.qt.nokia.com/browse/QTBUG-16274
-    setUnifiedTitleAndToolBarOnMac(false);
-    QMainWindow::showFullScreen();
+    m_platformManager->showFullScreen();
 }
 
 void MainWindow::showNormal()
 {
-    QMainWindow::showNormal();
-    ui->toolBar->setVisible(true);
-    ui->sidePanel->setVisible(true);
-    setUnifiedTitleAndToolBarOnMac(true);
+    m_platformManager->showNormal();
 }
 
 // protected
@@ -186,6 +181,28 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+
+    if (this->m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
+        m_isFullScreenPreviously = true;
+        updateViewActions();
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: Going to fullscreen: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
+    } else if (!this->m_platformManager->isFullScreen() && m_isFullScreenPreviously) {
+        m_isFullScreenPreviously = false;
+        updateViewActions();
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: Going to normal: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
+    }
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
+}
+
 // private
 
 void MainWindow::frenchConnection()
@@ -208,6 +225,10 @@ void MainWindow::frenchConnection()
             this, SLOT(showMinimized()));
     connect(m_maximizeWindowsAction, SIGNAL(triggered()),
             this, SLOT(showMaximized()));
+
+    // Settings
+    connect(&Settings::getInstance(), SIGNAL(changed()),
+            this, SLOT(updateUi()));
 }
 
 void MainWindow::newScene(ScreenieScene &screenieScene)
@@ -356,6 +377,21 @@ void MainWindow::updateEditActions()
     ui->selectAllAction->setEnabled(hasItems);
 }
 
+void MainWindow::updateViewActions()
+{
+    if (m_platformManager->isFullScreen()) {
+        ui->toggleFullScreenAction->setText((tr("Exit Full Screen")));
+    } else {
+        ui->toggleFullScreenAction->setText((tr("Enter Full Screen")));
+    }
+    ui->showToolBarAction->blockSignals(true);
+    ui->showToolBarAction->setChecked(ui->toolBar->isVisible());
+    ui->showToolBarAction->blockSignals(false);
+    ui->showSidePanelAction->blockSignals(true);
+    ui->showSidePanelAction->setChecked(ui->sidePanel->isVisible());
+    ui->showSidePanelAction->blockSignals(false);
+}
+
 void MainWindow::updateTitle()
 {
     QString title;
@@ -478,9 +514,26 @@ void MainWindow::restoreWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry = Settings::getInstance().getWindowGeometry();
     if (windowGeometry.fullScreen) {
-        showFullScreen();
+#ifndef Q_OS_MAC
+        shoFullScreen();
+#else
+        resize(windowGeometry.size);
+        // Note: On Mac OS 10.7 "Lion" the transition to fullscreen
+        //       apparently only works if the window has been shown
+        //       on screen. So we use a timer with a "visually pleasant"
+        //       timeout of 200 ms (we could also use 0, but then we
+        //       get window flickering!), such that the fullscreen
+        //       transition is only done once Qt has fully initialised
+        //       all data structures and the Qt event queue has made
+        //       sure that the window is shown before the timer is fired.
+        /*!\todo: On Mac 10.6 "Snow Leopard" we could in theory still call
+                  showFullScreen() here: query OS version at runtime!
+                  http://vgable.com/blog/2008/05/04/getting-mac-os-x-version-information/ */
+        QTimer::singleShot(200, this, SLOT(showFullScreen()));
+#endif
     } else {
         resize(windowGeometry.size);
+        m_isFullScreenPreviously = false;
         if (!windowGeometry.position.isNull()) {
             move(windowGeometry.position);
         }
@@ -737,9 +790,19 @@ void MainWindow::on_addTemplateAction_triggered()
     m_screenieControl->addTemplate(QPointF(0.0, 0.0));
 }
 
+void MainWindow::on_showToolBarAction_toggled(bool enable)
+{
+    Settings::getInstance().setToolBarVisible(enable);
+}
+
+void MainWindow::on_showSidePanelAction_toggled(bool enable)
+{
+    Settings::getInstance().setSidePanelVisible(enable);
+}
+
 void MainWindow::on_toggleFullScreenAction_triggered()
 {
-    if (!isFullScreen()) {
+    if (!m_platformManager->isFullScreen()) {
         showFullScreen();
     } else {
         showNormal();
@@ -878,11 +941,16 @@ void MainWindow::on_htmlBGColorLineEdit_editingFinished()
 
 void MainWindow::updateUi()
 {
+    Settings &settings = Settings::getInstance();
     if (!m_ignoreUpdateSignals) {
+        setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
+        ui->toolBar->setVisible(settings.isToolBarVisible());
+        ui->sidePanel->setVisible(settings.isSidePanelVisible());
         updateTransformationUi();
         updateReflectionUi();
         updateColorUi();
         updateEditActions();
+        updateViewActions();
     }
     updateDefaultValues();
     setWindowModified(m_screenieScene->isModified());

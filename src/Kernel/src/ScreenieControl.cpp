@@ -45,7 +45,6 @@
 #include "../../Model/src/ScreenieImageModel.h"
 #include "../../Model/src/ScreenieTemplateModel.h"
 #include "TemplateOrganizer.h"
-#include "Reflection.h"
 #include "ScreenieGraphicsScene.h"
 #include "ScreeniePixmapItem.h"
 #include "SceneGeometry.h"
@@ -66,20 +65,17 @@ public:
     ScreenieControlPrivate(ScreenieScene &theScreenieScene, ScreenieGraphicsScene &theScreenieGraphicsScene)
         : screenieScene(theScreenieScene),
           screenieGraphicsScene(theScreenieGraphicsScene),
-          reflection(new Reflection()),
           templateOrganizer(theScreenieScene)
     {}
 
     ~ScreenieControlPrivate()
     {
-        delete reflection;
     }
 
     ScreenieScene &screenieScene;
     ScreenieGraphicsScene &screenieGraphicsScene;
     QBrush checkerBoardBrush;
     QTimer qualityTimer;
-    Reflection *reflection; /*!\todo The Reflection effect does not belong here. Add an "FX Manager" which keeps track of effects instead */
     DefaultScreenieModel defaultScreenieModel;
     TemplateOrganizer templateOrganizer;
 };
@@ -696,7 +692,7 @@ void ScreenieControl::handleDistanceChanged()
 
 void ScreenieControl::handleModelAdded(ScreenieModelInterface &screenieModel)
 {
-    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, d->screenieScene, *d->reflection);
+    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, d->screenieScene);
     screeniePixmapItem->setPos(screenieModel.getPosition());
     d->screenieGraphicsScene.clearSelection();
     screeniePixmapItem->setSelected(true);

@@ -28,8 +28,6 @@ class QEvent;
 
 #include "AbstractPlatformManager.h"
 
-class MacPlatformManagerPrivate;
-
 namespace Ui {
     class MainWindow;
 }
@@ -38,19 +36,19 @@ class MacPlatformManager : public QObject, public AbstractPlatformManager
 {
     Q_OBJECT
 public:
-    MacPlatformManager();
-    virtual ~MacPlatformManager();
-
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
     virtual bool eventFilter(QObject *object, QEvent *event);
+
+    virtual void showFullScreen();
+    virtual void showNormal();
+    virtual bool isFullScreen() const;
 
 protected:
     virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
 
 private:
-    MacPlatformManagerPrivate *d;
-
     void handleWindowActivation(bool active);
+    void toggleFullScreen();
 };
 
 #endif // MACPLATFORMMANAGER_H

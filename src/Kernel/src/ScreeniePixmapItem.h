@@ -54,7 +54,7 @@ public:
      */
     KERNEL_API static const int ScreeniePixmapType;
 
-    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const ScreenieScene &screenieScene, const Reflection &reflection);
+    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const ScreenieScene &screenieScene);
     KERNEL_API virtual ~ScreeniePixmapItem();
 
     KERNEL_API ScreenieModelInterface &getScreenieModel() const;
@@ -69,6 +69,7 @@ protected:
     virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual QRectF boundingRect() const;
 
 private:
     ScreeniePixmapItemPrivate *d;

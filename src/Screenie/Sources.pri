@@ -29,8 +29,10 @@ FORMS += $$PWD/ui/MainWindow.ui
 
 if (macx) {
     HEADERS += $$PWD/src/PlatformManager/MacPlatformManager.h
-    SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Mac.cpp \
-               $$PWD/src/PlatformManager/MacPlatformManager.cpp
+
+    SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Mac.cpp
+    OBJECTIVE_SOURCES += $$PWD/src/PlatformManager/MacPlatformManager.mm
+
 } else:win32 {
     HEADERS += $$PWD/src/PlatformManager/WindowsPlatformManager.h
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Windows.cpp \

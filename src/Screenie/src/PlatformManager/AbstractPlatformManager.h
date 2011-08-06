@@ -23,6 +23,8 @@
 
 class QMainWindow;
 
+class AbstractPlatformManagerPrivate;
+
 namespace Ui {
     class MainWindow;
 }
@@ -32,13 +34,24 @@ namespace Ui {
 class AbstractPlatformManager : public PlatformManager
 {
 public:
+    AbstractPlatformManager();
+    virtual ~AbstractPlatformManager();
+
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+    virtual void showFullScreen();
+    virtual void showNormal();
+    virtual bool isFullScreen() const;
 
 protected:
     virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi) = 0;
+    QMainWindow *getMainWindow() const;
+    Ui::MainWindow *getMainWindowUi();
 
 private:
+    AbstractPlatformManagerPrivate *d;
+
     void intializeIcons(Ui::MainWindow &mainWindowUi);
+    void cleanUp();
 };
 
 #endif // ABSTRACTPLATFORMMANAGER_H

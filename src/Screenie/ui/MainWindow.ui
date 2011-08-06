@@ -326,6 +326,8 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="showToolBarAction"/>
+    <addaction name="showSidePanelAction"/>
     <addaction name="toggleFullScreenAction"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -420,10 +422,13 @@
   </action>
   <action name="toggleFullScreenAction">
    <property name="text">
-    <string>&amp;Full Screen</string>
+    <string>Enter &amp;Full Screen</string>
+   </property>
+   <property name="iconText">
+    <string>Enter Full Screen</string>
    </property>
    <property name="toolTip">
-    <string>View Full Screen</string>
+    <string>Toggle Full Screen</string>
    </property>
   </action>
   <action name="selectAllAction">
@@ -469,6 +474,22 @@
   <action name="aboutAction">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="showToolBarAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show &amp;Tool Bar</string>
+   </property>
+  </action>
+  <action name="showSidePanelAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Side &amp;Panel</string>
    </property>
   </action>
  </widget>

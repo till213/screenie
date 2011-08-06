@@ -18,42 +18,29 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QKeySequence>
-#include <QtGui/QIcon>
+#import <NSView.h>
+#import <NSWindow.h>
 
-#include "ui_MainWindow.h"
-#include "MacPlatformManager.h"
+#import <QtGui/QAction>
+#import <QtGui/QKeySequence>
+#import <QtGui/QIcon>
+#import <QtGui/QApplication>
 
-class MacPlatformManagerPrivate
-{
-public:
-    MacPlatformManagerPrivate(Ui::MainWindow &theMainWindowUi)
-        : mainWindowUi(theMainWindowUi)
-    {}
-
-    Ui::MainWindow &mainWindowUi;
-};
+#import "ui_MainWindow.h"
+#import "MacPlatformManager.h"
 
 // public
 
-MacPlatformManager::MacPlatformManager()
-    :d(0)
-{}
-
-MacPlatformManager::~MacPlatformManager()
-{
-    if (d != 0) {
-        delete d;
-    }
-}
-
 void MacPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
-    d = new MacPlatformManagerPrivate(mainWindowUi);
     AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
     mainWindow.installEventFilter(this);
-    mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL));
+    mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
+
+    // OS X 10.7 "Lion" fullscreen support
+    NSView *nsview = (NSView *) mainWindow.winId();
+    NSWindow *nswindow = [nsview window];
+    [nswindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
 }
 
 bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
@@ -76,6 +63,36 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
     return result;
 }
 
+void MacPlatformManager::showFullScreen()
+{
+    if (!isFullScreen()) {
+        toggleFullScreen();
+    }
+
+}
+
+void MacPlatformManager::showNormal()
+{
+    if (isFullScreen()) {
+        toggleFullScreen();
+    }
+}
+
+bool MacPlatformManager::isFullScreen() const
+{
+    bool result;
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        NSView *nsview = (NSView *) mainWindow->winId();
+        NSWindow *nswindow = [nsview window];
+        NSUInteger masks = [nswindow styleMask];
+        result = masks & NSFullScreenWindowMask;
+    } else {
+        result = false;
+    }
+    return result;
+}
+
 // protected
 
 void MacPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
@@ -87,9 +104,22 @@ void MacPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
 
 void MacPlatformManager::handleWindowActivation(bool active)
 {
-    if (active) {
-        d->mainWindowUi.sidePanel->setStyleSheet("#sidePanel {background-color: rgb(218, 223, 230); border-right: 1px solid rgb(187, 187, 187);}");
-    } else {
-        d->mainWindowUi.sidePanel->setStyleSheet("#sidePanel {background-color: rgb(237, 237, 237); border-right: 1px solid rgb(187, 187, 187);}");
+    Ui::MainWindow *mainWindowUi = getMainWindowUi();
+    if (mainWindowUi != 0) {
+        if (active) {
+            mainWindowUi->sidePanel->setStyleSheet("#sidePanel {background-color: rgb(218, 223, 230); border-right: 1px solid rgb(187, 187, 187);}");
+        } else {
+            mainWindowUi->sidePanel->setStyleSheet("#sidePanel {background-color: rgb(237, 237, 237); border-right: 1px solid rgb(187, 187, 187);}");
+        }
+    }
+}
+
+void MacPlatformManager::toggleFullScreen()
+{
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        NSView *nsview = (NSView *) mainWindow->winId();
+        NSWindow *nswindow = [nsview window];
+        [nswindow toggleFullScreen:nil];
     }
 }
