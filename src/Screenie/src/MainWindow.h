@@ -112,6 +112,8 @@ private:
     void showWriteError(const QString &documentName, const QString &filePath);
     void showError(const QString &message);
 
+    void storeWindowGeometry();
+
 private slots:
     // File
     void on_newAction_triggered();

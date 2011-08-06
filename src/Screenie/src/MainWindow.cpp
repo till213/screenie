@@ -163,6 +163,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             askBeforeClose();
             break;
         case DocumentInfo::Discard:
+            storeWindowGeometry();
             event->accept();
             break;
         default:
@@ -172,11 +173,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
-        Settings::WindowGeometry windowGeometry;
-        windowGeometry.fullScreen = isFullScreen();
-        windowGeometry.position = pos();
-        windowGeometry.size = size();
-        Settings::getInstance().setWindowGeometry(windowGeometry);
+        storeWindowGeometry();
         event->accept();
     }
 }
@@ -601,6 +598,15 @@ void MainWindow::showError(const QString &message)
     messageBox->open(this, SLOT(handleErrorClosed()));
 }
 
+void MainWindow::storeWindowGeometry()
+{
+    Settings::WindowGeometry windowGeometry;
+    windowGeometry.fullScreen = isFullScreen();
+    windowGeometry.position = pos();
+    windowGeometry.size = size();
+    Settings::getInstance().setWindowGeometry(windowGeometry);
+}
+
 // private slots
 
 void MainWindow::on_newAction_triggered()
@@ -943,8 +949,8 @@ void MainWindow::updateUi()
 {
     Settings &settings = Settings::getInstance();
     if (!m_ignoreUpdateSignals) {
-        setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
         ui->toolBar->setVisible(settings.isToolBarVisible());
+        setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
         ui->sidePanel->setVisible(settings.isSidePanelVisible());
         updateTransformationUi();
         updateReflectionUi();
