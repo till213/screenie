@@ -43,12 +43,16 @@ public:
     virtual void showNormal();
     virtual bool isFullScreen() const;
 
+    static bool isFullScreenAPISupported();
+
 protected:
     virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
 
 private:
     void handleWindowActivation(bool active);
+#ifdef MAC_OS_X_VERSION_10_7
     void toggleFullScreen();
+#endif
 };
 
 #endif // MACPLATFORMMANAGER_H

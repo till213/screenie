@@ -20,6 +20,7 @@
 
 #import <NSView.h>
 #import <NSWindow.h>
+#import "/usr/include/AvailabilityMacros.h"
 
 #import <QtGui/QAction>
 #import <QtGui/QKeySequence>
@@ -38,9 +39,11 @@ void MacPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mai
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
 
     // OS X 10.7 "Lion" fullscreen support
+#ifdef MAC_OS_X_VERSION_10_7
     NSView *nsview = (NSView *) mainWindow.winId();
     NSWindow *nswindow = [nsview window];
     [nswindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
+#endif
 }
 
 bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
@@ -65,17 +68,30 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
 
 void MacPlatformManager::showFullScreen()
 {
+#ifdef MAC_OS_X_VERSION_10_7
     if (!isFullScreen()) {
         toggleFullScreen();
     }
-
+#else
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        mainWindow->showFullScreen();
+    }
+#endif
 }
 
 void MacPlatformManager::showNormal()
 {
+#ifdef MAC_OS_X_VERSION_10_7
     if (isFullScreen()) {
         toggleFullScreen();
     }
+#else
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        mainWindow->showNormal();
+    }
+#endif
 }
 
 bool MacPlatformManager::isFullScreen() const
@@ -83,13 +99,25 @@ bool MacPlatformManager::isFullScreen() const
     bool result;
     QMainWindow *mainWindow = getMainWindow();
     if (mainWindow != 0) {
+#ifdef MAC_OS_X_VERSION_10_7
         NSView *nsview = (NSView *) mainWindow->winId();
         NSWindow *nswindow = [nsview window];
         NSUInteger masks = [nswindow styleMask];
         result = masks & NSFullScreenWindowMask;
+#else
+        result = mainWindow->isFullScreen();
+#endif
     } else {
         result = false;
     }
+    return result;
+}
+
+bool MacPlatformManager::isFullScreenAPISupported()
+{
+    bool result;
+    result == [NSWindow respondsToSelector: @selector(toggleFullScreen:)];
+    qDebug("MacPlatformManager::isFullScreenAPISupported: %d", result);
     return result;
 }
 
@@ -114,6 +142,7 @@ void MacPlatformManager::handleWindowActivation(bool active)
     }
 }
 
+#ifdef MAC_OS_X_VERSION_10_7
 void MacPlatformManager::toggleFullScreen()
 {
     QMainWindow *mainWindow = getMainWindow();
@@ -123,3 +152,4 @@ void MacPlatformManager::toggleFullScreen()
         [nswindow toggleFullScreen:nil];
     }
 }
+#endif

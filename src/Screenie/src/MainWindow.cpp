@@ -69,6 +69,9 @@
 #include "../../Kernel/src/PropertyDialogFactory.h"
 #include "PlatformManager/PlatformManagerFactory.h"
 #include "PlatformManager/PlatformManager.h"
+#ifdef Q_OS_MAC
+#include "PlatformManager/MacPlatformManager.h"
+#endif
 #include "RecentFiles.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -257,6 +260,7 @@ bool MainWindow::writeTemplate(const QString &filePath)
 
 void MainWindow::initializeUi()
 {
+    Settings &settings = Settings::getInstance();
     m_minimizeWindowsAction = new QAction(tr("Minimize", "Window menu"), this);
     m_minimizeWindowsAction->setShortcut(QKeySequence(Qt::Key_M + Qt::CTRL));
     m_maximizeWindowsAction = new QAction(tr("Maximize", "Window menu"), this);
@@ -279,6 +283,10 @@ void MainWindow::initializeUi()
     ui->reflectionGroupBox->setChecked(defaultScreenieModel.isReflectionEnabled());
     ui->reflectionOffsetSlider->setValue(defaultScreenieModel.getReflectionOffset());
     ui->reflectionOpacitySlider->setValue(defaultScreenieModel.getReflectionOpacity());
+
+    // View menu
+    ui->showToolBarAction->setChecked(settings.isToolBarVisible());
+    ui->showSidePanelAction->setChecked(settings.isSidePanelVisible());
 }
 
 void MainWindow::updateTransformationUi()
@@ -376,16 +384,17 @@ void MainWindow::updateEditActions()
 
 void MainWindow::updateViewActions()
 {
+    Settings &settings = Settings::getInstance();
     if (m_platformManager->isFullScreen()) {
         ui->toggleFullScreenAction->setText((tr("Exit Full Screen")));
     } else {
         ui->toggleFullScreenAction->setText((tr("Enter Full Screen")));
     }
     ui->showToolBarAction->blockSignals(true);
-    ui->showToolBarAction->setChecked(ui->toolBar->isVisible());
+    ui->showToolBarAction->setChecked(settings.isToolBarVisible());
     ui->showToolBarAction->blockSignals(false);
     ui->showSidePanelAction->blockSignals(true);
-    ui->showSidePanelAction->setChecked(ui->sidePanel->isVisible());
+    ui->showSidePanelAction->setChecked(settings.isSidePanelVisible());
     ui->showSidePanelAction->blockSignals(false);
 }
 
@@ -523,10 +532,15 @@ void MainWindow::restoreWindowGeometry()
         //       transition is only done once Qt has fully initialised
         //       all data structures and the Qt event queue has made
         //       sure that the window is shown before the timer is fired.
-        /*!\todo: On Mac 10.6 "Snow Leopard" we could in theory still call
-                  showFullScreen() here: query OS version at runtime!
-                  http://vgable.com/blog/2008/05/04/getting-mac-os-x-version-information/ */
-        QTimer::singleShot(200, this, SLOT(showFullScreen()));
+        //
+        //       On "Snow Leopard" we can directly call showFullScreen()
+        //       since the "Full Screen API" is not supported there anyway
+        //       and Qt does the full screen painting for us
+        if (MacPlatformManager::isFullScreenAPISupported()) {
+            QTimer::singleShot(200, this, SLOT(showFullScreen()));
+        } else {
+            showFullScreen();
+        }
 #endif
     } else {
         resize(windowGeometry.size);
@@ -949,6 +963,9 @@ void MainWindow::updateUi()
 {
     Settings &settings = Settings::getInstance();
     if (!m_ignoreUpdateSignals) {
+        qDebug("MainWindow::updateUi: istoolbar visible: %d", settings.isToolBarVisible());
+        // This somewhat helps on Mac "Lion" to re-establish the native toolbar
+        // Note: On "Snow Leopard" the toolbar is ALWAYS the Qt toolbar in fullscreen!
         ui->toolBar->setVisible(settings.isToolBarVisible());
         setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
         ui->sidePanel->setVisible(settings.isSidePanelVisible());
