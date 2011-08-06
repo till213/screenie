@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 const QString FileUtils::SceneExtension = QString("xsc");
 const QString FileUtils::TemplateExtension = QString("xst");
+const QString FileUtils::PngExtension = QString("png");
 
 QString FileUtils::getOpenImageFileFilter()
 {
@@ -42,6 +43,6 @@ QString FileUtils::getOpenImageFileFilter()
 QString FileUtils::getSaveImageFileFilter()
 {
     /*!\todo Support JPEG (and maybe TIFF/BMP) in the future as well */
-    QString result = QObject::tr("Portable Network Graphics") + "(*.png)";
+    QString result = QObject::tr("Portable Network Graphics") + QString("(*.%1)").arg(PngExtension);
     return result;
 }

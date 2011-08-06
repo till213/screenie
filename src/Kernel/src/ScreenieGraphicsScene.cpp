@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -132,7 +132,8 @@ bool ScreenieGraphicsScene::gestureEvent(const QGestureEvent *event)
 {
     bool result = false;
     if (selectedItems().size() > 0) {
-        if (QGesture *pinch = event->gesture(Qt::PinchGesture)) {
+        QGesture *pinch = event->gesture(Qt::PinchGesture);
+        if (pinch != 0) {
             result = pinchTriggered(static_cast<QPinchGesture *>(pinch));
         }
     } else {

@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ class QImage;
 #include "KernelLib.h"
 
 class ScreenieModelInterface;
+class ScreenieScene;
 class ScreenieControl;
 class Reflection;
 class ScreeniePixmapItemPrivate;
@@ -53,7 +54,7 @@ public:
      */
     KERNEL_API static const int ScreeniePixmapType;
 
-    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, Reflection &reflection);
+    KERNEL_API ScreeniePixmapItem(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, const ScreenieScene &screenieScene);
     KERNEL_API virtual ~ScreeniePixmapItem();
 
     KERNEL_API ScreenieModelInterface &getScreenieModel() const;
@@ -68,6 +69,7 @@ protected:
     virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual QRectF boundingRect() const;
 
 private:
     ScreeniePixmapItemPrivate *d;
@@ -85,6 +87,7 @@ private:
 
 private slots:
     void updateReflection();
+    void updateReflectionBoundingRect();
     void updatePixmap(const QImage &image);
     void updatePixmap();
     void updateItemGeometry();

@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,10 +27,36 @@
 #include "ui_MainWindow.h"
 #include "AbstractPlatformManager.h"
 
+class AbstractPlatformManagerPrivate
+{
+public:
+    AbstractPlatformManagerPrivate(QMainWindow &theMainWindow, Ui::MainWindow &theMainWindowUi)
+        : mainWindow(theMainWindow),
+          mainWindowUi(theMainWindowUi)
+    {}
+
+    QMainWindow &mainWindow;
+    Ui::MainWindow &mainWindowUi;
+};
+
 // public
+
+AbstractPlatformManager::AbstractPlatformManager()
+{
+    d = 0;
+}
+
+AbstractPlatformManager::~AbstractPlatformManager()
+{
+    cleanUp();
+}
 
 void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
+    cleanUp();
+
+    d = new AbstractPlatformManagerPrivate(mainWindow, mainWindowUi);
+
     // File
     mainWindowUi.newAction->setShortcut(QKeySequence::New);
     mainWindowUi.openAction->setShortcut(QKeySequence::Open);
@@ -53,4 +79,108 @@ void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow
     QObject::connect(shortcut, SIGNAL(activated()),
                      mainWindowUi.deleteAction, SIGNAL(triggered()));
 
+    intializeIcons(mainWindowUi);
+}
+
+void AbstractPlatformManager::showFullScreen()
+{
+    if (d != 0) {
+        /*!\todo Settings which control what becomes invisible in fullscreen mode */
+        d->mainWindowUi.toolBar->setVisible(false);
+        d->mainWindowUi.sidePanel->setVisible(false);
+        // Note: Qt crashes when we don't disable the unified toolbar before going
+        // fullscreen (when we switch back to normal view, that is)!
+        // But since for now we hide it anyway that does not make any visible difference.
+        // The Qt documentation recommends anyway to do so.
+        // Also refer to: http://bugreports.qt.nokia.com/browse/QTBUG-16274
+        d->mainWindow.setUnifiedTitleAndToolBarOnMac(false);
+        d->mainWindow.showFullScreen();
+    }
+#ifdef DEBUG
+    else {
+        qWarning("AbstractPlatformManager::showFullScreen: Private data not initialised! Call initialise() first.");
+    }
+#endif
+}
+
+void AbstractPlatformManager::showNormal()
+{
+    qDebug("AbstractPlatformManager::showNormal: called.");
+    if (d != 0) {
+        d->mainWindow.showNormal();
+        d->mainWindowUi.toolBar->setVisible(true);
+        d->mainWindowUi.sidePanel->setVisible(true);
+        d->mainWindow.setUnifiedTitleAndToolBarOnMac(true);
+    }
+#ifdef DEBUG
+    else {
+        qWarning("AbstractPlatformManager::showNormal: Private data not initialised! Call initialise() first.");
+    }
+#endif
+}
+
+bool AbstractPlatformManager::isFullScreen() const
+{
+    bool result;
+    if (d != 0) {
+        result = d->mainWindow.isFullScreen();
+    } else {
+        result = false;
+#ifdef DEBUG
+        qWarning("AbstractPlatformManager::showFullScreen: Private data not initialised! Call initialise() first.");
+#endif
+    }
+    return result;
+}
+
+// protected
+
+QMainWindow *AbstractPlatformManager::getMainWindow() const
+{
+    QMainWindow *result;
+    if (d != 0) {
+        result = &d->mainWindow;
+    } else {
+        result = 0;
+#ifdef DEBUG
+        qWarning("AbstractPlatformManager::getMainWindow: Private data not initialised! Call initialise() first.");
+#endif
+    }
+    return result;
+}
+
+Ui::MainWindow *AbstractPlatformManager::getMainWindowUi()
+{
+    Ui::MainWindow *result;
+    if (d != 0) {
+        result = &d->mainWindowUi;
+    } else {
+        result = 0;
+#ifdef DEBUG
+        qWarning("AbstractPlatformManager::getMainWindowUi: Private data not initialised! Call initialise() first.");
+#endif
+    }
+    return result;
+}
+
+// private
+
+void AbstractPlatformManager::intializeIcons(Ui::MainWindow &mainWindowUi)
+{
+    QIcon addImageIcon(":/img/insert-image.png");
+    mainWindowUi.addImageAction->setIcon(addImageIcon);
+    QIcon addTemplateIcon(":/img/insert-template.png");
+    mainWindowUi.addTemplateAction->setIcon(addTemplateIcon);
+    QIcon toggleFullScreenIcon(":/img/view-fullscreen.png");
+    mainWindowUi.toggleFullScreenAction->setIcon(toggleFullScreenIcon);
+
+    initializePlatformIcons(mainWindowUi);
+}
+
+void AbstractPlatformManager::cleanUp()
+{
+    if (d != 0) {
+        delete d;
+        d = 0;
+    }
 }

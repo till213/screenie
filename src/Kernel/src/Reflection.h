@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 class ReflectionPrivate;
 
-#include <QtGui/QPixmap>
+#include <QtGui/QImage>
 
 #include "KernelLib.h"
 
@@ -40,20 +40,22 @@ public:
      * Creates a reflected version of the \p pixmap, along with gradient translucency
      * defined by \p opacity and \p offset.
      *
-     * \param pixmap
-     *        the QPixmap to which the reflection is to be added
+     * \param image
+     *        the QImage to which the reflection is to be added
      * \param opacity
      *        the opacity (translucency) of the reflection in percent [0, 100];
-     *        0: fully translucent; 1: fully opaque
+     *        0: fully translucent; 100: fully opaque
      * \param offset
-     *        the offset of the gradient in percent [1, 100] of the \c pixmap's height
+     *        the offset of the gradient in percent [1, 100] of the \c image's height
      */
-    KERNEL_API QPixmap addReflection(const QPixmap &pixmap, int opacity, int offset);
+    KERNEL_API QImage createReflection(const QImage &image, int opacity, int offset);
 
 private:
     ReflectionPrivate *d;
 
-    QPixmap reflect(const QPixmap &pixmap, int offset);
+    QImage reflect(const QImage &image, int offset) const;
+    void updateGradient(int height);
+    void updateImages(int width, int height);
 };
 
 #endif // PAINTTOOLS_H

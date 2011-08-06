@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     // workaround for http://bugreports.qt.nokia.com/browse/QTBUG-15663: use
     // the "raster" paint engine on affected OSes (Mac and Linux, Qt 4.7.1).
     // Note that the command line argument -graphicssystem still takes precedence (which is good)
-// #if defined Q_OS_MAC || defined Q_OS_LINUX
+//#if defined Q_OS_MAC || defined Q_OS_LINUX
 #ifdef Q_OS_LINUX
     // Doh! This uncovers another Qt bug, at least on Mac with Qt 4.7.1
     // (Linux with Qt 4.7.0 seems to work though): the selection borders in the

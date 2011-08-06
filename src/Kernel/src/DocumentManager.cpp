@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ public:
     }
 
     QList<DocumentInfo *> documentInfos;
+    QList<QMainWindow *> activeDialogWindows;
     QActionGroup *windowActionGroup;
     QSignalMapper windowMapper;
     static DocumentManager *instance;
@@ -171,6 +172,29 @@ void DocumentManager::setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrat
     foreach (DocumentInfo *documentInfo, d->documentInfos) {
        documentInfo->saveStrategy = saveStrategy;
     }
+}
+
+void DocumentManager::addActiveDialogMainWindow(QMainWindow *mainWindow)
+{
+    d->activeDialogWindows.append(mainWindow);
+}
+
+void DocumentManager::removeActiveDialogMainWindow(QMainWindow *mainWindow)
+{
+    if (d->activeDialogWindows.contains(mainWindow)) {
+        d->activeDialogWindows.removeOne(mainWindow);
+    }
+}
+
+QMainWindow *DocumentManager::getRecentActiveDialogMainWindow() const
+{
+    QMainWindow *result;
+    if (!d->activeDialogWindows.isEmpty()) {
+        result = d->activeDialogWindows.last();
+    } else {
+        result = 0;
+    }
+    return result;
 }
 
 DocumentManager::CloseRequest DocumentManager::getCloseRequest()

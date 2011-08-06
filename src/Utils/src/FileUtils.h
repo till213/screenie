@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ public:
 
     UTILS_API static const QString SceneExtension;
     UTILS_API static const QString TemplateExtension;
+    UTILS_API static const QString PngExtension;
 
     UTILS_API QString static getOpenImageFileFilter();
     UTILS_API QString static getSaveImageFileFilter();

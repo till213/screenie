@@ -17,7 +17,8 @@ CONFIG(debug, debug|release) {
 }
 
 macx {
-    LIBS += -L$${DESTDIR}/$${APP_NAME}.app/Contents/Frameworks
+    LIBS += -L$${DESTDIR}/$${APP_NAME}.app/Contents/Frameworks -framework Cocoa
+    INCLUDEPATH += /System/Library/Frameworks/AppKit.framework/Headers/
 } else {
     LIBS += -L$${DESTDIR}
 }
@@ -37,6 +38,7 @@ win32 {
 macx {
    ICON = res/ApplicationIcon.icns
    QMAKE_INFO_PLIST = Info.plist
+   OTHER_FILES += Screenie.sdef
 }
 
 win32 {

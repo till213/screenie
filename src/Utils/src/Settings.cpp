@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,6 +44,8 @@ public:
     static const qreal DefaultDistanceGestureSensitivity;
     static const int DefaultMaxRecentFiles;
     static const Settings::EditRenderQuality DefaultEditRenderQuality;
+    static const bool DefaultToolBarVisible = true;
+    static const bool DefaultSidePanelVisible = true;
     static const bool DefaultFullScreen;
     static const QPoint DefaultMainWindowPosition;
     static const QSize DefaultMainWindowSize;
@@ -58,6 +60,8 @@ public:
     qreal distanceGestureSensitivity;
     int maxRecentFiles;
     Settings::EditRenderQuality editRenderQuality;
+    bool toolBarVisible;
+    bool sidePanelVisible;
     QStringList recentFiles;
 
     QSettings *settings;
@@ -264,6 +268,32 @@ void Settings::setEditRenderQuality(EditRenderQuality editRenderQuality)
     }
 }
 
+bool Settings::isToolBarVisible() const
+{
+    return d->toolBarVisible;
+}
+
+void Settings::setToolBarVisible(bool enable)
+{
+    if (d->toolBarVisible != enable) {
+        d->toolBarVisible = enable;
+        emit changed();
+    }
+}
+
+bool Settings::isSidePanelVisible() const
+{
+    return d->sidePanelVisible;
+}
+
+void Settings::setSidePanelVisible(bool enable)
+{
+    if (d->sidePanelVisible != enable) {
+        d->sidePanelVisible = enable;
+        emit changed();
+    }
+}
+
 Settings::WindowGeometry Settings::getWindowGeometry() const
 {
     WindowGeometry result;
@@ -311,6 +341,8 @@ void Settings::store()
     d->settings->beginGroup("UI");
     {
         d->settings->setValue("EditRenderQuality", d->editRenderQuality);
+        d->settings->setValue("ToolBarVisible", d->toolBarVisible);
+        d->settings->setValue("SidePanelVisible", d->sidePanelVisible);
         d->settings->beginGroup("Gestures");
         {
             d->settings->setValue("RotationSensitivity", d->rotationGestureSensitivity);
@@ -352,6 +384,8 @@ void Settings::restore()
     d->settings->beginGroup("UI");
     {
         d->editRenderQuality = static_cast<EditRenderQuality>(d->settings->value("EditRenderQuality", SettingsPrivate::DefaultEditRenderQuality).toInt());
+        d->toolBarVisible = d->settings->value("ToolBarVisible", SettingsPrivate::DefaultToolBarVisible).toBool();
+        d->sidePanelVisible = d->settings->value("SidePanelVisible", SettingsPrivate::DefaultSidePanelVisible).toBool();
         d->settings->beginGroup("Gestures");
         {
             d->rotationGestureSensitivity = d->settings->value("RotationSensitivity", SettingsPrivate::DefaultRotationGestureSensitivity).toReal();

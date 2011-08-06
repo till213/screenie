@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -37,6 +37,10 @@ public:
     virtual ~PlatformManager() {}
 
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) = 0;
+
+    virtual void showFullScreen() = 0;
+    virtual void showNormal() = 0;
+    virtual bool isFullScreen() const = 0;
 };
 
 #endif // PLATFORMMANAGER_H

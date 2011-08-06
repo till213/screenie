@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,8 +28,6 @@ class QEvent;
 
 #include "AbstractPlatformManager.h"
 
-class MacPlatformManagerPrivate;
-
 namespace Ui {
     class MainWindow;
 }
@@ -38,17 +36,19 @@ class MacPlatformManager : public QObject, public AbstractPlatformManager
 {
     Q_OBJECT
 public:
-    MacPlatformManager();
-    virtual ~MacPlatformManager();
-
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
-
     virtual bool eventFilter(QObject *object, QEvent *event);
 
-private:
-    MacPlatformManagerPrivate *d;
+    virtual void showFullScreen();
+    virtual void showNormal();
+    virtual bool isFullScreen() const;
 
+protected:
+    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
+
+private:
     void handleWindowActivation(bool active);
+    void toggleFullScreen();
 };
 
 #endif // MACPLATFORMMANAGER_H

@@ -7,13 +7,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
-	<string>@EXECUTABLE@ - A fancy screenshot composer</string>
+	<string>Screenie - A fancy screenshot composer</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>@EXECUTABLE@</string>
+	<string>Screenie</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.till-art.@EXECUTABLE@</string>
+	<string>net.till-art.Screenie</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -49,5 +49,9 @@
 	<string>@SHORT_VERSION@</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2011 Oliver Knoll, till-art.net</string>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
+	<key>OSAScriptingDefinition</key>
+	<string>Screenie.sdef</string>
 </dict>
 </plist>

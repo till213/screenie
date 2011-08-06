@@ -283,7 +283,7 @@
      <x>0</x>
      <y>0</y>
      <width>448</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -326,6 +326,8 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="showToolBarAction"/>
+    <addaction name="showSidePanelAction"/>
     <addaction name="toggleFullScreenAction"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -367,19 +369,11 @@
    <addaction name="toggleFullScreenAction"/>
   </widget>
   <action name="quitAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/application-exit.png</normaloff>:/img/application-exit.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
   </action>
   <action name="addImageAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/insert-image.png</normaloff>:/img/insert-image.png</iconset>
-   </property>
    <property name="text">
     <string>Image ...</string>
    </property>
@@ -388,35 +382,23 @@
    </property>
   </action>
   <action name="openAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/document-open.png</normaloff>:/img/document-open.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Open ...</string>
    </property>
   </action>
   <action name="saveAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/document-save.png</normaloff>:/img/document-save.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Save</string>
    </property>
   </action>
   <action name="saveAsAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/document-save-as.png</normaloff>:/img/document-save-as.png</iconset>
-   </property>
    <property name="text">
     <string>Save &amp;As ...</string>
    </property>
   </action>
   <action name="exportAction">
    <property name="text">
-    <string>&amp;Export Image</string>
+    <string>&amp;Export Image ...</string>
    </property>
    <property name="toolTip">
     <string>Export Image ...</string>
@@ -431,10 +413,6 @@
    </property>
   </action>
   <action name="addTemplateAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/insert-template.png</normaloff>:/img/insert-template.png</iconset>
-   </property>
    <property name="text">
     <string>Template</string>
    </property>
@@ -443,15 +421,14 @@
    </property>
   </action>
   <action name="toggleFullScreenAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/view-fullscreen.png</normaloff>:/img/view-fullscreen.png</iconset>
-   </property>
    <property name="text">
-    <string>&amp;Full Screen</string>
+    <string>Enter &amp;Full Screen</string>
+   </property>
+   <property name="iconText">
+    <string>Enter Full Screen</string>
    </property>
    <property name="toolTip">
-    <string>View Full Screen</string>
+    <string>Toggle Full Screen</string>
    </property>
   </action>
   <action name="selectAllAction">
@@ -460,46 +437,26 @@
    </property>
   </action>
   <action name="cutAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/edit-cut.png</normaloff>:/img/edit-cut.png</iconset>
-   </property>
    <property name="text">
     <string>Cu&amp;t</string>
    </property>
   </action>
   <action name="copyAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/edit-copy.png</normaloff>:/img/edit-copy.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Copy</string>
    </property>
   </action>
   <action name="pasteAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/edit-paste.png</normaloff>:/img/edit-paste.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Paste</string>
    </property>
   </action>
   <action name="deleteAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/edit-delete.png</normaloff>:/img/edit-delete.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Delete</string>
    </property>
   </action>
   <action name="newAction">
-   <property name="icon">
-    <iconset resource="../../Resources/Resources.qrc">
-     <normaloff>:/img/document-new.png</normaloff>:/img/document-new.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;New</string>
    </property>
@@ -519,9 +476,23 @@
     <string>&amp;About</string>
    </property>
   </action>
+  <action name="showToolBarAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show &amp;Tool Bar</string>
+   </property>
+  </action>
+  <action name="showSidePanelAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Side &amp;Panel</string>
+   </property>
+  </action>
  </widget>
- <resources>
-  <include location="../../Resources/Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

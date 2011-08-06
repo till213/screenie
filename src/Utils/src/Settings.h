@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -127,14 +127,28 @@ public:
      */
     UTILS_API void setMaxRecentFiles(int maxRecentFiles);
 
+    UTILS_API EditRenderQuality getEditRenderQuality() const;
+
     /*!
      * \sa #changed()
      */
     UTILS_API void setEditRenderQuality(EditRenderQuality editRenderQuality);
 
-    UTILS_API EditRenderQuality getEditRenderQuality() const;
-
     UTILS_API WindowGeometry getWindowGeometry() const;
+
+    UTILS_API bool isToolBarVisible() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setToolBarVisible(bool enable);
+
+    UTILS_API bool isSidePanelVisible() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setSidePanelVisible(bool enable);
 
     /*!
      * Sets the \p windowGeometry. This method does \em not emit the signal

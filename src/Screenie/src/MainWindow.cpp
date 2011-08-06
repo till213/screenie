@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_ignoreUpdateSignals(false)
 {
+    m_isFullScreenPreviously = false;
     ui->setupUi(this);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
@@ -97,10 +98,11 @@ MainWindow::MainWindow(QWidget *parent) :
     initializeUi();
     m_platformManager = PlatformManagerFactory::getInstance().create();
     m_platformManager->initialize(*this, *ui);
-    updateUi();
+
     restoreWindowGeometry();
     // call unified toolbar AFTER restoring window geometry!
     setUnifiedTitleAndToolBarOnMac(true);
+    updateUi();
     m_screenieControl->setRenderQuality(ScreenieControl::MaximumQuality);
     frenchConnection();
 }
@@ -129,28 +131,21 @@ bool MainWindow::read(const QString &filePath)
     return result;
 }
 
+bool MainWindow::isFullScreen() const
+{
+    return m_platformManager->isFullScreen();
+}
+
 // public slots
 
 void MainWindow::showFullScreen()
 {
-    /*!\todo Settings which control what becomes invisible in fullscreen mode */
-    ui->toolBar->setVisible(false);
-    ui->sidePanel->setVisible(false);
-    // Note: Qt crashes when we don't disable the unified toolbar before going
-    // fullscreen (when we switch back to normal view, that is)!
-    // But since for now we hide it anyway that does not make any visible difference.
-    // The Qt documentation recommends anyway to do so.
-    // Also refer to: http://bugreports.qt.nokia.com/browse/QTBUG-16274
-    setUnifiedTitleAndToolBarOnMac(false);
-    QMainWindow::showFullScreen();
+    m_platformManager->showFullScreen();
 }
 
 void MainWindow::showNormal()
 {
-    QMainWindow::showNormal();
-    ui->toolBar->setVisible(true);
-    ui->sidePanel->setVisible(true);
-    setUnifiedTitleAndToolBarOnMac(true);
+    m_platformManager->showNormal();
 }
 
 // protected
@@ -168,6 +163,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             askBeforeClose();
             break;
         case DocumentInfo::Discard:
+            storeWindowGeometry();
             event->accept();
             break;
         default:
@@ -177,13 +173,31 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
-        Settings::WindowGeometry windowGeometry;
-        windowGeometry.fullScreen = isFullScreen();
-        windowGeometry.position = pos();
-        windowGeometry.size = size();
-        Settings::getInstance().setWindowGeometry(windowGeometry);
+        storeWindowGeometry();
         event->accept();
     }
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+
+    if (this->m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
+        m_isFullScreenPreviously = true;
+        updateViewActions();
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: Going to fullscreen: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
+    } else if (!this->m_platformManager->isFullScreen() && m_isFullScreenPreviously) {
+        m_isFullScreenPreviously = false;
+        updateViewActions();
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: Going to normal: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
+    }
+#ifdef DEBUG
+    qDebug("MainWindow::resizeEvent: ToolBar visible: %d", ui->toolBar->isVisible());
+#endif
 }
 
 // private
@@ -208,6 +222,10 @@ void MainWindow::frenchConnection()
             this, SLOT(showMinimized()));
     connect(m_maximizeWindowsAction, SIGNAL(triggered()),
             this, SLOT(showMaximized()));
+
+    // Settings
+    connect(&Settings::getInstance(), SIGNAL(changed()),
+            this, SLOT(updateUi()));
 }
 
 void MainWindow::newScene(ScreenieScene &screenieScene)
@@ -356,6 +374,21 @@ void MainWindow::updateEditActions()
     ui->selectAllAction->setEnabled(hasItems);
 }
 
+void MainWindow::updateViewActions()
+{
+    if (m_platformManager->isFullScreen()) {
+        ui->toggleFullScreenAction->setText((tr("Exit Full Screen")));
+    } else {
+        ui->toggleFullScreenAction->setText((tr("Enter Full Screen")));
+    }
+    ui->showToolBarAction->blockSignals(true);
+    ui->showToolBarAction->setChecked(ui->toolBar->isVisible());
+    ui->showToolBarAction->blockSignals(false);
+    ui->showSidePanelAction->blockSignals(true);
+    ui->showSidePanelAction->setChecked(ui->sidePanel->isVisible());
+    ui->showSidePanelAction->blockSignals(false);
+}
+
 void MainWindow::updateTitle()
 {
     QString title;
@@ -434,6 +467,7 @@ void MainWindow::askBeforeClose()
     messageBox->addButton(QMessageBox::Discard);
     messageBox->addButton(QMessageBox::Cancel);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     messageBox->open(this, SLOT(handleAskBeforeClose(int)));
 }
 
@@ -469,6 +503,7 @@ void MainWindow::saveAsBeforeClose()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsBeforeCloseSelected(const QString &)));
 }
 
@@ -476,9 +511,26 @@ void MainWindow::restoreWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry = Settings::getInstance().getWindowGeometry();
     if (windowGeometry.fullScreen) {
-        showFullScreen();
+#ifndef Q_OS_MAC
+        shoFullScreen();
+#else
+        resize(windowGeometry.size);
+        // Note: On Mac OS 10.7 "Lion" the transition to fullscreen
+        //       apparently only works if the window has been shown
+        //       on screen. So we use a timer with a "visually pleasant"
+        //       timeout of 200 ms (we could also use 0, but then we
+        //       get window flickering!), such that the fullscreen
+        //       transition is only done once Qt has fully initialised
+        //       all data structures and the Qt event queue has made
+        //       sure that the window is shown before the timer is fired.
+        /*!\todo: On Mac 10.6 "Snow Leopard" we could in theory still call
+                  showFullScreen() here: query OS version at runtime!
+                  http://vgable.com/blog/2008/05/04/getting-mac-os-x-version-information/ */
+        QTimer::singleShot(200, this, SLOT(showFullScreen()));
+#endif
     } else {
         resize(windowGeometry.size);
+        m_isFullScreenPreviously = false;
         if (!windowGeometry.position.isNull()) {
             move(windowGeometry.position);
         }
@@ -542,7 +594,17 @@ void MainWindow::showError(const QString &message)
                                               QMessageBox::Ok,
                                               this);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    messageBox->open();
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    messageBox->open(this, SLOT(handleErrorClosed()));
+}
+
+void MainWindow::storeWindowGeometry()
+{
+    Settings::WindowGeometry windowGeometry;
+    windowGeometry.fullScreen = isFullScreen();
+    windowGeometry.position = pos();
+    windowGeometry.size = size();
+    Settings::getInstance().setWindowGeometry(windowGeometry);
 }
 
 // private slots
@@ -622,6 +684,7 @@ void MainWindow::on_saveAsAction_triggered()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsSelected(const QString &)));
 }
 
@@ -638,6 +701,7 @@ void MainWindow::on_saveAsTemplateAction_triggered()
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->open(this, SLOT(handleFileSaveAsTemplateSelected(const QString &)));
 }
 
@@ -646,18 +710,17 @@ void MainWindow::on_exportAction_triggered()
     Settings &settings = Settings::getInstance();
     QString lastExportDirectoryPath = settings.getLastExportDirectoryPath();
     QString filter = FileUtils::getSaveImageFileFilter();
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Export Image"), lastExportDirectoryPath, filter);
-    if (!filePath.isNull()) {
-        ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
-        bool ok = exportImage.exportImage(filePath);
-        if (ok) {
-            lastExportDirectoryPath = QFileInfo(filePath).absolutePath();
-            settings.setLastExportDirectoryPath(lastExportDirectoryPath);
-        } else {
-            showError(tr("Could not export iamge to file %1!")
-                      .arg(filePath));
-        }
-    }
+
+    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    fileDialog->setNameFilter(filter);
+    fileDialog->setDefaultSuffix(FileUtils::PngExtension);
+    fileDialog->setWindowTitle(tr("Export Image"));
+    fileDialog->setDirectory(lastExportDirectoryPath);
+    fileDialog->setWindowModality(Qt::WindowModal);
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->open(this, SLOT(handleExportFilePathSelected(const QString &)));
 }
 
 void MainWindow::on_closeAction_triggered()
@@ -669,17 +732,22 @@ void MainWindow::on_closeAction_triggered()
 void MainWindow::on_quitAction_triggered()
 {
     DocumentManager &documentManager = DocumentManager::getInstance();
-    DocumentManager::setCloseRequest(DocumentManager::Quit);
-    int count = documentManager.count();
-    if (count > 1) {
-        int nofModified = documentManager.getModifiedCount();
-        if (nofModified > 1) {
-            handleMultipleModifiedBeforeQuit();
+    QMainWindow *activeDialogMainWindow = documentManager.getRecentActiveDialogMainWindow();
+    if (activeDialogMainWindow == 0) {
+        DocumentManager::setCloseRequest(DocumentManager::Quit);
+        int count = documentManager.count();
+        if (count > 1) {
+            int nofModified = documentManager.getModifiedCount();
+            if (nofModified > 1) {
+                handleMultipleModifiedBeforeQuit();
+            } else {
+                QApplication::closeAllWindows();
+            }
         } else {
             QApplication::closeAllWindows();
         }
     } else {
-        QApplication::closeAllWindows();
+        activeDialogMainWindow->raise();
     }
 }
 
@@ -728,9 +796,19 @@ void MainWindow::on_addTemplateAction_triggered()
     m_screenieControl->addTemplate(QPointF(0.0, 0.0));
 }
 
+void MainWindow::on_showToolBarAction_toggled(bool enable)
+{
+    Settings::getInstance().setToolBarVisible(enable);
+}
+
+void MainWindow::on_showSidePanelAction_toggled(bool enable)
+{
+    Settings::getInstance().setSidePanelVisible(enable);
+}
+
 void MainWindow::on_toggleFullScreenAction_triggered()
 {
-    if (!isFullScreen()) {
+    if (!m_platformManager->isFullScreen()) {
         showFullScreen();
     } else {
         showNormal();
@@ -869,11 +947,16 @@ void MainWindow::on_htmlBGColorLineEdit_editingFinished()
 
 void MainWindow::updateUi()
 {
+    Settings &settings = Settings::getInstance();
     if (!m_ignoreUpdateSignals) {
+        ui->toolBar->setVisible(settings.isToolBarVisible());
+        setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
+        ui->sidePanel->setVisible(settings.isSidePanelVisible());
         updateTransformationUi();
         updateReflectionUi();
         updateColorUi();
         updateEditActions();
+        updateViewActions();
     }
     updateDefaultValues();
     setWindowModified(m_screenieScene->isModified());
@@ -891,7 +974,6 @@ void MainWindow::updateDefaultValues()
 
 void MainWindow::handleRecentFile(const QString &filePath)
 {
-    // xxx
     bool ok;
     if (m_screenieScene->isDefault()) {
         ok = read(filePath);
@@ -925,6 +1007,7 @@ void MainWindow::updateWindowMenu()
 void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 {
     bool ok = false;
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -943,6 +1026,7 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 {
     bool ok = false;
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(true);
         ok = writeTemplate(filePath);
@@ -961,6 +1045,7 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
 {
     bool ok = false;
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -981,8 +1066,26 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
     }
 }
 
+void MainWindow::handleExportFilePathSelected(const QString &filePath)
+{
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
+    Settings &settings = Settings::getInstance();
+    if (!filePath.isNull()) {
+        ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
+        bool ok = exportImage.exportImage(filePath);
+        if (ok) {
+            QString lastExportDirectoryPath = QFileInfo(filePath).absolutePath();
+            settings.setLastExportDirectoryPath(lastExportDirectoryPath);
+        } else {
+            showError(tr("Could not export image to file %1!")
+                      .arg(filePath));
+        }
+    }
+}
+
 void MainWindow::handleAskBeforeClose(int answer)
 {
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     switch (answer) {
     case QMessageBox::Save:
         saveBeforeClose();
@@ -1003,5 +1106,10 @@ void MainWindow::handleAskBeforeClose(int answer)
 #endif
         break;
     }
+}
+
+void MainWindow::handleErrorClosed()
+{
+    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
 }
 

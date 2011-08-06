@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public:
     QImage image;
 };
 
-ScreenieImageModel::ScreenieImageModel(QImage image)
+ScreenieImageModel::ScreenieImageModel(const QImage image)
     : d(new ScreenieImageModelPrivate())
 {
     d->image = fitToMaximumSize(image);
@@ -81,7 +81,7 @@ QString ScreenieImageModel::getOverlayText() const
     return QString();
 }
 
-void ScreenieImageModel::setImage(QImage image)
+void ScreenieImageModel::setImage(const QImage image)
 {
     if (d->image.cacheKey() != image.cacheKey()) {
         d->image = fitToMaximumSize(image);

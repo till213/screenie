@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2008 Ariya Hidayat <ariya.hidayat@gmail.com>
+   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class QWidget;
 class QCloseEvent;
 class QEvent;
 class QAction;
+class QResizeEvent;
 
 class ScreenieModelInterface;
 class ScreenieScene;
@@ -53,6 +54,7 @@ public:
     virtual ~MainWindow();
 
     bool read(const QString &filePath);
+    bool isFullScreen() const;
 
 public slots:
     virtual void showFullScreen();
@@ -60,6 +62,7 @@ public slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
     Q_DISABLE_COPY(MainWindow)
@@ -75,6 +78,7 @@ private:
     RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
+    bool m_isFullScreenPreviously;
 
     void frenchConnection();
 
@@ -87,6 +91,7 @@ private:
     void updateReflectionUi();
     void updateColorUi();
     void updateEditActions();
+    void updateViewActions();
     void updateTitle();
 
     void createScene();
@@ -106,6 +111,8 @@ private:
     void showReadError(const QString &filePath);
     void showWriteError(const QString &documentName, const QString &filePath);
     void showError(const QString &message);
+
+    void storeWindowGeometry();
 
 private slots:
     // File
@@ -130,6 +137,8 @@ private slots:
     void on_addTemplateAction_triggered();
 
     // View
+    void on_showToolBarAction_toggled(bool enable);
+    void on_showSidePanelAction_toggled(bool enable);
     void on_toggleFullScreenAction_triggered();
 
     // About
@@ -160,7 +169,10 @@ private slots:
     void handleFileSaveAsTemplateSelected(const QString &filePath);
     void handleFileSaveAsBeforeCloseSelected(const QString &filePath);
 
+    void handleExportFilePathSelected(const QString &filePath);
+
     void handleAskBeforeClose(int answer);
+    void handleErrorClosed();
 };
 
 #endif // MAINWINDOW_H
