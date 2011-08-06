@@ -521,7 +521,7 @@ void MainWindow::restoreWindowGeometry()
     Settings::WindowGeometry windowGeometry = Settings::getInstance().getWindowGeometry();
     if (windowGeometry.fullScreen) {
 #ifndef Q_OS_MAC
-        shoFullScreen();
+        showFullScreen();
 #else
         resize(windowGeometry.size);
         // Note: On Mac OS 10.7 "Lion" the transition to fullscreen
