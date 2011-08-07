@@ -197,22 +197,10 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if (m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
         m_isFullScreenPreviously = true;
         updateViewActions();
-#ifdef DEBUG
-    qDebug("MainWindow::resizeEvent: Going to fullscreen: ToolBar visible: %d", ui->toolBar->isVisible());
-#endif
     } else if (!this->m_platformManager->isFullScreen() && m_isFullScreenPreviously) {
         m_isFullScreenPreviously = false;
         updateViewActions();
-#ifdef DEBUG
-    qDebug("MainWindow::resizeEvent: Going to normal: ToolBar visible: %d", ui->toolBar->isVisible());
-#endif
     }
-#ifdef DEBUG
-    qDebug("MainWindow::resizeEvent: ToolBar visible: %d isFullScreen: %d FullScreen Previously: %d"
-           , ui->toolBar->isVisible(),
-           m_platformManager->isFullScreen(),
-           m_isFullScreenPreviously);
-#endif
 }
 #endif
 
