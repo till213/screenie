@@ -20,13 +20,15 @@
 
 #import <NSView.h>
 #import <NSWindow.h>
-#import "/usr/include/AvailabilityMacros.h"
+#import <AvailabilityMacros.h>
 
+#import <QtCore/QSysInfo>
 #import <QtGui/QAction>
 #import <QtGui/QKeySequence>
 #import <QtGui/QIcon>
 #import <QtGui/QApplication>
 
+#import "../../../Utils/src/Settings.h"
 #import "ui_MainWindow.h"
 #import "MacPlatformManager.h"
 
@@ -79,6 +81,11 @@ void MacPlatformManager::showFullScreen()
 #else
     AbstractPlatformManager::showFullScreen();
 #endif
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        // re-initialising the toolbar to be unified helps in Qt toolbar quirks
+        mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
+    }
 }
 
 void MacPlatformManager::showNormal()
@@ -94,6 +101,11 @@ void MacPlatformManager::showNormal()
 #else
     AbstractPlatformManager::showNormal();
 #endif
+    QMainWindow *mainWindow = getMainWindow();
+    if (mainWindow != 0) {
+        // re-initialising the toolbar to be unified helps in Qt toolbar quirks
+        mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
+    }
 }
 
 bool MacPlatformManager::isFullScreen() const
@@ -122,8 +134,12 @@ bool MacPlatformManager::isFullScreen() const
 
 bool MacPlatformManager::isFullScreenAPISupported()
 {
-    /*!\todo Use http://doc.qt.nokia.com/4.7/qsysinfo.html#MacVersion-enum instead! */
     bool result;
+    /*!\todo Qt 4.8 supports "Lion" */
+//    result = (QSysInfo::MacVersion() > QSysInfo::MV_SNOWLEOPARD);
+//    qDebug("MacPlatformManager::isFullScreenAPISupported: %d", result);
+//    return result;
+    /*!\todo Use http://doc.qt.nokia.com/4.7/qsysinfo.html#MacVersion-enum instead! */
     NSWindow *nswin = [[NSWindow alloc] init];
     result = (YES == [nswin respondsToSelector: @selector(toggleFullScreen:)]);
     [nswin release];

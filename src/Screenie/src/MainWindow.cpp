@@ -825,6 +825,8 @@ void MainWindow::on_addTemplateAction_triggered()
 void MainWindow::on_showToolBarAction_toggled(bool enable)
 {
     Settings::getInstance().setToolBarVisible(enable);
+    // re-initialising the toolbar to be unified when visible helps in Qt toolbar quirks
+    setUnifiedTitleAndToolBarOnMac(enable);
 }
 
 void MainWindow::on_showSidePanelAction_toggled(bool enable)
@@ -975,11 +977,7 @@ void MainWindow::updateUi()
 {
     Settings &settings = Settings::getInstance();
     if (!m_ignoreUpdateSignals) {
-        qDebug("MainWindow::updateUi: istoolbar visible: %d", settings.isToolBarVisible());
-        // This somewhat helps on Mac "Lion" to re-establish the native toolbar
-        // Note: On "Snow Leopard" the toolbar is ALWAYS the Qt toolbar in fullscreen!
         ui->toolBar->setVisible(settings.isToolBarVisible());
-        setUnifiedTitleAndToolBarOnMac(settings.isToolBarVisible());
         ui->sidePanel->setVisible(settings.isSidePanelVisible());
         updateTransformationUi();
         updateReflectionUi();
