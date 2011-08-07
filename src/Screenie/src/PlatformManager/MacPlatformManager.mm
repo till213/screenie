@@ -69,52 +69,60 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
 void MacPlatformManager::showFullScreen()
 {
 #ifdef MAC_OS_X_VERSION_10_7
-    if (!isFullScreen()) {
-        toggleFullScreen();
+    if (isFullScreenAPISupported()) {
+        if (!isFullScreen()) {
+            toggleFullScreen();
+        }
+    } else {
+        AbstractPlatformManager::showFullScreen();
     }
 #else
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
-        mainWindow->showFullScreen();
-    }
+    AbstractPlatformManager::showFullScreen();
 #endif
 }
 
 void MacPlatformManager::showNormal()
 {
 #ifdef MAC_OS_X_VERSION_10_7
-    if (isFullScreen()) {
-        toggleFullScreen();
+    if (isFullScreenAPISupported()) {
+        if (isFullScreen()) {
+            toggleFullScreen();
+        }
+    } else {
+        AbstractPlatformManager::showNormal();
     }
 #else
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
-        mainWindow->showNormal();
-    }
+    AbstractPlatformManager::showNormal();
 #endif
 }
 
 bool MacPlatformManager::isFullScreen() const
 {
     bool result;
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
 #ifdef MAC_OS_X_VERSION_10_7
-        NSView *nsview = (NSView *) mainWindow->winId();
-        NSWindow *nswindow = [nsview window];
-        NSUInteger masks = [nswindow styleMask];
-        result = masks & NSFullScreenWindowMask;
-#else
-        result = mainWindow->isFullScreen();
-#endif
+    if (isFullScreenAPISupported()) {
+        QMainWindow *mainWindow = getMainWindow();
+        if (mainWindow != 0) {
+            NSView *nsview = (NSView *) mainWindow->winId();
+            NSWindow *nswindow = [nsview window];
+            NSUInteger masks = [nswindow styleMask];
+            result = masks & NSFullScreenWindowMask;
+        } else {
+            result = false;
+        }
     } else {
-        result = false;
+        result = AbstractPlatformManager::isFullScreen();
     }
+#else
+    result = AbstractPlatformManager::isFullScreen();
+#endif
+
     return result;
 }
 
 bool MacPlatformManager::isFullScreenAPISupported()
 {
+    /*!\todo Use http://doc.qt.nokia.com/4.7/qsysinfo.html#MacVersion-enum instead! */
     bool result;
     NSWindow *nswin = [[NSWindow alloc] init];
     result = (YES == [nswin respondsToSelector: @selector(toggleFullScreen:)]);
