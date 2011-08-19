@@ -53,7 +53,6 @@ public:
 private:
     ReflectionPrivate *d;
 
-    QImage reflect(const QImage &image, int offset) const;
     void updateGradient(int height);
     void updateImages(int width, int height);
 };

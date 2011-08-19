@@ -30,6 +30,7 @@ public:
     ReflectionPrivate()
         : gradient(0),
           lastWidth(-1),
+          lastHeight(-1),
           lastReflectionHeight(-1),
           lastOffset(-1) {}
 
@@ -45,6 +46,7 @@ public:
     quint8 *gradient;
     QImage mask;
     int lastWidth;
+    int lastHeight;
     int lastReflectionHeight;
     int lastOffset;
 };
@@ -65,23 +67,26 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
     int width = image.width();
     int height = image.height();
     int reflectionHeight = qRound(height * offset / 100.0);
+    int top = height - 1;
     quint8 gradient;
 
     updateGradient(reflectionHeight);
-    updateImages(width, reflectionHeight);
+    updateImages(width, height);
     d->lastWidth = width;
+    d->lastHeight = height;
     d->lastReflectionHeight = reflectionHeight;
 
+    d->reflection.fill(Qt::transparent);
     for (int y = 0; y < reflectionHeight; ++y) {
         gradient = d->gradient[y];
-        const QRgb *src = reinterpret_cast<const QRgb *>(image.constScanLine(height - 1 - y));
+        const QRgb *src = reinterpret_cast<const QRgb *>(image.constScanLine(top - y));
         QRgb *dst = reinterpret_cast<QRgb *>(d->reflection.scanLine(y));
 #ifdef DEBUG
         qDebug("Input image format: %d", image.format());
 #endif
         for (int x = 0; x < width; ++x) {
             int red = qRed(*src);
-            int green = qRed(*src);
+            int green = qGreen(*src);
             int blue = qBlue(*src);
             int alpha = qAlpha(*src);
             if (gradient < alpha) {
@@ -110,9 +115,9 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
 void Reflection::updateImages(int width, int height)
 {
     if (width != d->lastWidth ||
-        height != d->lastReflectionHeight) {
-        d->reflection = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
-        d->background = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+        height != d->lastHeight) {
+        d->reflection = QImage(width, height, QImage::Format_ARGB32);
+        d->background = QImage(width, height, QImage::Format_ARGB32);
     }
 }
 
@@ -136,57 +141,6 @@ void Reflection::updateGradient(int height)
         delete[] d->gradient;
         d->gradient = 0;
     }
-}
-
-QImage Reflection::reflect(const QImage &image, int offset) const
-{
-    QLinearGradient gradient(QPoint(0, 0), QPoint(0, image.height()));
-    if (offset <= 0) {
-        // make sure the black offset is never 0.0, but at least 1% (arbitrarily small);
-        // otherwise the entire "gradient" would be white
-        offset = 1;
-    }
-    gradient.setColorAt(qMin(1.0, offset / 100.0), Qt::black);
-    gradient.setColorAt(0.0, Qt::white);
-
-    bool recreate;
-    if (image.size() != d->mask.size()) {
-        /*! \todo What is the fastest format here to draw a simple linear gradient (without alpha)
-                  and apply it to another image (with alpha) as an alpha mask later on? */
-        d->mask = QImage(image.size(), QImage::Format_ARGB32_Premultiplied);
-        recreate = true;
-    } else {
-        recreate = false;
-    }
-
-    // repaint gradient IF either image size or offset (since last time) have changed
-    if (recreate || d->lastOffset != offset) {
-        QImage alphaChannel = image.alphaChannel();
-        QPainter painter(&d->mask);
-        painter.setCompositionMode(QPainter::CompositionMode_Source);
-        painter.fillRect(d->mask.rect(), gradient);
-        painter.end();
-        /*!\todo Optimise this */
-        if (!alphaChannel.isNull()) {
-            for (int y = 0; y < d->mask.height(); ++y) {
-                for (int x = 0; x < d->mask.width(); ++x) {
-                    QRgb value = d->mask.pixel(x, y);
-                    QRgb alpha = alphaChannel.pixel(x, y);
-                    if (alpha < value) {
-                        d->mask.setPixel(x, y, alpha);
-                    }
-                }
-            }
-        }
-        d->lastOffset = offset;
-    }
-    //alphaChannel.save("/Users/tknoll/alphaChannel.png", "PNG");
-    d->mask.save("/Users/tknoll/mask.png", "PNG");
-
-    QImage result = image.mirrored();
-    result.setAlphaChannel(d->mask);
-
-    return result;
 }
 
 

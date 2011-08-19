@@ -467,12 +467,25 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
 void ScreeniePixmapItem::updateReflection()
 {
     QImage image = d->screenieModel.readImage();
+    QPixmap pixmap;
+    QImage reflection;
 
     if (d->screenieModel.isReflectionEnabled()) {
-        image = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
+        reflection = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
+        pixmap = QPixmap(image.width(), image.height() << 1);
+        QPainter p(&pixmap);
+        pixmap.fill(Qt::white);
+        p.drawImage(0, 0, image);
+        p.drawImage(0, image.height(), reflection);
+
+    } else {
+        pixmap = QPixmap(image.width(), image.height());
+
+        QPainter p(&pixmap);
+        pixmap.fill(Qt::white);
+        p.drawImage(0, 0, image);
     }
-    QPixmap pixmap;
-    pixmap.convertFromImage(image);
+
     setPixmap(pixmap);
     updateReflectionBoundingRect();
 }
