@@ -1,10 +1,6 @@
 QT_LIB_DIR = $$QMAKE_LIBDIR_QT
 QT_PLUGINS_SRC_DIR = $$[QT_INSTALL_PLUGINS]
 
-message(QT_BIN_DIR: $$QT_BIN_DIR)
-message(QMAKE_LIBDIR_QT: $$QMAKE_LIBDIR_QT)
-message(QT_INSTALL_DIR: $$QT_INSTALL_LIBS)
-
 CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/debug/$${APP_NAME}.app
     message(Distributing $$APP_NAME in DEBUG mode Qt: $$QT_LIB_DIR Qt Plugins: $$QT_PLUGINS_SRC_DIR)
@@ -12,6 +8,7 @@ CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/release/$${APP_NAME}.app
     message(Distributing $$APP_NAME in RELEASE mode Qt: $$QT_LIB_DIR Qt Plugins: $$QT_PLUGINS_SRC_DIR)
 }
+
 DIST_APP_BUNDLE = dist/$${APP_NAME}.app
 FRAMEWORKS_DIR = $${DIST_APP_BUNDLE}/Contents/Frameworks
 QT_PLUGINS_DIR = $${DIST_APP_BUNDLE}/Contents/PlugIns
@@ -34,7 +31,6 @@ distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework || mkdir $$FR
 distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework/Versions || mkdir $$FRAMEWORKS_DIR/QtCore.framework/Versions;
 distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework/Versions/4 || mkdir $$FRAMEWORKS_DIR/QtCore.framework/Versions/4;
 
-# TODO: Use $$[QT_INSTALL_BINS] etc. instead!
 distribution.commands += cp $$QT_LIB_DIR/QtCore.framework/QtCore $$FRAMEWORKS_DIR/QtCore.framework/Versions/4;
 
 distribution.commands += install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $$DIST_APP_BUNDLE/Contents/Frameworks/QtCore.framework/Versions/4/QtCore;
@@ -48,47 +44,47 @@ distribution.commands += cp -R $$QT_LIB_DIR/QtGui.framework/Resources/qt_menu.ni
 distribution.commands += cp $$QT_LIB_DIR/QtGui.framework/QtGui $$FRAMEWORKS_DIR/QtGui.framework/Versions/4;
 
 distribution.commands += install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui $$DIST_APP_BUNDLE/Contents/Frameworks/QtGui.framework/Versions/4/QtGui;
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$DIST_APP_BUNDLE/Contents/Frameworks/QtGui.framework/Versions/4/QtGui;
 
 # Utils library
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$FRAMEWORKS_DIR/libUtils.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$FRAMEWORKS_DIR/libUtils.$${VERSION}.dylib;
 
 # Resources library
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$FRAMEWORKS_DIR/libResources.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$FRAMEWORKS_DIR/libResources.$${VERSION}.dylib;
 
 # Model library
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$FRAMEWORKS_DIR/libModel.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$FRAMEWORKS_DIR/libModel.$${VERSION}.dylib;
 
 # Kernel library
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$FRAMEWORKS_DIR/libKernel.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$FRAMEWORKS_DIR/libKernel.$${VERSION}.dylib;
 
 # Application executable
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$DIST_APP_BUNDLE/Contents/MacOS/$${APP_NAME};
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$DIST_APP_BUNDLE/Contents/MacOS/$${APP_NAME};
 
@@ -98,28 +94,28 @@ distribution.commands += test -d $$QT_PLUGINS_DIR/imageformats || mkdir $$QT_PLU
 
 # Image JPEG plugin
 distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqjpeg.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib;
 
 # Image TIFF plugin
 distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqtiff.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib;
 
 # Image GIF plugin
 distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqgif.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change QtCore.framework/Versions/4/QtCore \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
                                                    @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
                                                    $$QT_PLUGINS_DIR/imageformats/libqgif.dylib;
-distribution.commands += install_name_tool -change QtGui.framework/Versions/4/QtGui \
+distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
                                                    @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
                                                    $$QT_PLUGINS_DIR/imageformats/libqgif.dylib;
 
