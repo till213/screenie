@@ -50,7 +50,7 @@ protected:
 
 private:
     void handleWindowActivation(bool active);
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     void toggleFullScreen();
 #endif
 };

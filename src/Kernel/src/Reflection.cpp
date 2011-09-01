@@ -122,7 +122,6 @@ void Reflection::updateImages(int width, int height)
 
 void Reflection::updateGradient(int height)
 {
-    qDebug("Reflection::updateGradient: height: %d", height);
     if (height > 0) {
         if (height != d->lastReflectionHeight) {
             if (d->gradient != 0) {

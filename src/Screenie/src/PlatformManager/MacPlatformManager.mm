@@ -41,7 +41,7 @@ void MacPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mai
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
 
     // OS X 10.7 "Lion" fullscreen support
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     NSView *nsview = (NSView *) mainWindow.winId();
     NSWindow *nswindow = [nsview window];
     [nswindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
@@ -70,7 +70,7 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
 
 void MacPlatformManager::showFullScreen()
 {
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     if (isFullScreenAPISupported()) {
         if (!isFullScreen()) {
             toggleFullScreen();
@@ -90,7 +90,7 @@ void MacPlatformManager::showFullScreen()
 
 void MacPlatformManager::showNormal()
 {
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     if (isFullScreenAPISupported()) {
         if (isFullScreen()) {
             toggleFullScreen();
@@ -111,7 +111,7 @@ void MacPlatformManager::showNormal()
 bool MacPlatformManager::isFullScreen() const
 {
     bool result;
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     if (isFullScreenAPISupported()) {
         QMainWindow *mainWindow = getMainWindow();
         if (mainWindow != 0) {
@@ -167,7 +167,7 @@ void MacPlatformManager::handleWindowActivation(bool active)
     }
 }
 
-#ifdef MAC_OS_X_VERSION_10_7
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
 void MacPlatformManager::toggleFullScreen()
 {
     QMainWindow *mainWindow = getMainWindow();
