@@ -31,7 +31,9 @@
 
 QImage PaintTools::createDefaultImage()
 {
-    QImage result = QImage(400, 300, QImage::Format_ARGB32_Premultiplied);
+    /*!\todo Switch back to Premultiplied once reflection rendering code can deal with it */
+    // QImage result = QImage(400, 300, QImage::Format_ARGB32_Premultiplied);
+    QImage result = QImage(400, 300, QImage::Format_ARGB32);
     QPainter painter(&result);
     drawBackground(painter, result);
     drawText("?", painter, result);
@@ -40,7 +42,8 @@ QImage PaintTools::createDefaultImage()
 
 QImage PaintTools::createTemplateImage(const QSize &size)
 {
-    QImage result = QImage(size, QImage::Format_ARGB32_Premultiplied);
+    // QImage result = QImage(size, QImage::Format_ARGB32_Premultiplied);
+    QImage result = QImage(size, QImage::Format_ARGB32);
     QPainter painter(&result);
     drawBackground(painter, result);
     drawText("T", painter, result);

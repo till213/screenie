@@ -13,6 +13,55 @@
         Contains one or more suite XML elements.
 
     -->
-    <suite name="Simple Scripting Properties Suite" code="SsPs" description="SimpleScriptingProperties application specific scripting facilities.">
+    <suite name="Simple Scripting Properties Suite" code="Scren" description="Screenie Commands">
+
+        <command name="myopen" code="mownopen" description="My Open a document.">
+            <cocoa class="ASOpenCommand"/>
+            <direct-parameter description="The file(s) to be opened.">
+                    <type type="file"/>
+                    <type type="file" list="yes"/>
+            </direct-parameter>
+            <result description="The opened document(s).">
+                    <type type="document"/>
+                    <type type="document" list="yes"/>
+            </result>
+        </command>
+
+        <command name="do command with args" code="SVrbAgCm" description="run a command with a bunch of arguments">
+                        <cocoa class="CommandWithArgs"/>
+
+                        <direct-parameter description="a text parameter passed to the command">
+                                <type type="text"/>
+                        </direct-parameter>
+
+                        <parameter name="blinking" code="savo" type="boolean" optional="yes"
+                                description="a boolean parameter.">
+                                <cocoa key="SaveOptions"/>
+                        </parameter>
+
+                        <parameter name="preferred hand" code="LRnd" type="preferredhands" optional="yes"
+                                description="a parameter using our enumeration.">
+                                <cocoa key="TheHand"/>
+                        </parameter>
+
+                        <parameter name="prose" code="Pros" type="text" optional="yes"
+                                description="a text parameter.">
+                                <cocoa key="ProseText"/>
+                        </parameter>
+
+                        <parameter name="ivalue" code="iVal" type="integer" optional="yes"
+                                description="an integer parameter.">
+                                <cocoa key="IntegerValue"/>
+                        </parameter>
+
+                        <parameter name="rvalue" code="rVal" type="real" optional="yes"
+                                description="an real number parameter.">
+                                <cocoa key="RealValue"/>
+                        </parameter>
+
+                        <result type="text" description="the direct parameter enclosed in quotes"/>
+                </command>
+
+
     </suite>
 </dictionary>

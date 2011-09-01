@@ -66,6 +66,7 @@ bool ScreenieApplication::event(QEvent *event)
     switch (event->type()) {
     case QEvent::FileOpen:
         result = true;
+        qDebug("ScreenieApplication::event: %s", qPrintable(static_cast<QFileOpenEvent *>(event)->file()));
         m_mainWindow->read(static_cast<QFileOpenEvent *>(event)->file());
         event->accept();
         break;

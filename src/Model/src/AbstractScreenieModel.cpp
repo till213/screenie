@@ -187,6 +187,7 @@ void AbstractScreenieModel::setReflectionEnabled(bool enable)
 
 int AbstractScreenieModel::getReflectionOffset() const
 {
+    qDebug("AbstractScreenieModel::getReflectionOffset: %d", d->reflectionOffset);
     return d->reflectionOffset;
 }
 

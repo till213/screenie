@@ -478,6 +478,8 @@ void MainWindow::askBeforeClose()
     messageBox->addButton(QMessageBox::Cancel);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    messageBox->connect(messageBox, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
     messageBox->open(this, SLOT(handleAskBeforeClose(int)));
 }
 
@@ -514,6 +516,8 @@ void MainWindow::saveAsBeforeClose()
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->connect(fileDialog, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
     fileDialog->open(this, SLOT(handleFileSaveAsBeforeCloseSelected(const QString &)));
 }
 
@@ -699,6 +703,8 @@ void MainWindow::on_saveAsAction_triggered()
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->connect(fileDialog, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
     fileDialog->open(this, SLOT(handleFileSaveAsSelected(const QString &)));
 }
 
@@ -716,6 +722,8 @@ void MainWindow::on_saveAsTemplateAction_triggered()
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->connect(fileDialog, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
     fileDialog->open(this, SLOT(handleFileSaveAsTemplateSelected(const QString &)));
 }
 
@@ -734,6 +742,8 @@ void MainWindow::on_exportAction_triggered()
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->connect(fileDialog, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
     fileDialog->open(this, SLOT(handleExportFilePathSelected(const QString &)));
 }
 
@@ -1022,7 +1032,6 @@ void MainWindow::updateWindowMenu()
 void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -1041,7 +1050,6 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(true);
         ok = writeTemplate(filePath);
@@ -1060,7 +1068,6 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
 void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
 {
     bool ok = false;
-    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     if (!filePath.isNull()) {
         m_screenieScene->setTemplate(false);
         ok = writeScene(filePath);
@@ -1081,9 +1088,13 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
     }
 }
 
-void MainWindow::handleExportFilePathSelected(const QString &filePath)
+void MainWindow::handleDialogClosed()
 {
     DocumentManager::getInstance().removeActiveDialogMainWindow(this);
+}
+
+void MainWindow::handleExportFilePathSelected(const QString &filePath)
+{
     Settings &settings = Settings::getInstance();
     if (!filePath.isNull()) {
         ExportImage exportImage(*m_screenieScene, *m_screenieGraphicsScene);
@@ -1100,7 +1111,6 @@ void MainWindow::handleExportFilePathSelected(const QString &filePath)
 
 void MainWindow::handleAskBeforeClose(int answer)
 {
-    DocumentManager::getInstance().removeActiveDialogMainWindow(this);
     switch (answer) {
     case QMessageBox::Save:
         saveBeforeClose();

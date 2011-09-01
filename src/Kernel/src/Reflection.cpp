@@ -81,9 +81,7 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
         gradient = d->gradient[y];
         const QRgb *src = reinterpret_cast<const QRgb *>(image.constScanLine(top - y));
         QRgb *dst = reinterpret_cast<QRgb *>(d->reflection.scanLine(y));
-#ifdef DEBUG
-        qDebug("Input image format: %d", image.format());
-#endif
+
         for (int x = 0; x < width; ++x) {
             int red = qRed(*src);
             int green = qGreen(*src);
@@ -107,6 +105,7 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
 //    painter.drawImage(0, image.height(), reflect(image, offset));
 //    painter.end();
 
+    //d->reflection.save("/Users/tknoll/reflection.png", "PNG");
     return d->reflection;
 }
 
@@ -123,6 +122,7 @@ void Reflection::updateImages(int width, int height)
 
 void Reflection::updateGradient(int height)
 {
+    qDebug("Reflection::updateGradient: height: %d", height);
     if (height > 0) {
         if (height != d->lastReflectionHeight) {
             if (d->gradient != 0) {

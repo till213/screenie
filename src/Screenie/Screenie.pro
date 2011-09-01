@@ -38,7 +38,9 @@ win32 {
 macx {
    ICON = res/ApplicationIcon.icns
    QMAKE_INFO_PLIST = Info.plist
-   OTHER_FILES += Screenie.sdef
+   OTHER_FILES += Info.plist \
+                  Screenie.sdef \
+                  Screenie-Entitlements.plist
 }
 
 win32 {

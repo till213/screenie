@@ -52,5 +52,7 @@ win32-g++ {
 macx {
     QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -O
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
+
+    QMAKE_LFLAGS += -sectcreate __TEXT __info_plist $$PWD/Screenie/Info.plist
 }
 

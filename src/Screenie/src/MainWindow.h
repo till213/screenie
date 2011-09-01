@@ -172,6 +172,7 @@ private slots:
     void handleFileSaveAsSelected(const QString &filePath);
     void handleFileSaveAsTemplateSelected(const QString &filePath);
     void handleFileSaveAsBeforeCloseSelected(const QString &filePath);
+    void handleDialogClosed();
 
     void handleExportFilePathSelected(const QString &filePath);
 

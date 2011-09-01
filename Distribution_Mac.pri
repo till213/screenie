@@ -126,6 +126,11 @@ distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $$DIST_APP
 
 distribution.commands += cp ./src/Screenie/Screenie.sdef $$RESOURCES_DIR/Screenie.sdef;
 
+# Sanboxing and Signing
+
+distribution.commands += codesign -s till-art.net\\ Code\\ Signing -v dist/Screenie.app/Contents/MacOS/Screenie;
+distribution.commands += codesign -f -s till-art.net\\ Code\\ Signing -v --entitlements src/Screenie/Screenie-Entitlements.plist dist/Screenie.app;
+
 # Strip unused architecture
 
 !x86 {

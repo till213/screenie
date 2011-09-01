@@ -398,6 +398,7 @@ void ScreeniePixmapItem::changeReflection(QGraphicsSceneMouseEvent *event)
     qreal height_2 = boundingRect().height() / 2.0;
     qreal factor  = (event->pos().y() - height_2) / height_2;
     int percent = qRound(factor * 100.0);
+    qDebug("ScreeniePixmapItem::changeReflection: factor: %d", percent);
     switch (event->buttons()) {
     case Qt::LeftButton:
         if (percent < 1) {

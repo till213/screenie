@@ -31,7 +31,11 @@ if (macx) {
     HEADERS += $$PWD/src/PlatformManager/MacPlatformManager.h
 
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Mac.cpp
-    OBJECTIVE_SOURCES += $$PWD/src/PlatformManager/MacPlatformManager.mm
+    OBJECTIVE_HEADERS += $$PWD/Script/ASOpenCommand.h  \
+                         $$PWD/Script/CommandWithArgs.h
+    OBJECTIVE_SOURCES += $$PWD/src/PlatformManager/MacPlatformManager.mm \
+                         $$PWD/Script/ASOpenCommand.mm \
+                         $$PWD/Script/CommandWithArgs.mm
 
 } else:win32 {
     HEADERS += $$PWD/src/PlatformManager/WindowsPlatformManager.h
@@ -46,3 +50,6 @@ if (macx) {
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Default.cpp \
                $$PWD/src/PlatformManager/DefaultPlatformManager.cpp
 }
+
+OTHER_FILES += \
+

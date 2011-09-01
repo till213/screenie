@@ -29,8 +29,8 @@ int main(int argc, char *argv[])
     // workaround for http://bugreports.qt.nokia.com/browse/QTBUG-15663: use
     // the "raster" paint engine on affected OSes (Mac and Linux, Qt 4.7.1).
     // Note that the command line argument -graphicssystem still takes precedence (which is good)
-//#if defined Q_OS_MAC || defined Q_OS_LINUX
-#ifdef Q_OS_LINUX
+#if defined Q_OS_MAC || defined Q_OS_LINUX
+//#ifdef Q_OS_LINUX
     // Doh! This uncovers another Qt bug, at least on Mac with Qt 4.7.1
     // (Linux with Qt 4.7.0 seems to work though): the selection borders in the
     // QGraphicsView are not always properly drawn/updated with multiple
