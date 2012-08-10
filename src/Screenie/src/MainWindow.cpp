@@ -192,7 +192,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 #ifdef Q_OS_MAC
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
+    QMainWindow::resizeEvent(event);
 
     if (m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
         m_isFullScreenPreviously = true;

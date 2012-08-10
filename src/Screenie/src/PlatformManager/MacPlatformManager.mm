@@ -84,7 +84,7 @@ void MacPlatformManager::showFullScreen()
     QMainWindow *mainWindow = getMainWindow();
     if (mainWindow != 0) {
         // re-initialising the toolbar to be unified helps in Qt toolbar quirks
-        mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
+        //mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
     }
 }
 
@@ -101,11 +101,6 @@ void MacPlatformManager::showNormal()
 #else
     AbstractPlatformManager::showNormal();
 #endif
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
-        // re-initialising the toolbar to be unified helps in Qt toolbar quirks
-        mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
-    }
 }
 
 bool MacPlatformManager::isFullScreen() const

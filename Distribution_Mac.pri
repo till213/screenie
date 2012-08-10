@@ -127,26 +127,7 @@ distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $$DIST_APP
 distribution.commands += cp ./src/Screenie/Screenie.sdef $$RESOURCES_DIR/Screenie.sdef;
 
 # Sanboxing and Signing
-
-distribution.commands += codesign -s till-art.net\\ Code\\ Signing -v dist/Screenie.app/Contents/MacOS/Screenie;
-distribution.commands += codesign -f -s till-art.net\\ Code\\ Signing -v --entitlements src/Screenie/Screenie-Entitlements.plist dist/Screenie.app;
-
-# Strip unused architecture
-
-!x86 {
-  STRIP_ARCH=i386
-}
-
-!x86_64 {
-  STRIP_ARCH=x86_64
-}
-
-message(Stripping $$STRIP_ARCH arch)
-distribution.commands += lipo -remove $$STRIP_ARCH $$FRAMEWORKS_DIR/QtCore.framework/Versions/4/QtCore -output $$FRAMEWORKS_DIR/QtCore.framework/Versions/4/QtCore;
-distribution.commands += lipo -remove i386 $$FRAMEWORKS_DIR/QtGui.framework/Versions/4/QtGui -output $$FRAMEWORKS_DIR/QtGui.framework/Versions/4/QtGui;
-distribution.commands += lipo -remove i386 $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib -output $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib;
-distribution.commands += lipo -remove i386 $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib -output $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib;
-distribution.commands += lipo -remove i386 $$QT_PLUGINS_DIR/imageformats/libqgif.dylib -output $$QT_PLUGINS_DIR/imageformats/libqgif.dylib;
+distribution.commands += codesign -f -v --entitlements src/Screenie/Screenie-Entitlements.plist -s till-art.net\\ Code\\ Signing dist/Screenie.app;
 
 #
 # Installer
