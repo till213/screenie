@@ -110,7 +110,7 @@ ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, Sc
     // we also want to be able to change the reflection also in the fully translucent areas
     // of the reflection
     setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-    updatePixmap(d->screenieModel.readImage());
+    updatePixmap(d->screenieModel.getImage());
     setAcceptDrops(true);
     frenchConnection();
 }
@@ -466,7 +466,7 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
 
 void ScreeniePixmapItem::updateReflection()
 {
-    QImage image = d->screenieModel.readImage();
+    QImage image = d->screenieModel.getImage();
     QPixmap pixmap;
     QImage reflection;
 
@@ -526,7 +526,7 @@ void ScreeniePixmapItem::updatePixmap(const QImage &image)
 
 void ScreeniePixmapItem::updatePixmap()
 {
-    updatePixmap(d->screenieModel.readImage());
+    updatePixmap(d->screenieModel.getImage());
 }
 
 void ScreeniePixmapItem::updateItemGeometry()

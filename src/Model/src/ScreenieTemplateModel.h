@@ -61,7 +61,7 @@ public:
     explicit ScreenieTemplateModel(const ScreenieTemplateModel &other);
     virtual ~ScreenieTemplateModel();
 
-    virtual const QImage &readImage() const;
+    virtual const QImage &getImage() const;
 
     /*!
      * Returns the requested size.

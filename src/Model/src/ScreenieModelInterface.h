@@ -46,7 +46,7 @@ public:
      *
      * \sa #setFilePath(const QString &)
      */
-    virtual const QImage &readImage() const = 0;
+    virtual const QImage &getImage() const = 0;
 
     /*!
      * Returns the size of the image.

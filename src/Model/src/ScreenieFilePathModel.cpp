@@ -68,23 +68,25 @@ ScreenieFilePathModel::~ScreenieFilePathModel()
 #endif
 }
 
-const QImage &ScreenieFilePathModel::readImage() const
+const QImage &ScreenieFilePathModel::getImage() const
 {
-    d->image.load(d->filePath);
-    if (!d->image.isNull()) {
-        if (d->sizeFitter != 0) {
-            QSize fittedSize;
-            bool doResize = d->sizeFitter->fit(d->image.size(), fittedSize);
-            if (doResize) {
-                d->image = d->image.scaled(fittedSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    if (d->image.isNull()) {
+        d->image.load(d->filePath);
+        if (!d->image.isNull()) {
+            if (d->sizeFitter != 0) {
+                QSize fittedSize;
+                bool doResize = d->sizeFitter->fit(d->image.size(), fittedSize);
+                if (doResize) {
+                    d->image = d->image.scaled(fittedSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+                }
+            } else {
+                d->image = fitToMaximumSize(d->image);
             }
+            d->valid = true;
         } else {
-            d->image = fitToMaximumSize(d->image);
+            d->image = PaintTools::createDefaultImage();
+            d->valid = false;
         }
-        d->valid = true;
-    } else {
-        d->image = PaintTools::createDefaultImage();
-        d->valid = false;
     }
     return d->image;
 }
@@ -96,7 +98,7 @@ QSize ScreenieFilePathModel::getSize() const
         result = d->image.size();
     } else {
         /*!\todo Optimisation: use Exiv2 (or http://www.sentex.net/~mwandel/jhead/) library to quickly read the image size from disk (EXIF data). */
-        result = readImage().size();
+        result = getImage().size();
     }
     return result;
 }
