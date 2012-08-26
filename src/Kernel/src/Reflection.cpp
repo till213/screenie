@@ -115,8 +115,8 @@ void Reflection::updateImages(int width, int height)
 {
     if (width != d->lastWidth ||
         height != d->lastHeight) {
-        d->reflection = QImage(width, height, QImage::Format_ARGB32);
-        d->background = QImage(width, height, QImage::Format_ARGB32);
+        d->reflection = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+        d->background = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
     }
 }
 

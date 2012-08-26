@@ -32,6 +32,7 @@
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
 #include <QtGui/QBrush>
+#include <QtGui/QColor>
 #include <QtGui/QPixmap>
 #include <QtGui/QImage>
 #include <QtGui/QFont>
@@ -467,25 +468,26 @@ QPoint ScreeniePixmapItem::calculateDialogPosition(const QPoint &mousePosition)
 void ScreeniePixmapItem::updateReflection()
 {
     QImage image = d->screenieModel.getImage();
+    QImage imageWithReflection;
     QPixmap pixmap;
+    QColor backgroundColor;
     QImage reflection;
 
     if (d->screenieModel.isReflectionEnabled()) {
         reflection = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
-        pixmap = QPixmap(image.width(), image.height() << 1);
-        QPainter p(&pixmap);
-        pixmap.fill(Qt::white);
+        imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
+        QPainter p(&imageWithReflection);
+        backgroundColor = d->screenieScene.getBackgroundColor();
+        imageWithReflection.fill(Qt::transparent); /*! \todo Reflection here with proper background colour */
         p.drawImage(0, 0, image);
         p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
         p.drawImage(0, image.height(), reflection);
 
     } else {
-        pixmap = QPixmap(image.width(), image.height());
-        QPainter p(&pixmap);
-        pixmap.fill(Qt::white);
-        p.drawImage(0, 0, image);
+        imageWithReflection = image;
     }
 
+    pixmap.convertFromImage(imageWithReflection);
     setPixmap(pixmap);
     updateReflectionBoundingRect();
 }

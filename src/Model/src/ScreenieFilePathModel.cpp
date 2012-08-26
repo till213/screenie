@@ -72,7 +72,16 @@ const QImage &ScreenieFilePathModel::getImage() const
 {
     if (d->image.isNull()) {
         d->image.load(d->filePath);
+
+#ifdef DEBUG
+        qDebug("ScreenieFilePathModel::getImage: image format: %d has Alpha: %d",
+               d->image.format(), d->image.hasAlphaChannel());
+#endif
         if (!d->image.isNull()) {
+
+            if (d->image.format() != QImage::Format_ARGB32_Premultiplied) {
+                d->image = d->image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+            }
             if (d->sizeFitter != 0) {
                 QSize fittedSize;
                 bool doResize = d->sizeFitter->fit(d->image.size(), fittedSize);
