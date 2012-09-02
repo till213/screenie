@@ -44,21 +44,19 @@ class MODEL_API ScreenieFilePathModel : public AbstractScreenieModel
     Q_OBJECT
 public:
     /*!
-     * Creates this ScreenieFilePathModel. Call #readImage() after creation.
+     * Creates this ScreenieFilePathModel.
      *
      * \param filePath
      *        the file path to the image to be read
      * \param sizeFitter
      *        if given the image is scaled with the \p sizeFitter; may be 0; ownership
      *        remains with the caller
-     *
-     * \sa #readImage()
      */
     explicit ScreenieFilePathModel(const QString &filePath = QString(), const SizeFitter *sizeFitter = 0);
     explicit ScreenieFilePathModel(const ScreenieFilePathModel &other);
     virtual ~ScreenieFilePathModel();
 
-    virtual const QImage &readImage() const;
+    virtual const QImage &getImage() const;
     virtual QSize getSize() const;
     virtual ScreenieModelInterface *copy() const;
     virtual bool isTemplate() const;

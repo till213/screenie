@@ -83,7 +83,7 @@ ScreenieTemplateModel::~ScreenieTemplateModel()
     delete d;
 }
 
-const QImage &ScreenieTemplateModel::readImage() const
+const QImage &ScreenieTemplateModel::getImage() const
 {
     if (d->image.isNull()) {
         d->image = PaintTools::createTemplateImage(getSize());
@@ -173,7 +173,7 @@ void ScreenieTemplateModel::handleSizeFitterChanged()
 {
     if (d->image.size() != d->sizeFitter.getTargetSize()) {
         d->image = QImage();
-        emit imageChanged(readImage());
+        emit imageChanged(getImage());
     }
     emit changed();
 }

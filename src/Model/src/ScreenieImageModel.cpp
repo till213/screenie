@@ -55,7 +55,7 @@ ScreenieImageModel::~ScreenieImageModel()
 #endif
 }
 
-const QImage &ScreenieImageModel::readImage() const
+const QImage &ScreenieImageModel::getImage() const
 {
     return d->image;
 }
@@ -87,11 +87,6 @@ void ScreenieImageModel::setImage(const QImage image)
         d->image = fitToMaximumSize(image);
         emit imageChanged(d->image);
     }
-}
-
-QImage ScreenieImageModel::getImage() const
-{
-    return d->image;
 }
 
 

@@ -53,13 +53,11 @@ public:
     explicit ScreenieImageModel(const ScreenieImageModel &other);
     virtual ~ScreenieImageModel();
 
-    virtual const QImage &readImage() const;
+    virtual const QImage &getImage() const;
     virtual QSize getSize() const;
     virtual ScreenieModelInterface *copy() const;
     virtual bool isTemplate() const;
     virtual QString getOverlayText() const;
-
-    QImage getImage() const;
 
     /*!
      * Sets the \p image data. Scales the image data as not to exceed
