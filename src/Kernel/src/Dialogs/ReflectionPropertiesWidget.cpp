@@ -19,9 +19,9 @@
  */
 
 #include <QtCore/QString>
-#include <QtGui/QWidget>
-#include <QtGui/QSlider>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QIntValidator>
 
 #include "../../../Model/src/ScreenieModelInterface.h"

@@ -22,7 +22,7 @@
 #define FILEPATHMODELPROPERTIESWIDGET_H
 
 #include <QtCore/QString>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "PropertyValidatorWidget.h"
 

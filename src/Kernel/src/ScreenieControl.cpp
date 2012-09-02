@@ -29,13 +29,13 @@
 #include <QtCore/QUrl>
 #include <QtCore/QDir>
 #include <QtGui/QColor>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QBrush>
 #include <QtGui/QImage>
 #include <QtGui/QPainter>
-#include <QtGui/QMainWindow>
-#include <QtGui/QSlider>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSlider>
 
 #include "../../Utils/src/PaintTools.h"
 #include "../../Utils/src/Settings.h"

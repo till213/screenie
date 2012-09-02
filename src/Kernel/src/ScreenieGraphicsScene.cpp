@@ -25,13 +25,16 @@
 #include <QtCore/QList>
 #include <QtCore/QPointF>
 #include <QtCore/QTimer>
+#include <QtCore/QMimeData>
 #include <QtGui/QImage>
-#include <QtGui/QGraphicsSceneDragDropEvent>
+#include <QtWidgets/QGraphicsSceneDragDropEvent>
 #include <QtGui/QDropEvent>
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QPinchGesture>
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QWidget>
+#include <QtCore/QEvent>
+#include <QtWidgets/QGestureEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QPinchGesture>
+#include <QtWidgets/QGraphicsView>
 
 #include "../../Utils/src/Settings.h"
 #include "Clipboard/MimeHelper.h"

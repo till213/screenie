@@ -20,8 +20,8 @@
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <QtGui/QSlider>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QIntValidator>
 
 #include "../../../Utils/src/SizeFitter.h"

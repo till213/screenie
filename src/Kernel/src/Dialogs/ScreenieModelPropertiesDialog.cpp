@@ -19,9 +19,9 @@
  */
 
 #include <QtCore/QString>
-#include <QtGui/QWidget>
-#include <QtGui/QDialog>
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QTabWidget>
 
 #include "../../../Utils/src/SizeFitter.h"
 #include "../../../Model/src/ScreenieModelInterface.h"

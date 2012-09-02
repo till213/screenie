@@ -21,8 +21,8 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
-#include <QtGui/QWidget>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QFileDialog>
 
 #include "../../../Utils/src/FileUtils.h"
 #include "../../../Model/src/ScreenieFilePathModel.h"
@@ -76,7 +76,7 @@ void FilePathModelPropertiesWidget::frenchConnection()
 
 void FilePathModelPropertiesWidget::updateUi()
 {
-    ui->filePathLineEdit->setText(QDir::convertSeparators(d->screenieFilePathModel.getFilePath()));
+    ui->filePathLineEdit->setText(QDir::toNativeSeparators(d->screenieFilePathModel.getFilePath()));
 }
 
 void FilePathModelPropertiesWidget::on_filePathLineEdit_editingFinished()
@@ -104,7 +104,7 @@ void FilePathModelPropertiesWidget::on_filePathPushButton_clicked()
 void FilePathModelPropertiesWidget::handleFileSelected(QString filePath)
 {
     if (!filePath.isNull()) {
-        ui->filePathLineEdit->setText(QDir::convertSeparators(filePath));
+        ui->filePathLineEdit->setText(QDir::toNativeSeparators(filePath));
         d->screenieControl.setFilePath(filePath, &d->screenieFilePathModel);
     }
 }

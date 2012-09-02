@@ -23,9 +23,9 @@
 #include <QtCore/QVariant>
 #include <QtCore/QEvent>
 #include <QtCore/QSignalMapper>
-#include <QtGui/QMainWindow>
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QActionGroup>
 
 #include "../../Model/src/ScreenieScene.h"
 #include "DocumentInfo.h"

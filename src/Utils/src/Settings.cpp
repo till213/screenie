@@ -25,7 +25,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QDir>
 #include <QtGui/QDesktopServices>
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 
 #include "Version.h"
 #include "Settings.h"

@@ -127,7 +127,7 @@ QString ScreenieFilePathModel::getOverlayText() const
 {
     QString result;
     if (!d->valid) {
-        result = QDir::convertSeparators(d->filePath);
+        result = QDir::toNativeSeparators(d->filePath);
     }
     return result;
 }

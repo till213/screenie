@@ -23,7 +23,7 @@
 
 #include <QtCore/QList>
 #include <QtGui/QImage>
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 
 class QGraphicsSceneDragDropEvent;
 class QEvent;
