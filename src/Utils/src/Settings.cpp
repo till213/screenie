@@ -24,7 +24,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QSettings>
 #include <QtCore/QDir>
-#include <QtGui/QDesktopServices>
+#include <QtCore/QStandardPaths>
 #include <QtWidgets/QMainWindow>
 
 #include "Version.h"
@@ -86,9 +86,9 @@ Settings *SettingsPrivate::instance = 0;
 const QSize SettingsPrivate::DefaultMaximumImageSize = QSize(1024, 1024);
 const QSize SettingsPrivate::DefaultTemplateSize = QSize(400, 300);
 // workaround for http://bugreports.qt.nokia.com/browse/QTBUG-3239: use fromNativeSeparators
-const QString SettingsPrivate::DefaultLastImageDirectoryPath = QDir::fromNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+const QString SettingsPrivate::DefaultLastImageDirectoryPath = QDir::fromNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
 const QString SettingsPrivate::DefaultLastExportDirectoryPath = SettingsPrivate::DefaultLastImageDirectoryPath;
-const QString SettingsPrivate::DefaultLastDocumentDirectoryPath = QDir::fromNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+const QString SettingsPrivate::DefaultLastDocumentDirectoryPath = QDir::fromNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
 const qreal SettingsPrivate::DefaultRotationGestureSensitivity = 2.0; // these values work well on a MacBook Pro ;)
 const qreal SettingsPrivate::DefaultDistanceGestureSensitivity = 10.0;
 const int SettingsPrivate::DefaultMaxRecentFiles = 8;
