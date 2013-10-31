@@ -49,6 +49,7 @@
 //#include <QtOpenGL/QGLWidget>
 //#include <QtOpenGL/QGLFormat>
 
+
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
 #include "../../Utils/src/FileUtils.h"
