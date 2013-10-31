@@ -76,8 +76,9 @@ void ScreenieGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void ScreenieGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-    // @todo What is the proper view transform here?
-    if (this->itemAt(event->scenePos().x(), event->scenePos().y(), QTransform()) == 0) {
+    /*!\todo Proper transform of view! (Qt 5 now requires this) */
+    QTransform transform;
+    if (this->itemAt(event->scenePos().x(), event->scenePos().y(), transform) == 0) {
         d->itemDragDrop = false;
     } else {
         QGraphicsScene::dragMoveEvent(event);
