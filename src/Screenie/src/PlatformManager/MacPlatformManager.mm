@@ -18,8 +18,8 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#import <NSView.h>
-#import <NSWindow.h>
+#import <AppKit/NSView.h>
+#import <AppKit/NSWindow.h>
 #import <AvailabilityMacros.h>
 
 #import <QtCore/QSysInfo>
