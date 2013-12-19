@@ -21,7 +21,7 @@
 #ifndef GEOMETRYPROPERTIESWIDGET_H
 #define GEOMETRYPROPERTIESWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "PropertyValidatorWidget.h"
 

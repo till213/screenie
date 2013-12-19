@@ -21,8 +21,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QFileInfo>
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QActionGroup>
 #include <QtGui/QKeySequence>
 
 #include "../../Utils/src/Settings.h"

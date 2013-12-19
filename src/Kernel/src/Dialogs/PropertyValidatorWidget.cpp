@@ -19,7 +19,7 @@
  */
 
 #include <QtGui/QPalette>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "PropertyValidatorWidget.h"
 

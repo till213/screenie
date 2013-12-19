@@ -24,7 +24,7 @@
 #include <QtCore/QPoint>
 #include <QtCore/QPointF>
 #include <QtCore/QVariant>
-#include <QtGui/QGraphicsPixmapItem>
+#include <QtWidgets/QGraphicsPixmapItem>
 
 class QSize;
 class QGraphicsSceneMouseEvent;

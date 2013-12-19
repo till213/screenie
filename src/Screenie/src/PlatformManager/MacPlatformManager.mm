@@ -23,10 +23,10 @@
 #import <AvailabilityMacros.h>
 
 #import <QtCore/QSysInfo>
-#import <QtGui/QAction>
+#import <QtWidgets/QAction>
 #import <QtGui/QKeySequence>
 #import <QtGui/QIcon>
-#import <QtGui/QApplication>
+#import <QtWidgets/QApplication>
 
 #import "../../../Utils/src/Settings.h"
 #import "ui_MainWindow.h"

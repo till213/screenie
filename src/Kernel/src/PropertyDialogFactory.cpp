@@ -19,7 +19,7 @@
  */
 
 #include <QtCore/QObject>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QtGui/QIcon>
 
 #include "../../Model/src/ScreenieModelInterface.h"

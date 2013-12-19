@@ -21,8 +21,8 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 #include <QtCore/QSizeF>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QImage>
 #include <QtGui/QPainter>
 

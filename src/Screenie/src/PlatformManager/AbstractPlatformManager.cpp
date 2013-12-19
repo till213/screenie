@@ -19,10 +19,10 @@
  */
 
 #include <QtCore/QObject>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
-#include <QtGui/QShortcut>
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QShortcut>
+#include <QtWidgets/QMainWindow>
 
 #include "ui_MainWindow.h"
 #include "AbstractPlatformManager.h"

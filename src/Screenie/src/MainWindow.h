@@ -23,8 +23,8 @@
 
 #include <QtCore/QList>
 #include <QtCore/QString>
-#include <QtGui/QWidget>
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QMainWindow>
 
 #include "RecentFiles.h"
 

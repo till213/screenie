@@ -22,7 +22,7 @@
 #define SCREENIEAPPLICATION_H
 
 #include <QtCore/QStringList>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 class QEvent;
 

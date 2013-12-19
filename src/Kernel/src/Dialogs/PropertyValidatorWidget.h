@@ -21,7 +21,7 @@
 #ifndef PROPERTYVALIDATORWIDGET_H
 #define PROPERTYVALIDATORWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class PropertyValidatorWidgetPrivate;
 

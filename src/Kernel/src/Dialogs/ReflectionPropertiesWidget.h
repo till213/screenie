@@ -21,7 +21,7 @@
 #ifndef REFLECTIONPROPERTIESWIDGET_H
 #define REFLECTIONPROPERTIESWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "PropertyValidatorWidget.h"
 

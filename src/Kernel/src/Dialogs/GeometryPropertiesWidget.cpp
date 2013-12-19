@@ -21,8 +21,8 @@
 #include <QtCore/QString>
 #include <QtGui/QDoubleValidator>
 #include <QtGui/QIntValidator>
-#include <QtGui/QSlider>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QLineEdit>
 
 #include "../../../Model/src/ScreenieModelInterface.h"
 #include "../../../Model/src/SceneLimits.h"

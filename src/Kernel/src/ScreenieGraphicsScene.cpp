@@ -25,13 +25,16 @@
 #include <QtCore/QList>
 #include <QtCore/QPointF>
 #include <QtCore/QTimer>
+#include <QtCore/QMimeData>
 #include <QtGui/QImage>
-#include <QtGui/QGraphicsSceneDragDropEvent>
+#include <QtWidgets/QGraphicsSceneDragDropEvent>
 #include <QtGui/QDropEvent>
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QPinchGesture>
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QWidget>
+#include <QtCore/QEvent>
+#include <QtWidgets/QGestureEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QPinchGesture>
+#include <QtWidgets/QGraphicsView>
 
 #include "../../Utils/src/Settings.h"
 #include "Clipboard/MimeHelper.h"
@@ -73,7 +76,9 @@ void ScreenieGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void ScreenieGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-    if (this->itemAt(event->scenePos().x(), event->scenePos().y()) == 0) {
+    /*!\todo Proper transform of view! (Qt 5 now requires this) */
+    QTransform transform;
+    if (this->itemAt(event->scenePos().x(), event->scenePos().y(), transform) == 0) {
         d->itemDragDrop = false;
     } else {
         QGraphicsScene::dragMoveEvent(event);
