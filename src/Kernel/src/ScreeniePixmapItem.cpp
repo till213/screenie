@@ -276,6 +276,7 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (!overlayText.isNull()) {
         QRectF boundingRect = this->boundingRect();
         /*!\todo Optimise this; cache the font, re-calculate when overlay text changes (add signal) */
+        /*!\todo Take "Retina" displays into account (platform-dependent code) */
         if (boundingRect.width() > 100 && boundingRect.height() > 48) {
             boundingRect.adjust(10.0, 10.0, -10.0, -10.0);
             int length = overlayText.length();
