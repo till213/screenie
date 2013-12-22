@@ -476,7 +476,8 @@ void ScreeniePixmapItem::updateReflection()
 
     if (d->screenieModel.isReflectionEnabled()) {
         reflection = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
-        imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
+        // imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
+        imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32);
         QPainter p(&imageWithReflection);
         backgroundColor = d->screenieScene.getBackgroundColor();
         imageWithReflection.fill(Qt::transparent); /*! \todo Reflection here with proper background colour */

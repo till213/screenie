@@ -70,6 +70,8 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
     int top = height - 1;
     quint8 gradient;
 
+    qDebug("Reflection::createReflection: called.");
+
     updateGradient(reflectionHeight);
     updateImages(width, height);
     d->lastWidth = width;
@@ -115,8 +117,10 @@ void Reflection::updateImages(int width, int height)
 {
     if (width != d->lastWidth ||
         height != d->lastHeight) {
-        d->reflection = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
-        d->background = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+//        d->reflection = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+//        d->background = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+        d->reflection = QImage(width, height, QImage::Format_ARGB32);
+        d->background = QImage(width, height, QImage::Format_ARGB32);
     }
 }
 
