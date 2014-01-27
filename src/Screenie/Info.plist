@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 	<key>CFBundleIconFile</key>
 	<string>ApplicationIcon.icns</string>
 	<key>CFBundlePackageType</key>
@@ -14,8 +16,8 @@
 	<string>Screenie</string>
 	<key>CFBundleIdentifier</key>
 	<string>net.till-art.Screenie</string>
-        <key>CFBundleName</key>
-        <string>Screenie</string>
+	<key>CFBundleName</key>
+	<string>Screenie</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
