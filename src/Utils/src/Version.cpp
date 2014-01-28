@@ -26,31 +26,31 @@ class VersionPrivate
 {
 public:
     VersionPrivate()
-        : major(Major), minor(Minor), subminor(Subminor)
+        : majorNo(MajorNo), minorNo(MinorNo), subMinorNo(SubMinorNo)
     {}
 
     VersionPrivate(int theMajor, int theMinor, int theSubMinor)
-        : major(theMajor), minor(theMinor), subminor(theSubMinor)
+        : majorNo(theMajor), minorNo(theMinor), subMinorNo(theSubMinor)
     {}
 
-    int major;
-    int minor;
-    int subminor;
+    int majorNo;
+    int minorNo;
+    int subMinorNo;
 
-    static const int Major;
-    static const int Minor;
-    static const int Subminor;
+    static const int MajorNo;
+    static const int MinorNo;
+    static const int SubMinorNo;
     static const QString CodeName;
     static const QString UserVersion;
     static const QString ApplicationTitle;
 };
 
 // Application version
-const int VersionPrivate::Major = 1;
-const int VersionPrivate::Minor = 0;
-const int VersionPrivate::Subminor = 0;
+const int VersionPrivate::MajorNo = 1;
+const int VersionPrivate::MinorNo = 0;
+const int VersionPrivate::SubMinorNo = 0;
 const QString VersionPrivate::CodeName = QString("Anarchic Amoeba");
-const QString VersionPrivate::UserVersion = QString("11.02");
+const QString VersionPrivate::UserVersion = QString("14.01");
 const QString VersionPrivate::ApplicationTitle = QString("Screenie"); // note: no translation here (i18n)
 
 // public
@@ -61,8 +61,8 @@ Version::Version()
 
 }
 
-Version::Version(int major, int minor, int subminor)
-    : d(new VersionPrivate(major, minor, subminor))
+Version::Version(int majorNo, int minorNo, int subMinorNo)
+    : d(new VersionPrivate(majorNo, minorNo, subMinorNo))
 {
 
 }
@@ -72,9 +72,9 @@ Version::Version(const QString &version)
 {
     QRegExp versionRegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
     if (versionRegExp.indexIn(version) != -1) {
-        d->major = versionRegExp.cap(1).toInt();
-        d->minor = versionRegExp.cap(2).toInt();
-        d->subminor = versionRegExp.cap(3).toInt();
+        d->majorNo = versionRegExp.cap(1).toInt();
+        d->minorNo = versionRegExp.cap(2).toInt();
+        d->subMinorNo = versionRegExp.cap(3).toInt();
     }
 }
 
@@ -85,45 +85,45 @@ Version::~Version()
 
 int Version::getMajor()
 {
-    return d->major;
+    return d->majorNo;
 }
 
 int Version::getMinor()
 {
-    return d->minor;
+    return d->minorNo;
 }
 
 int Version::getSubminor()
 {
-    return d->subminor;
+    return d->subMinorNo;
 }
 
 QString Version::toString()
 {
-    return QString("%1.%2.%3").arg(d->major).arg(d->minor).arg(d->subminor);
+    return QString("%1.%2.%3").arg(d->majorNo).arg(d->minorNo).arg(d->subMinorNo);
 }
 
 bool Version::operator==(const Version &other)
 {
     bool result;
-    result = d->major == other.d->major && d->minor == other.d->minor && d->subminor == other.d->subminor;
+    result = d->majorNo == other.d->majorNo && d->minorNo == other.d->minorNo && d->subMinorNo == other.d->subMinorNo;
     return result;
 }
 
 bool Version::operator>=(const Version &other)
 {
     bool result;
-    if (d->major > other.d->major) {
+    if (d->majorNo > other.d->majorNo) {
         result = true;
-    } else if (d->major < other.d->major) {
+    } else if (d->majorNo < other.d->majorNo) {
         result = false;
     } else {
-        if (d->minor > other.d->minor) {
+        if (d->minorNo > other.d->minorNo) {
             result = true;
-        } else if (d->minor < other.d->minor) {
+        } else if (d->minorNo < other.d->minorNo) {
             result = false;
         } else {
-            if (d->subminor >= other.d->subminor) {
+            if (d->subMinorNo >= other.d->subMinorNo) {
                 result = true;
             } else {
                 result = false;

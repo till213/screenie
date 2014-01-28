@@ -44,17 +44,17 @@ public:
     UTILS_API Version();
 
     /*!
-     * Creates this Version with \p major, \p minor and \p subMinor values. This
+     * Creates this Version with \p majorNo, \p minorNo and \p subMinorNo values. This
      * Version can then be compared against the application version, for example.
      *
-     * \param major
+     * \param majorNo
      *        major version number
-     * \param minor
+     * \param minorNo
      *        minor version number
-     * \param subMinor
+     * \param subMinorNo
      *        sub-minor version number
      */
-    UTILS_API Version(int major, int minor, int subMinor);
+    UTILS_API Version(int majorNo, int minorNo, int subMinorNo);
 
     /*!
      * Creates this Version by parsing the \p version string value. This
