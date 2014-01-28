@@ -268,10 +268,12 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 //            painter->setCompositionMode(compositionMode);
         }
         // todo: Remove this, testing only
-        //painter->setPen(Qt::red);
-        //painter->drawRect(d->reflectionBoundingRect);
+
     }
+    QPainter::CompositionMode compositionMode = painter->compositionMode();
+    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     QGraphicsPixmapItem::paint(painter, option, widget);
+    painter->setCompositionMode(compositionMode);
     QString overlayText = d->screenieModel.getOverlayText();
     if (!overlayText.isNull()) {
         QRectF boundingRect = this->boundingRect();
@@ -293,6 +295,10 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
             painter->drawText(boundingRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, overlayText);
         }
     }
+#ifdef DEBUG
+    painter->setPen(Qt::red);
+    painter->drawRect(d->reflectionBoundingRect);
+#endif
 }
 
 QRectF ScreeniePixmapItem::boundingRect() const
@@ -474,6 +480,7 @@ void ScreeniePixmapItem::updateReflection()
     QColor backgroundColor;
     QImage reflection;
 
+    updateReflectionBoundingRect();
     if (d->screenieModel.isReflectionEnabled()) {
         reflection = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
         // imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
@@ -481,17 +488,17 @@ void ScreeniePixmapItem::updateReflection()
         QPainter p(&imageWithReflection);
         backgroundColor = d->screenieScene.getBackgroundColor();
         imageWithReflection.fill(Qt::transparent); /*! \todo Reflection here with proper background colour */
+        //imageWithReflection.fill(backgroundColor); /*! \todo Reflection here with proper background colour */
+        p.fillRect(d->reflectionBoundingRect, backgroundColor);
         p.drawImage(0, 0, image);
         p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
         p.drawImage(0, image.height(), reflection);
-
     } else {
         imageWithReflection = image;
     }
 
     pixmap.convertFromImage(imageWithReflection);
-    setPixmap(pixmap);
-    updateReflectionBoundingRect();
+    setPixmap(pixmap);    
 }
 
 void ScreeniePixmapItem::updateReflectionBoundingRect()
@@ -499,8 +506,8 @@ void ScreeniePixmapItem::updateReflectionBoundingRect()
     QPointF topLeft;
     QPointF bottomRight;
     if (d->screenieModel.isReflectionEnabled()) {
-    QSize size = d->screenieModel.getSize();
-        topLeft.setX(1.0);
+        QSize size = d->screenieModel.getSize();
+        topLeft.setX(0.0);
         topLeft.setY(size.height());
         bottomRight.setX(size.width() - 1.0);
         bottomRight.setY(size.height() + size.height() * d->screenieModel.getReflectionOffset() / 100.0 - 1.0);
