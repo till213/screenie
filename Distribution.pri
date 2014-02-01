@@ -9,4 +9,10 @@ win32 {
 
 installer.depends = distribution
 
-QMAKE_EXTRA_TARGETS += distribution installer
+help.commands  = @echo 'Available Custom Commands:';
+help.commands += echo 'distribution - Copy all files required for distribution into directory dist';
+help.commands += echo 'installer - Create an Installer. Mac: PKG installer - Windows: MSI installer';
+help.commands += echo 'codesign - Mac: sign all frameworks, plugins and the bundle';
+help.commands += echo 'help - This help text';
+
+QMAKE_EXTRA_TARGETS += distribution installer help

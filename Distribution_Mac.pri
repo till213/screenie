@@ -1,140 +1,103 @@
-QT_LIB_DIR = $$QMAKE_LIBDIR_QT
-QT_PLUGINS_SRC_DIR = $$[QT_INSTALL_PLUGINS]
-
 CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/debug/$${APP_NAME}.app
-    message(Distributing $$APP_NAME in DEBUG mode Qt: $$QT_LIB_DIR Qt Plugins: $$QT_PLUGINS_SRC_DIR)
+    message(Distributing $$APP_NAME in DEBUG mode)
 } else {
     APP_BUNDLE = bin/release/$${APP_NAME}.app
-    message(Distributing $$APP_NAME in RELEASE mode Qt: $$QT_LIB_DIR Qt Plugins: $$QT_PLUGINS_SRC_DIR)
+    message(Distributing $$APP_NAME in RELEASE mode)
 }
 
-DIST_APP_BUNDLE = dist/$${APP_NAME}.app
-FRAMEWORKS_DIR = $${DIST_APP_BUNDLE}/Contents/Frameworks
-QT_PLUGINS_DIR = $${DIST_APP_BUNDLE}/Contents/PlugIns
-RESOURCES_DIR  = $${DIST_APP_BUNDLE}/Contents/Resources
+DIST_APP_BUNDLE = dist/$${TARGET}.app
+
+# Name of the application signing certificate
+APP_CERT = Test\\ Code\\ Signing\\ Cert
+
+# Name of the installer signing certificate
+INSTALLER_CERT = Test\\ Installer\\ Signing\\ Cert
+
+# Bundle identifier for your application
+BUNLDE_ID = net.till-art.Screenie
+
+# Name of the entitlements file (sandboxing)
+ENTITLEMENTS = src/Screenie/Screenie-Entitlements.plist
+
 
 #
 # Distribution
 #
 
-distribution.commands += @echo Making dist on Mac;
+distribution.depends  = all
+distribution.commands += @echo Making distribution for Mac;
 
 # Remove previous bundle
-distribution.commands += test -d $$DIST_APP_BUNDLE && rm -rf $$DIST_APP_BUNDLE;
+distribution.commands += test -d dist && rm -rf dist;
 
-distribution.commands += test -d dist || mkdir dist fi;
-distribution.commands += cp -R ./$$APP_BUNDLE ./$$DIST_APP_BUNDLE;
-
-# Qt Core
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework || mkdir $$FRAMEWORKS_DIR/QtCore.framework;
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework/Versions || mkdir $$FRAMEWORKS_DIR/QtCore.framework/Versions;
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtCore.framework/Versions/4 || mkdir $$FRAMEWORKS_DIR/QtCore.framework/Versions/4;
-
-distribution.commands += cp $$QT_LIB_DIR/QtCore.framework/QtCore $$FRAMEWORKS_DIR/QtCore.framework/Versions/4;
-
-distribution.commands += install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $$DIST_APP_BUNDLE/Contents/Frameworks/QtCore.framework/Versions/4/QtCore;
-
-# Qt Gui
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtGui.framework || mkdir $$FRAMEWORKS_DIR/QtGui.framework;
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtGui.framework/Resources || mkdir $$FRAMEWORKS_DIR/QtGui.framework/Resources;
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtGui.framework/Versions || mkdir $$FRAMEWORKS_DIR/QtGui.framework/Versions;
-distribution.commands += test -d $$FRAMEWORKS_DIR/QtGui.framework/Versions/4 || mkdir $$FRAMEWORKS_DIR/QtGui.framework/Versions/4;
-distribution.commands += cp -R $$QT_LIB_DIR/QtGui.framework/Resources/qt_menu.nib $$FRAMEWORKS_DIR/QtGui.framework/Resources/qt_menu.nib;
-distribution.commands += cp $$QT_LIB_DIR/QtGui.framework/QtGui $$FRAMEWORKS_DIR/QtGui.framework/Versions/4;
-
-distribution.commands += install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui $$DIST_APP_BUNDLE/Contents/Frameworks/QtGui.framework/Versions/4/QtGui;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$DIST_APP_BUNDLE/Contents/Frameworks/QtGui.framework/Versions/4/QtGui;
-
-# Utils library
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$FRAMEWORKS_DIR/libUtils.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$FRAMEWORKS_DIR/libUtils.$${VERSION}.dylib;
-
-# Resources library
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$FRAMEWORKS_DIR/libResources.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$FRAMEWORKS_DIR/libResources.$${VERSION}.dylib;
-
-# Model library
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$FRAMEWORKS_DIR/libModel.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$FRAMEWORKS_DIR/libModel.$${VERSION}.dylib;
-
-# Kernel library
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$FRAMEWORKS_DIR/libKernel.$${VERSION}.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$FRAMEWORKS_DIR/libKernel.$${VERSION}.dylib;
-
-# Application executable
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$DIST_APP_BUNDLE/Contents/MacOS/$${APP_NAME};
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$DIST_APP_BUNDLE/Contents/MacOS/$${APP_NAME};
-
-# Qt Plugins
-distribution.commands += test -d $$QT_PLUGINS_DIR || mkdir $$QT_PLUGINS_DIR;
-distribution.commands += test -d $$QT_PLUGINS_DIR/imageformats || mkdir $$QT_PLUGINS_DIR/imageformats;
-
-# Image JPEG plugin
-distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqjpeg.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqjpeg.dylib;
-
-# Image TIFF plugin
-distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqtiff.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqtiff.dylib;
-
-# Image GIF plugin
-distribution.commands += cp -R $$QT_PLUGINS_SRC_DIR/imageformats/libqgif.dylib $$QT_PLUGINS_DIR/imageformats;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtCore.framework/Versions/4/QtCore \
-                                                   @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqgif.dylib;
-distribution.commands += install_name_tool -change $$QT_LIB_DIR/QtGui.framework/Versions/4/QtGui \
-                                                   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-                                                   $$QT_PLUGINS_DIR/imageformats/libqgif.dylib;
-
+distribution.commands += mkdir dist;
+distribution.commands += cp -R ./$${APP_BUNDLE} ./$${DIST_APP_BUNDLE};
+distribution.commands += macdeployqt $${DIST_APP_BUNDLE};
 # qt.conf
-distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $$DIST_APP_BUNDLE/Contents/Resources/qt.conf;
+distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $${DIST_APP_BUNDLE}/Contents/Resources/qt.conf;
 
-# Screenie.sdef (Apple Script terminology)
+# Remove unnecessary plug-ins
+distribution.commands += rm -r $${DIST_APP_BUNDLE}/Contents/PlugIns/printsupport;
+distribution.commands += rm $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqico.dylib;
+distribution.commands += rm $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqmng.dylib;
 
-distribution.commands += cp ./src/Screenie/Screenie.sdef $$RESOURCES_DIR/Screenie.sdef;
+#
+# Code Signing
+#
 
-# Sanboxing and Signing
-distribution.commands += codesign -f -v --entitlements src/Screenie/Screenie-Entitlements.plist -s till-art.net\\ Code\\ Signing dist/Screenie.app;
+codesign.depends = distribution
+
+# Sign Frameworks
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/QtCore.framework/Versions/5/QtCore;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/QtGui.framework/Versions/5/QtGui;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/QtWidgets.framework/Versions/5/QtWidgets;
+
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/libKernel.$${VERSION}.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/libModel.$${VERSION}.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/libResources.$${VERSION}.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/Frameworks/libUtils.$${VERSION}.dylib;
+
+# Sign Plugins
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqgif.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqjpeg.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqtga.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqtiff.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/imageformats/libqwbmp.dylib;
+codesign.commands += codesign -s $${APP_CERT} -v -i $${BUNLDE_ID} $${DIST_APP_BUNDLE}/Contents/PlugIns/platforms/libqcocoa.dylib;
+
+# Sign the application bundle, using the provided entitlements
+codesign.commands += codesign -f -s $${APP_CERT} -v --entitlements $${ENTITLEMENTS} $${DIST_APP_BUNDLE};
+
 
 #
 # Installer
 #
 
+installer.depends = codesign
+
+# Extract debug symbols
+installer.commands += dsymutil $${DIST_APP_BUNDLE}/Contents/MacOS/$${TARGET} -o dist/$${TARGET}.app.dSYM;
+# Build and sign the installer package
+# installer.commands += installerbuild --component $${DIST_APP_BUNDLE} /Applications --sign $${INSTALLER_CERT} $${TARGET}.pkg;
+installer.commands += productbuild --component $${DIST_APP_BUNDLE} /Applications dist/$${TARGET}.pkg;
+
+QMAKE_EXTRA_TARGETS += codesign
+
+
+#
+# Disk Image (Installer 2)
+#
+
 # TODO: Create compressed DMG disk image with some fancy background image ;)
-installer.commands =
+#diskimage.commands  = hdiutil create -srcfolder dist -volname $${TARGET} -fs HFS+ -fsargs \"-c c=64,a=16,e=16\" -format UDRW -size 64000k pack.temp.dmg;
+diskimage.depends = distribution
+diskimage.commands = @echo Creating Disk Image...;
+diskimage.commands += Installer/Mac/build_disk_image.sh;
+
+QMAKE_EXTRA_TARGETS += diskimage
+
+OTHER_FILES += Installer/Mac/build_disk_image.sh
 
 
 

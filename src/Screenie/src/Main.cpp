@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(Resources);
 
+    QApplication::setOrganizationName("till-art.net");
+    QApplication::setApplicationName("Screenie");
+
     ScreenieApplication app(argc, argv);
     app.show();
 

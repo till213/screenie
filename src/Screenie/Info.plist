@@ -13,11 +13,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>Screenie</string>
+        <string>@EXECUTABLE@</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.till-art.Screenie</string>
+        <string>net.tillart.@EXECUTABLE@</string>
 	<key>CFBundleName</key>
-	<string>Screenie</string>
+        <string>@EXECUTABLE@</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -28,7 +28,7 @@
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>CFBundleTypeIconFile</key>
-			<string>ApplicationIcon.icns</string>
+                        <string>@ICON@</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>xsc</string>
@@ -42,7 +42,7 @@
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>CFBundleTypeIconFile</key>
-			<string>ApplicationIcon.icns</string>
+                        <string>@ICON@</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>xst</string>
@@ -50,12 +50,8 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>@SHORT_VERSION@</string>
+        <string>@SHORT_VERSION@</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2011 Oliver Knoll, till-art.net</string>
-	<key>NSAppleScriptEnabled</key>
-	<true/>
-	<key>OSAScriptingDefinition</key>
-	<string>Screenie.sdef</string>
+        <string>Copyright 2014 Oliver Knoll, till-art.net</string>
 </dict>
 </plist>

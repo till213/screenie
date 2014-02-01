@@ -42,10 +42,13 @@ macx {
    OTHER_FILES += Info.plist \
                   Screenie.sdef \
                   Screenie-Entitlements.plist
+    # http://qihome.org/qiliang/2013/05/28/how-to-embedded-a-info-plist-into-arbitrary-binaries/
+    QMAKE_LFLAGS += -sectcreate __TEXT __info_plist $$PWD/Info.plist
 }
 
 win32 {
    RC_FILE = res/Screenie.rc
 }
+
 
 

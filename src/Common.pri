@@ -13,6 +13,8 @@ VERSIONS = $$split(VERSION, ".")
 VERSION_MAJ = $$member(VERSIONS, 0)
 VERSION_MIN = $$member(VERSIONS, 1)
 
+QMAKE_TARGET_BUNDLE_PREFIX = net.tillart
+
 # On Mac we build 64bit Intel only
 macx {
   CONFIG += x86_64
@@ -34,25 +36,25 @@ CONFIG(debug, debug|release) {
     INCLUDEPATH   += GeneratedFiles/release
 }
 
-target.path = $$PWD/../dist
-INSTALLS += target
+!macx {
+    target.path = $$PWD/../dist
+    INSTALLS += target
+}
 
 unix:linux* {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -O
+    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
-
     QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
 }
 
 win32-g++ {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -O
+    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
 }
 
 macx {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -O
-    QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
-
-    QMAKE_LFLAGS += -sectcreate __TEXT __info_plist $$PWD/Screenie/Info.plist
+    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -gdwarf-2
+    QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes gdwarf-2
+    QMAKE_OBJECTIVE_CFLAGS += -gdwarf-2
 }
 
