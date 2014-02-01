@@ -406,9 +406,9 @@ void MainWindow::updateTitle()
     DocumentManager &documentManager = DocumentManager::getInstance();
     if (!m_documentFilePath.isNull()) {
         title = QFileInfo(m_documentFilePath).fileName();
-        documentManager.setWindowTitle(title, *this);
+        documentManager.setDocumentFileName(title, *this);
     } else {
-        title = documentManager.getDocumentName(*this);
+        title = documentManager.getDocumentFileName(*this);
     }
     title.append("[*] - ");
     title.append(Version::getApplicationName());
@@ -470,7 +470,7 @@ void MainWindow::askBeforeClose()
     QMessageBox *messageBox = new QMessageBox(QMessageBox::Warning,
                                               Version::getApplicationName(),
                                               tr("Do you want to save the changes you made in the document \"%1\"?")
-                                              .arg(DocumentManager::getInstance().getDocumentName(*this)) +
+                                              .arg(DocumentManager::getInstance().getDocumentFileName(*this)) +
                                               QString("<br /><br /><font size=\"-1\" style=\"font-weight:normal;\">") +
                                               tr("Your changes will be lost if you don't save them.") + QString("</font>"),
                                               QMessageBox::Save,
@@ -491,7 +491,7 @@ void MainWindow::saveBeforeClose()
         if (ok) {
             close();
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentName(*this),
+            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
                            QDir::toNativeSeparators(m_documentFilePath));
         }
 #ifdef DEBUG
@@ -504,6 +504,7 @@ void MainWindow::saveBeforeClose()
 
 void MainWindow::saveAsBeforeClose()
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     QString lastDocumentDirectoryPath = Settings::getInstance().getLastDocumentDirectoryPath();
     QString sceneFilter = tr("Screenie Scene (*.%1)", "Save As dialog filter")
                           .arg(FileUtils::SceneExtension);
@@ -513,6 +514,7 @@ void MainWindow::saveAsBeforeClose()
     fileDialog->setDefaultSuffix(FileUtils::SceneExtension);
     fileDialog->setWindowTitle(tr("Save As"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
+    fileDialog->selectFile(documentManager.getDocumentName(*this));
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -684,7 +686,7 @@ void MainWindow::on_saveAction_triggered()
         qDebug("MainWindow::on_saveAction_triggered: ok: %d", ok);
 #endif
         if (!ok) {
-            showWriteError(DocumentManager::getInstance().getDocumentName(*this),
+            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
                            QDir::toNativeSeparators(m_documentFilePath));
 
         }
@@ -695,11 +697,8 @@ void MainWindow::on_saveAction_triggered()
 
 void MainWindow::on_saveAsAction_triggered()
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     QString lastDocumentDirectoryPath = Settings::getInstance().getLastDocumentDirectoryPath();
-    // workaround for QTBUG-35779 (Qt 5.2.0)
-#ifdef Q_OS_OSX
-    lastDocumentDirectoryPath.append("/*");
-#endif
     QString sceneFilter = tr("Screenie Scene (*.%1)", "Save As dialog filter")
                              .arg(FileUtils::SceneExtension);
 
@@ -708,8 +707,9 @@ void MainWindow::on_saveAsAction_triggered()
     fileDialog->setDefaultSuffix(FileUtils::SceneExtension);
     fileDialog->setWindowTitle(tr("Save As"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
+    fileDialog->selectFile(documentManager.getDocumentName(*this));
     fileDialog->setWindowModality(Qt::WindowModal);
-    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);    
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
     fileDialog->connect(fileDialog, SIGNAL(finished(int)),
@@ -719,18 +719,17 @@ void MainWindow::on_saveAsAction_triggered()
 
 void MainWindow::on_saveAsTemplateAction_triggered()
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     QString lastDocumentDirectoryPath = Settings::getInstance().getLastDocumentDirectoryPath();
-    // workaround for QTBUG-35779 (Qt 5.2.0)
-#ifdef Q_OS_OSX
-    lastDocumentDirectoryPath.append("/*");
-#endif
     QString templateFilter = tr("Screenie Template (*.%1)", "Save As Template dialog filter")
                              .arg(FileUtils::TemplateExtension);
+
     QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
     fileDialog->setNameFilter(templateFilter);
     fileDialog->setDefaultSuffix(FileUtils::TemplateExtension);
     fileDialog->setWindowTitle(tr("Save As Template"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
+    fileDialog->selectFile(documentManager.getDocumentName(*this));
     fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -980,7 +979,6 @@ void MainWindow::on_htmlBGColorLineEdit_editingFinished()
 {
     QString htmlNotation = QString("#") + ui->htmlBGColorLineEdit->text();
     QColor color(htmlNotation);
-    qDebug("Foreground role: %d", ui->htmlBGColorLineEdit->foregroundRole());
     QPalette palette;
     if (color.isValid()) {
         m_screenieControl->setBackgroundColor(color);
@@ -1062,7 +1060,7 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
             settings.addRecentFile(filePath);
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentName(*this),
+            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
                            QDir::toNativeSeparators(filePath));
         }
     }
@@ -1080,7 +1078,7 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
             settings.addRecentFile(filePath);
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentName(*this),
+            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
                            filePath);
         }
     }
@@ -1103,7 +1101,7 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
                 QApplication::closeAllWindows();
             }
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentName(*this),
+            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
                            QDir::toNativeSeparators(filePath));
         }
     }

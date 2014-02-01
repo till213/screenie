@@ -62,8 +62,9 @@ public:
      */
     KERNEL_API void add(DocumentInfo *documentInfo);
     KERNEL_API DocumentInfo *getDocumentInfo(const QMainWindow &mainWindow) const;
+    KERNEL_API QString getDocumentFileName(const QMainWindow &mainWindow) const;
     KERNEL_API QString getDocumentName(const QMainWindow &mainWindow) const;
-    KERNEL_API void setWindowTitle(const QString &windowTitle, const QMainWindow &mainWindow);
+    KERNEL_API void setDocumentFileName(const QString &documentFileName, const QMainWindow &mainWindow);
     KERNEL_API QActionGroup &getActionGroup() const;
     KERNEL_API int count() const;
     KERNEL_API int getModifiedCount() const;

@@ -27,6 +27,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QActionGroup>
 
+#include "../../Utils/src/FileUtils.h"
 #include "../../Model/src/ScreenieScene.h"
 #include "DocumentInfo.h"
 #include "DocumentManager.h"
@@ -55,7 +56,7 @@ public:
 };
 
 DocumentManager *DocumentManagerPrivate::instance = 0;
-int DocumentManagerPrivate::nextWindowId = 0;
+int DocumentManagerPrivate::nextWindowId = 1;
 DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentManager::CloseCurrent;
 
 // public
@@ -88,11 +89,11 @@ void DocumentManager::add(DocumentInfo *documentInfo)
     /*!\todo This gets messy: make DocumentInfo a proper class. */
     documentInfo->id = d->nextWindowId;
     ++d->nextWindowId;
-    documentInfo->windowTitle = tr("New %1", "New document title + ID").arg(d->nextWindowId);
+    documentInfo->documentFileName = tr("New %1", "New document title + ID").arg(documentInfo->id);
     QAction *action = new QAction(d->windowActionGroup);
     action->setCheckable(true);
     action->setData(documentInfo->id);
-    action->setText(documentInfo->windowTitle);
+    action->setText(documentInfo->documentFileName);
     d->windowMapper.setMapping(action, documentInfo->id);
     connect(action, SIGNAL(triggered()),
             &d->windowMapper, SLOT(map()));
@@ -104,24 +105,38 @@ DocumentInfo *DocumentManager::getDocumentInfo(const QMainWindow &mainWindow) co
     return getDocumentInfoFromObject(mainWindow);
 }
 
-QString DocumentManager::getDocumentName(const QMainWindow &mainWindow) const
+QString DocumentManager::getDocumentFileName(const QMainWindow &mainWindow) const
 {
     QString result;
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
     if (documentInfo != 0) {
-        result = documentInfo->windowTitle;
+        result = documentInfo->documentFileName;
     }
     return result;
 }
 
-void DocumentManager::setWindowTitle(const QString &windowTitle, const QMainWindow &mainWindow)
+QString DocumentManager::getDocumentName(const QMainWindow &mainWindow) const
+{
+    QString result;
+    result = getDocumentFileName(mainWindow);
+    if (result.endsWith(FileUtils::SceneExtension)) {
+        // chop including the dot (.) -> +1
+        result.chop(FileUtils::SceneExtension.length() + 1);
+    } else if (result.endsWith(FileUtils::TemplateExtension)) {
+        // chop including the dot (.) -> +1
+        result.chop(FileUtils::TemplateExtension.length() + 1);
+    }
+    return result;
+}
+
+void DocumentManager::setDocumentFileName(const QString &documentFileName, const QMainWindow &mainWindow)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
     if (documentInfo != 0) {
-        documentInfo->windowTitle = windowTitle;
+        documentInfo->documentFileName = documentFileName;
         QAction *action = getWindowAction(documentInfo->id);
         if (action != 0) {
-            action->setText(windowTitle);
+            action->setText(documentFileName);
         }
     }
 }

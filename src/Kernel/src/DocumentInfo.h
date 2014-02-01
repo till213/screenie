@@ -41,7 +41,7 @@ struct DocumentInfo
     int id;
     QMainWindow *mainWindow;
     ScreenieScene *screenieScene;
-    QString windowTitle;
+    QString documentFileName;
     SaveStrategy saveStrategy;
 };
 
