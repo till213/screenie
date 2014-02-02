@@ -1,95 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="9C717168-DCA4-49F0-894F-2C5CEAF0A0C4" Name="Screenie" Language="1033" Version="1.0.0" Manufacturer="till-art.net" UpgradeCode="479C1D6F-20B5-4EBE-B97E-1157A9563348">
-        <Package Description="Screenie" Comments="A fancy screenshot composer" InstallerVersion="200" Compressed="yes" />
+        <Package Description="Screenie - A Fancy Screenshot Composer" Comments="Screenie" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
-				<Directory Id="ScreenieInstallationDir" Name="Screenie">
-                    <Component Id="Kernel1.dll" DiskId="1" Guid="7ABBAFAD-AFC2-469C-8DFA-AF4A1E005C7E">
-                        <File Id="Kernel1.dll" Name="Kernel1.dll" Source="..\..\dist\Kernel1.dll" />
-                    </Component>
-                    <Component Id="Model1.dll" DiskId="1" Guid="1436EFC5-15B4-4D9D-ADF4-033F664FAA96">
-                        <File Id="Model1.dll" Name="Model1.dll" Source="..\..\dist\Model1.dll" />
-                    </Component>
-                    <Component Id="Resources1.dll" DiskId="1" Guid="36A33861-0697-4033-BCBA-EC7B0A1E3348">
-                        <File Id="Resources1.dll" Name="Resources1.dll" Source="..\..\dist\Resources1.dll" />
-                    </Component>
-                    <Component Id="Screenie.exe" DiskId="1" Guid="A6A2B006-C3B7-4EA1-9BE6-F97F887331EB">
-                        <Shortcut Id="ExeShortcut" Directory="ProgramMenuDir" Name="Screenie" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" />
-                        <File Id="Screenie.exe" Name="Screenie.exe" Source="..\..\dist\Screenie.exe">
-                        </File>
-                        <ProgId Id="Screenie.ScreenieScene" Description="Screenie Scene File" Icon="Screenie.exe" IconIndex="0">
-                            <Extension Id="xsc" ContentType="application/x-screenie">
-                                <Verb Id="open" Command="Open" TargetFile="Screenie.exe" Argument="1" />
-                            </Extension>
-                        </ProgId>
-                        <RemoveFile Id="RemoveScreenie.ini" On="uninstall" Name="Screenie.ini" Property="till_art.net" />
-                    </Component>
-                    <Component Id="Utils1.dll" DiskId="1" Guid="7CA0C58B-A021-490F-B83E-F2DB266A258C">
-                        <File Id="Utils1.dll" Name="Utils1.dll" Source="..\..\dist\Utils1.dll" />
-                    </Component>
-                    <Component Id="QtCore4.dll" DiskId="1" Guid="68B86918-FB5D-4C46-9193-C90CD3C23C1D">
-                        <File Id="QtCore4.dll" Name="QtCore4.dll" Source="..\..\dist\QtCore4.dll" />
-                    </Component>
-                    <Component Id="QtGui4.dll" DiskId="1" Guid="67D2D04C-F96B-49EC-926A-FE6468EC3ED6">
-                        <File Id="QtGui4.dll" Name="QtGui4.dll" Source="..\..\dist\QtGui4.dll" />
-                    </Component>
-                    <Component Id="mingwm10.dll" DiskId="1" Guid="BF3DD2BB-CD2B-4359-A6E2-A5C48C36D2E5">
-                        <File Id="mingwm10.dll" Name="mingwm10.dll" Source="..\..\dist\mingwm10.dll" />
-                    </Component>
-                    <Component Id="libgcc_s_dw2_1.dll" Guid="06D7059B-7950-4C43-84F8-9B854F7E87E3">
-                        <File Id="libgcc_s_dw2_1.dll" Name="libgcc_s_dw2-1.dll" Source="..\..\dist\libgcc_s_dw2-1.dll" />
-                    </Component>
-                    <Directory Id="imageformats" Name="imageformats">
-                        <Component Id="qjpeg4.dll" DiskId="1" Guid="EBFD6795-99D9-4687-AF84-2F0E9903E398">
-                            <File Id="qjpeg4.dll" Name="qjpeg4.dll" Source="..\..\dist\imageformats\qjpeg4.dll" />
+                <Directory Id="CompanyFolder" Name="till-art.net">
+                    <Directory Id="ScreenieFolder" Name="Screenie">
+                        <Component Id="icudt51.dll" DiskId="1" Guid="89E2D415-F1BE-45E7-BEC2-C9F6C8AB2512">
+                            <File Id="icudt51.dll" Name="icudt51.dll" Source="..\..\dist\icudt51.dll" />
                         </Component>
-                        <Component Id="qtiff4.dll" DiskId="1" Guid="B8D44CB2-F8D4-49FC-8366-3B2A484A2C3E">
-                            <File Id="qtiff4.dll" Name="qtiff4.dll" Source="..\..\dist\imageformats\qtiff4.dll" />
+                        <Component Id="icuin51.dll" DiskId="1" Guid="F35F4733-A275-45CA-BCCC-F0CC05C372FE">
+                            <File Id="icuin51.dll" Name="icuin51.dll" Source="..\..\dist\icuin51.dll" />
                         </Component>
-                        <Component Id="qgif4.dll" DiskId="1" Guid="6D505D1C-0BE4-4B75-A137-E73C7629A8E6">
-                            <File Id="qgif4.dll" Name="qgif4.dll" Source="..\..\dist\imageformats\qgif4.dll" />
+                        <Component Id="icuuc51.dll" DiskId="1" Guid="6EA52650-C53A-439C-AB9F-DFF0814452E3">
+                            <File Id="icuuc51.dll" Name="icuuc51.dll" Source="..\..\dist\icuuc51.dll" />
                         </Component>
+                        <Component Id="Kernel1.dll" DiskId="1" Guid="136F0F26-FEE0-49CE-A0AE-F15205543FF1">
+                            <File Id="Kernel1.dll" Name="Kernel1.dll" Source="..\..\dist\Kernel1.dll" />
+                        </Component>
+                        <Component Id="libgcc_s_dw2_1.dll" DiskId="1" Guid="79B6CFC5-D843-48D2-88B6-418FA43D9F5A">
+                            <File Id="libgcc_s_dw2_1.dll" Name="libgcc_s_dw2-1.dll" Source="..\..\dist\libgcc_s_dw2-1.dll" />
+                        </Component>
+                        <Component Id="libstdc___6.dll" DiskId="1" Guid="763E89C6-67B4-4D48-A6A8-DF902BBEA7CB">
+                            <File Id="libstdc___6.dll" Name="libstdc++-6.dll" Source="..\..\dist\libstdc++-6.dll" />
+                        </Component>
+                        <Component Id="libwinpthread_1.dll" DiskId="1" Guid="88C45C60-F898-4B89-B76B-E8263A421A60">
+                            <File Id="libwinpthread_1.dll" Name="libwinpthread-1.dll" Source="..\..\dist\libwinpthread-1.dll" />
+                        </Component>
+                        <Component Id="Model1.dll" DiskId="1" Guid="20A0FF19-5018-445F-AEE1-CDBDF5552A2B">
+                            <File Id="Model1.dll" Name="Model1.dll" Source="..\..\dist\Model1.dll" />
+                        </Component>
+                        <Component Id="Qt5Core.dll" DiskId="1" Guid="36C60023-5295-4F6A-B083-95B316376303">
+                            <File Id="Qt5Core.dll" Name="Qt5Core.dll" Source="..\..\dist\Qt5Core.dll" />
+                        </Component>
+                        <Component Id="Qt5Gui.dll" DiskId="1" Guid="BFBA7269-9CE0-495F-813F-1588B0AB8117">
+                            <File Id="Qt5Gui.dll" Name="Qt5Gui.dll" Source="..\..\dist\Qt5Gui.dll" />
+                        </Component>
+                        <Component Id="Qt5Widgets.dll" DiskId="1" Guid="82A26EA3-5EBB-4892-932A-822ED5B252AB">
+                            <File Id="Qt5Widgets.dll" Name="Qt5Widgets.dll" Source="..\..\dist\Qt5Widgets.dll" />
+                        </Component>
+                        <Component Id="Resources1.dll" DiskId="1" Guid="DD30D4C9-4436-477C-ACF6-4B7B46E65205">
+                            <File Id="Resources1.dll" Name="Resources1.dll" Source="..\..\dist\Resources1.dll" />
+                        </Component>
+                        <Component Id="Screenie.exe" DiskId="1" Guid="21185D64-10FB-4DBC-BC88-492528498875">
+                            <File Id="Screenie.exe" Name="Screenie.exe" Source="..\..\dist\Screenie.exe">
+                            </File>
+                            <Shortcut Id="ExeShortcut" Name="Screenie" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" Directory="ProgramMenuDir" />
+                        </Component>
+                        <Component Id="Utils1.dll" DiskId="1" Guid="E81CD282-936C-42C6-A272-7500B26E46B5">
+                            <File Id="Utils1.dll" Name="Utils1.dll" Source="..\..\dist\Utils1.dll" />
+                        </Component>
+                        <Directory Id="imageformats" Name="imageformats">
+                            <Component Id="qgif.dll" DiskId="1" Guid="27BF858D-1164-455E-A2F0-2D976648F68C">
+                                <File Id="qgif.dll" Name="qgif.dll" Source="..\..\dist\imageformats\qgif.dll" />
+                            </Component>
+                            <Component Id="qjpeg.dll" DiskId="1" Guid="6B724ACC-6D88-412E-ABB0-C436E16E1326">
+                                <File Id="qjpeg.dll" Name="qjpeg.dll" Source="..\..\dist\imageformats\qjpeg.dll" />
+                            </Component>
+                            <Component Id="qtga.dll" DiskId="1" Guid="AE1CB769-2E65-4AF9-881D-A6CE58FB298D">
+                                <File Id="qtga.dll" Name="qtga.dll" Source="..\..\dist\imageformats\qtga.dll" />
+                            </Component>
+                            <Component Id="qtiff.dll" DiskId="1" Guid="C6D6E372-EBD0-490D-BF6A-838F2DA48A5C">
+                                <File Id="qtiff.dll" Name="qtiff.dll" Source="..\..\dist\imageformats\qtiff.dll" />
+                            </Component>
+                            <Component Id="qwbmp.dll" DiskId="1" Guid="FCF20A65-E8C2-4CDA-9024-5B221046A049">
+                                <File Id="qwbmp.dll" Name="qwbmp.dll" Source="..\..\dist\imageformats\qwbmp.dll" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="platforms" Name="platforms">
+                            <Component Id="qwindows.dll" DiskId="1" Guid="D96A43FD-0AE6-4223-AB06-6263EE179C89">
+                                <File Id="qwindows.dll" Name="qwindows.dll" Source="..\..\dist\platforms\qwindows.dll" />
+                            </Component>
+                        </Directory>
                     </Directory>
                 </Directory>
-			</Directory>
+            </Directory>
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ProgramMenuDir" Name="Screenie">
-                    <Component Id="StartMenuShortcuts" Guid="E45E227E-6C6D-4843-98C5-0101C34A801A">
+                    <Component Id="StartMenuShortcuts" Guid="6435FB0D-889C-4B24-940A-57F21488CAE0">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="Screenie" />
-                    </Component>
-                </Directory>
-            </Directory>
-            <Directory Id="AppDataFolder">
-                <Directory Id="till_art.net" Name="till-art.net">
-                    <Component Id="Removetill_art.net" Guid="44AF020F-45FA-4FF6-BF70-C66A5F0099AA">
-                        <RemoveFolder Id="Removetill_art.net" On="uninstall" />
-                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="Screenie" />
+                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes" />
+                        <Shortcut Id="UninstallProduct" Name="Uninstall" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                     </Component>
                 </Directory>
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="icudt51.dll" />
+            <ComponentRef Id="icuin51.dll" />
+            <ComponentRef Id="icuuc51.dll" />
             <ComponentRef Id="Kernel1.dll" />
+            <ComponentRef Id="libgcc_s_dw2_1.dll" />
+            <ComponentRef Id="libstdc___6.dll" />
+            <ComponentRef Id="libwinpthread_1.dll" />
             <ComponentRef Id="Model1.dll" />
+            <ComponentRef Id="Qt5Core.dll" />
+            <ComponentRef Id="Qt5Gui.dll" />
+            <ComponentRef Id="Qt5Widgets.dll" />
             <ComponentRef Id="Resources1.dll" />
             <ComponentRef Id="Screenie.exe" />
             <ComponentRef Id="Utils1.dll" />
-            <ComponentRef Id="QtCore4.dll" />
-            <ComponentRef Id="QtGui4.dll" />
-            <ComponentRef Id="mingwm10.dll" />
-            <ComponentRef Id="qjpeg4.dll" />
-            <ComponentRef Id="qtiff4.dll" />
-            <ComponentRef Id="qgif4.dll" />
+            <ComponentRef Id="qgif.dll" />
+            <ComponentRef Id="qjpeg.dll" />
+            <ComponentRef Id="qtga.dll" />
+            <ComponentRef Id="qtiff.dll" />
+            <ComponentRef Id="qwbmp.dll" />
+            <ComponentRef Id="qwindows.dll" />
             <ComponentRef Id="StartMenuShortcuts" />
-            <ComponentRef Id="libgcc_s_dw2_1.dll" />
-            <ComponentRef Id="Removetill_art.net" />
         </Feature>
-		<Property Id="WIXUI_INSTALLDIR" Value="ScreenieInstallationDir" />
-        <UI />
-        <UIRef Id="WixUI_InstallDir" />
+        <UI>
+        </UI>
+        <UIRef Id="WixUI_Minimal" />
         <Icon Id="StartMenuIcon.exe" SourceFile="..\..\dist\Screenie.exe" />
         <WixVariable Id="WixUILicenseRtf" Value="GPL3.rtf" />
     </Product>

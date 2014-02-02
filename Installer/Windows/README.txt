@@ -13,7 +13,7 @@ been created with WiX Edit:
 
 which itself is based on Windows Installer XML (WiX) toolset:
 
-  http://wix.sourceforge.net/
+  http://wixtoolset.org/
 
 
 Installer Creation
@@ -40,12 +40,13 @@ to the document and WiX installer has trouble displaying that document
 
 Only use WordPad (possibly other RTF editors - OpenOffice might be fine, too).
 
+
 Links
 -----
 
 - WiX Edit: http://wixedit.sourceforge.net/
-- Windows Installer XML (WiX): http://wix.sourceforge.net/
-- WiX Tutorial: http://www.tramontana.co.hu/wix/
+- Windows Installer XML (WiX): http://wixtoolset.org/
+- WiX Tutorial: http://wix.tramontana.co.hu/
 - General info about WiX: https://secure.wikimedia.org/wikipedia/en/wiki/WiX
 - Other installers: https://secure.wikimedia.org/wikipedia/en/wiki/List_of_installation_software
 - Yet another (free) MSI installer: http://www.advancedinstaller.com/
