@@ -46,9 +46,6 @@
 #include <QtGui/QCloseEvent>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QPushButton>
-//#include <QtOpenGL/QGLWidget>
-//#include <QtOpenGL/QGLFormat>
-
 
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
@@ -96,9 +93,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Gesture support
     ui->graphicsView->viewport()->grabGesture(Qt::PinchGesture);
 
-    // later: OpenGL support (configurable)
-    // ui->graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-
     createScene();
     updateDocumentManager();
     initializeUi();
@@ -134,6 +128,7 @@ bool MainWindow::read(const QString &filePath)
     } else {
         result = false;
     }
+
     return result;
 }
 
@@ -245,12 +240,14 @@ bool MainWindow::writeScene(const QString &filePath)
     QFile file(filePath);
     ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
     result = screenieSceneDao->write(*m_screenieScene);
+
     if (result) {
         m_screenieScene->setModified(false);
         setWindowModified(false);
         m_documentFilePath = filePath;
         updateTitle();
     }
+
     return result;
 }
 
@@ -491,12 +488,13 @@ void MainWindow::saveBeforeClose()
         if (ok) {
             close();
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
-                           QDir::toNativeSeparators(m_documentFilePath));
+            m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
+                             .arg(DocumentManager::getInstance().getDocumentFileName(*this))
+                             .arg(QDir::toNativeSeparators(m_documentFilePath));
+            // workaround for "Cascading Mac Sheets" bug: use a single shot timer;
+            // also refer to http://qt-project.org/forums/viewthread/33684
+            QTimer::singleShot(0, this, SLOT(showError()));
         }
-#ifdef DEBUG
-        qDebug("MainWindow::saveBeforeClose: ok: %d", ok);
-#endif
     } else {
         saveAsBeforeClose();
     }
@@ -594,31 +592,6 @@ bool MainWindow::isFilePathRequired() const
     return m_documentFilePath.isNull() || (m_screenieScene->isTemplate() && !m_screenieScene->hasTemplatesExclusively());
 }
 
-void MainWindow::showReadError(const QString &filePath)
-{
-    showError(tr("Could not open document from file \"%1\"!")
-              .arg(QDir::toNativeSeparators(filePath)));
-}
-
-void MainWindow::showWriteError(const QString &documentName, const QString &filePath)
-{
-    showError(tr("Could not save document \"%1\" to file \"%2\"!")
-              .arg(documentName)
-              .arg(filePath));
-}
-
-void MainWindow::showError(const QString &message)
-{
-    QMessageBox *messageBox = new QMessageBox(QMessageBox::Warning,
-                                              Version::getApplicationName(),
-                                              message,
-                                              QMessageBox::Ok,
-                                              this);
-    messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    DocumentManager::getInstance().addActiveDialogMainWindow(this);
-    messageBox->open(this, SLOT(handleErrorClosed()));
-}
-
 void MainWindow::storeWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry;
@@ -672,7 +645,11 @@ void MainWindow::on_openAction_triggered()
             QString lastDocumentFilePath = QFileInfo(filePath).absolutePath();
             Settings::getInstance().setLastDocumentDirectoryPath(lastDocumentFilePath);
         } else {
-            showReadError(QDir::toNativeSeparators(filePath));
+            m_errorMessage = tr("Could not read document \"%1\"!")
+                             .arg(QDir::toNativeSeparators(filePath));
+            // the Open File dialog above is not shown as Sheet, hence no need for the
+            // workaround QTimer single-shot
+            showError();
         }
     }
 }
@@ -682,12 +659,11 @@ void MainWindow::on_saveAction_triggered()
     // save with given 'm_documentFilePath', if scene is not a template or if so, has only template items
     if (!isFilePathRequired()) {
         bool ok = writeScene(m_documentFilePath);
-#ifdef DEBUG
-        qDebug("MainWindow::on_saveAction_triggered: ok: %d", ok);
-#endif
         if (!ok) {
-            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
-                           QDir::toNativeSeparators(m_documentFilePath));
+            m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
+                            .arg(DocumentManager::getInstance().getDocumentFileName(*this))
+                            .arg(QDir::toNativeSeparators(m_documentFilePath));
+            QTimer::singleShot(0, this, SLOT(showError()));
 
         }
     } else {
@@ -1031,7 +1007,9 @@ void MainWindow::handleRecentFile(const QString &filePath)
         }
     }
     if (!ok) {
-        showReadError(filePath);
+        m_errorMessage = tr("Could not read document \"%1\"!")
+                         .arg(filePath);
+        QTimer::singleShot(0, this, SLOT(showError()));
     }
 }
 
@@ -1060,8 +1038,10 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
             settings.addRecentFile(filePath);
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
-                           QDir::toNativeSeparators(filePath));
+            m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
+                             .arg(DocumentManager::getInstance().getDocumentFileName(*this))
+                             .arg(QDir::toNativeSeparators(filePath));
+            QTimer::singleShot(0, this, SLOT(showError()));
         }
     }
 }
@@ -1078,8 +1058,10 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
             settings.addRecentFile(filePath);
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
-                           filePath);
+            m_errorMessage = tr("Could not save template \"%1\" to file \"%2\"!")
+                             .arg(DocumentManager::getInstance().getDocumentFileName(*this))
+                             .arg(QDir::toNativeSeparators(filePath));
+            QTimer::singleShot(0, this, SLOT(showError()));
         }
     }
 }
@@ -1101,8 +1083,10 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
                 QApplication::closeAllWindows();
             }
         } else {
-            showWriteError(DocumentManager::getInstance().getDocumentFileName(*this),
-                           QDir::toNativeSeparators(filePath));
+            m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
+                             .arg(DocumentManager::getInstance().getDocumentFileName(*this))
+                             .arg(QDir::toNativeSeparators(filePath));
+            QTimer::singleShot(0, this, SLOT(showError()));
         }
     }
 }
@@ -1122,8 +1106,9 @@ void MainWindow::handleExportFilePathSelected(const QString &filePath)
             QString lastExportDirectoryPath = QFileInfo(filePath).absolutePath();
             settings.setLastExportDirectoryPath(lastExportDirectoryPath);
         } else {
-            showError(tr("Could not export image to file %1!")
-                      .arg(filePath));
+            m_errorMessage = tr("Could not export image to file \"%1\"!")
+                             .arg(QDir::toNativeSeparators(filePath));
+            QTimer::singleShot(0, this, SLOT(showError()));
         }
     }
 }
@@ -1149,6 +1134,21 @@ void MainWindow::handleAskBeforeClose(int answer)
         qCritical("MainWindow::handleAskBeforeClose: UNHANDLED QMessageBox answer: %d", answer);
 #endif
         break;
+    }
+}
+
+void MainWindow::showError()
+{
+    if (!m_errorMessage.isEmpty()) {
+        QMessageBox *messageBox = new QMessageBox(QMessageBox::Critical,
+                                                  Version::getApplicationName(),
+                                                  m_errorMessage,
+                                                  QMessageBox::Ok,
+                                                  this);
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
+        DocumentManager::getInstance().addActiveDialogMainWindow(this);
+        messageBox->open(this, SLOT(handleErrorClosed()));
+        m_errorMessage = QString();
     }
 }
 

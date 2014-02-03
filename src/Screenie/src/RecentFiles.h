@@ -21,7 +21,7 @@
 #ifndef RECENTFILES_H
 #define RECENTFILES_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class QActionGroup;
 class QAction;

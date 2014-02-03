@@ -15,9 +15,12 @@ qrc_*.cpp
 moc_*.cpp
 GeneratedFiles
 bin
+dist
 
 # Qt Creator
 *.pro.user
+*.autosave
+.qmake*
 
 # Mac
 *.xcodeproj

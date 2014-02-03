@@ -21,10 +21,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMainWindow>
+#include <QList>
+#include <QString>
+#include <QWidget>
+#include <QMainWindow>
 
 #include "RecentFiles.h"
 
@@ -83,6 +83,7 @@ private:
 #ifdef Q_OS_MAC
     bool m_isFullScreenPreviously;
 #endif
+    QString m_errorMessage;
 
     void frenchConnection();
 
@@ -112,9 +113,6 @@ private:
     MainWindow *createMainWindow();
 
     inline bool isFilePathRequired() const;
-    void showReadError(const QString &filePath);
-    void showWriteError(const QString &documentName, const QString &filePath);
-    void showError(const QString &message);
 
     void storeWindowGeometry();
 
@@ -177,7 +175,12 @@ private slots:
     void handleExportFilePathSelected(const QString &filePath);
 
     void handleAskBeforeClose(int answer);
+
+    // Shows the error message stored in m_errorMessage; the later is re-initialised
+    // to an empty QString again
+    void showError();
     void handleErrorClosed();
+
 };
 
 #endif // MAINWINDOW_H

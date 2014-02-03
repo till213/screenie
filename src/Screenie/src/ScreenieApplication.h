@@ -21,8 +21,8 @@
 #ifndef SCREENIEAPPLICATION_H
 #define SCREENIEAPPLICATION_H
 
-#include <QtCore/QStringList>
-#include <QtWidgets/QApplication>
+#include <QStringList>
+#include <QApplication>
 
 class QEvent;
 
