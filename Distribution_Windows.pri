@@ -47,6 +47,7 @@ qt_img_plugins.path = $${DIST_DIR}/imageformats
 qt_platform_plugins.files = $$[QT_INSTALL_PLUGINS]/platforms/$${QT_PLATFORM_WIN}
 qt_platform_plugins.path = $${DIST_DIR}/platforms
 
+# libstdc++-6.dll - also refer to QTBUG-16372
 support_lib.files = $$[QT_INSTALL_BINS]/libstd~1.dll \
                     $$[QT_INSTALL_BINS]/libgcc_s_dw2-1.dll \
                     $$[QT_INSTALL_BINS]/libwinpthread-1.dll \
