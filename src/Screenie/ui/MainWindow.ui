@@ -15,7 +15,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <property name="spacing">
@@ -154,7 +163,16 @@
           <bool>true</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
            <number>4</number>
           </property>
           <item>
@@ -283,7 +301,7 @@
      <x>0</x>
      <y>0</y>
      <width>448</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -365,8 +383,6 @@
    </attribute>
    <addaction name="addImageAction"/>
    <addaction name="addTemplateAction"/>
-   <addaction name="separator"/>
-   <addaction name="toggleFullScreenAction"/>
   </widget>
   <action name="quitAction">
    <property name="text">

@@ -137,8 +137,6 @@ void AbstractPlatformManager::intializeIcons(Ui::MainWindow &mainWindowUi)
     mainWindowUi.addImageAction->setIcon(addImageIcon);
     QIcon addTemplateIcon(":/img/insert-template.png");
     mainWindowUi.addTemplateAction->setIcon(addTemplateIcon);
-    QIcon toggleFullScreenIcon(":/img/view-fullscreen.png");
-    mainWindowUi.toggleFullScreenAction->setIcon(toggleFullScreenIcon);
 
     initializePlatformIcons(mainWindowUi);
 }

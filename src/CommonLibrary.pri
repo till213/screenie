@@ -1,10 +1,9 @@
 include(Common.pri)
 
 macx {
-    QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
-}
 
-macx {
+    QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
+
     CONFIG(debug, debug|release) {
         DESTDIR = $$PWD/../bin/debug/$${APP_NAME}.app/Contents/Frameworks
         message(Building $$TARGET in debug mode)

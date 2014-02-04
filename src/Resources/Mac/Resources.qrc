@@ -2,6 +2,5 @@
     <qresource prefix="/">
         <file>img/insert-image.png</file>
         <file>img/insert-template.png</file>
-        <file>img/view-fullscreen.png</file>
     </qresource>
 </RCC>
