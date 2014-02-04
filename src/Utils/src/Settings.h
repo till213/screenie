@@ -21,9 +21,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QtCore/QObject>
-#include <QtCore/QPoint>
-#include <QtCore/QSize>
+#include <QObject>
+#include <QPoint>
+#include <QSize>
 
 #include "UtilsLib.h"
 
@@ -134,8 +134,6 @@ public:
      */
     UTILS_API void setEditRenderQuality(EditRenderQuality editRenderQuality);
 
-    UTILS_API WindowGeometry getWindowGeometry() const;
-
     UTILS_API bool isToolBarVisible() const;
 
     /*!
@@ -150,6 +148,8 @@ public:
      */
     UTILS_API void setSidePanelVisible(bool enable);
 
+    UTILS_API WindowGeometry getWindowGeometry() const;
+
     /*!
      * Sets the \p windowGeometry. This method does \em not emit the signal
      * #changed(), as this method is typically called upon application termination,
@@ -159,6 +159,8 @@ public:
      *        the WindowGeometry containing the values of the last MainWindow geometry
      */
     UTILS_API void setWindowGeometry(const WindowGeometry windowGeometry);
+
+    UTILS_API static QSize getDefaultWindowSize();
 
 public slots:
     /*!

@@ -39,13 +39,6 @@ void MacPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mai
     AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
     mainWindow.installEventFilter(this);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
-
-    // OS X 10.7 "Lion" fullscreen support
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-    NSView *nsview = (NSView *) mainWindow.winId();
-    NSWindow *nswindow = [nsview window];
-    [nswindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-#endif
 }
 
 bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
@@ -68,41 +61,6 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
     return result;
 }
 
-void MacPlatformManager::showFullScreen()
-{
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-    if (isFullScreenAPISupported()) {
-        if (!isFullScreen()) {
-            toggleFullScreen();
-        }
-    } else {
-        AbstractPlatformManager::showFullScreen();
-    }
-#else
-    AbstractPlatformManager::showFullScreen();
-#endif
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
-        // re-initialising the toolbar to be unified helps in Qt toolbar quirks
-        //mainWindow->setUnifiedTitleAndToolBarOnMac(Settings::getInstance().isToolBarVisible());
-    }
-}
-
-void MacPlatformManager::showNormal()
-{
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-    if (isFullScreenAPISupported()) {
-        if (isFullScreen()) {
-            toggleFullScreen();
-        }
-    } else {
-        AbstractPlatformManager::showNormal();
-    }
-#else
-    AbstractPlatformManager::showNormal();
-#endif
-}
-
 bool MacPlatformManager::isFullScreen() const
 {
     bool result;
@@ -110,7 +68,7 @@ bool MacPlatformManager::isFullScreen() const
     if (isFullScreenAPISupported()) {
         QMainWindow *mainWindow = getMainWindow();
         if (mainWindow != 0) {
-            NSView *nsview = (NSView *) mainWindow->winId();
+            NSView *nsview = (__bridge NSView *)reinterpret_cast<void *>(mainWindow->winId());
             NSWindow *nswindow = [nsview window];
             NSUInteger masks = [nswindow styleMask];
             result = masks & NSFullScreenWindowMask;
@@ -130,14 +88,8 @@ bool MacPlatformManager::isFullScreen() const
 bool MacPlatformManager::isFullScreenAPISupported()
 {
     bool result;
-    /*!\todo Qt 4.8 supports "Lion" */
-//    result = (QSysInfo::MacVersion() > QSysInfo::MV_SNOWLEOPARD);
-//    qDebug("MacPlatformManager::isFullScreenAPISupported: %d", result);
-//    return result;
-    /*!\todo Use http://doc.qt.nokia.com/4.7/qsysinfo.html#MacVersion-enum instead! */
-    NSWindow *nswin = [[NSWindow alloc] init];
-    result = (YES == [nswin respondsToSelector: @selector(toggleFullScreen:)]);
-    [nswin release];
+
+    result = (QSysInfo::MacintoshVersion > QSysInfo::MV_SNOWLEOPARD);
     return result;
 }
 
@@ -161,15 +113,3 @@ void MacPlatformManager::handleWindowActivation(bool active)
         }
     }
 }
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-void MacPlatformManager::toggleFullScreen()
-{
-    QMainWindow *mainWindow = getMainWindow();
-    if (mainWindow != 0) {
-        NSView *nsview = (NSView *) mainWindow->winId();
-        NSWindow *nswindow = [nsview window];
-        [nswindow toggleFullScreen:nil];
-    }
-}
-#endif

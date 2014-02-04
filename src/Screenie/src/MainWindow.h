@@ -54,17 +54,10 @@ public:
     virtual ~MainWindow();
 
     bool read(const QString &filePath);
-    bool isFullScreen() const;
-
-public slots:
-    virtual void showFullScreen();
-    virtual void showNormal();
 
 protected:
     virtual void closeEvent(QCloseEvent *event);
-#ifdef Q_OS_MAC
     virtual void resizeEvent(QResizeEvent *event);
-#endif
 
 private:
     Q_DISABLE_COPY(MainWindow)
@@ -80,9 +73,7 @@ private:
     RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
-#ifdef Q_OS_MAC
     bool m_isFullScreenPreviously;
-#endif
     QString m_errorMessage;
 
     void frenchConnection();

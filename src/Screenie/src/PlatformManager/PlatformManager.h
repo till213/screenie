@@ -37,9 +37,6 @@ public:
     virtual ~PlatformManager() {}
 
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) = 0;
-
-    virtual void showFullScreen() = 0;
-    virtual void showNormal() = 0;
     virtual bool isFullScreen() const = 0;
 };
 

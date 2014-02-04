@@ -18,14 +18,13 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QSize>
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QSettings>
-#include <QtCore/QDir>
-#include <QtCore/QStandardPaths>
-#include <QtWidgets/QMainWindow>
+#include <QPoint>
+#include <QSize>
+#include <QString>
+#include <QStringList>
+#include <QSettings>
+#include <QDir>
+#include <QStandardPaths>
 
 #include "Version.h"
 #include "Settings.h"
@@ -315,6 +314,11 @@ void Settings::setWindowGeometry(const WindowGeometry windowGeometry)
         d->settings->setValue("Size", windowGeometry.size);
     }
     d->settings->endGroup();
+}
+
+QSize Settings::getDefaultWindowSize()
+{
+    return SettingsPrivate::DefaultMainWindowSize;
 }
 
 // public slots

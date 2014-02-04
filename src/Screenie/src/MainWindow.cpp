@@ -79,11 +79,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_ignoreUpdateSignals(false)
+    m_ignoreUpdateSignals(false),
+    m_isFullScreenPreviously(false)
 {
-#ifdef Q_OS_MAC
-    m_isFullScreenPreviously = false;
-#endif
     ui->setupUi(this);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
@@ -132,29 +130,6 @@ bool MainWindow::read(const QString &filePath)
     return result;
 }
 
-bool MainWindow::isFullScreen() const
-{
-    return m_platformManager->isFullScreen();
-}
-
-// public slots
-
-void MainWindow::showFullScreen()
-{
-    m_platformManager->showFullScreen();
-#ifndef Q_OS_MAC
-    updateViewActions();
-#endif
-}
-
-void MainWindow::showNormal()
-{
-    m_platformManager->showNormal();
-#ifndef Q_OS_MAC
-    updateViewActions();
-#endif
-}
-
 // protected
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -185,20 +160,21 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-#ifdef Q_OS_MAC
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
+    // workaround (OS X specifically): use the native "isFullScreen" API: QWidget::isFullScreen
+    // reports bogus values when window size is changed with "fullscreen" arrow on OS X
+    bool fullScreen = m_platformManager->isFullScreen();
 
-    if (m_platformManager->isFullScreen() && !m_isFullScreenPreviously) {
+    if (fullScreen && !m_isFullScreenPreviously) {
         m_isFullScreenPreviously = true;
         updateViewActions();
-    } else if (!this->m_platformManager->isFullScreen() && m_isFullScreenPreviously) {
+    } else if (!fullScreen && m_isFullScreenPreviously) {
         m_isFullScreenPreviously = false;
         updateViewActions();
     }
 }
-#endif
 
 // private
 
@@ -529,22 +505,22 @@ void MainWindow::restoreWindowGeometry()
 #ifndef Q_OS_OSX
         showFullScreen();
 #else
-        resize(windowGeometry.size);
-        // Note: On Mac OS 10.7 "Lion" the transition to fullscreen
-        //       apparently only works if the window has been shown
-        //       on screen. So we use a timer with a "visually pleasant"
-        //       timeout of 200 ms (we could also use 0, but then we
-        //       get window flickering!), such that the fullscreen
-        //       transition is only done once Qt has fully initialised
-        //       all data structures and the Qt event queue has made
-        //       sure that the window is shown before the timer is fired.
-        //
-        //       On "Snow Leopard" we can directly call showFullScreen()
-        //       since the "Full Screen API" is not supported there anyway
-        //       and Qt does the full screen painting for us
+        resize(Settings::getDefaultWindowSize());
         if (MacPlatformManager::isFullScreenAPISupported()) {
+            // Note: With the native "Full Screen API" (since OS X 10.7) the
+            //       transition to fullscreen only looks nice if the window has
+            //       been previously shown on screen with a "normal size".
+            //       So we use a timer with a "visually pleasant"
+            //       timeout of 200 ms (we could also use 0, but then we
+            //       get window flickering!), such that the fullscreen
+            //       transition is only done once Qt has fully initialised
+            //       all data structures and the Qt event queue has made
+            //       sure that the window is shown before the timer is fired.
             QTimer::singleShot(200, this, SLOT(showFullScreen()));
         } else {
+            // On "Snow Leopard" we can directly call showFullScreen()
+            // since the "Full Screen API" is not supported there anyway
+            // and Qt does the full screen painting for us
             showFullScreen();
         }
 #endif
@@ -595,7 +571,7 @@ bool MainWindow::isFilePathRequired() const
 void MainWindow::storeWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry;
-    windowGeometry.fullScreen = isFullScreen();
+    windowGeometry.fullScreen = m_platformManager->isFullScreen();
     windowGeometry.position = pos();
     windowGeometry.size = size();
     Settings::getInstance().setWindowGeometry(windowGeometry);

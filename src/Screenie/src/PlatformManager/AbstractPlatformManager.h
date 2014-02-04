@@ -38,8 +38,6 @@ public:
     virtual ~AbstractPlatformManager();
 
     virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
-    virtual void showFullScreen();
-    virtual void showNormal();
     virtual bool isFullScreen() const;
 
 protected:

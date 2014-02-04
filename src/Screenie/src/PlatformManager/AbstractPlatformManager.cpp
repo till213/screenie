@@ -82,31 +82,6 @@ void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow
     intializeIcons(mainWindowUi);
 }
 
-void AbstractPlatformManager::showFullScreen()
-{
-    if (d != 0) {
-        d->mainWindow.showFullScreen();
-    }
-#ifdef DEBUG
-    else {
-        qWarning("AbstractPlatformManager::showFullScreen: Private data not initialised! Call initialise() first.");
-    }
-#endif
-}
-
-void AbstractPlatformManager::showNormal()
-{
-    qDebug("AbstractPlatformManager::showNormal: called.");
-    if (d != 0) {
-        d->mainWindow.showNormal();
-    }
-#ifdef DEBUG
-    else {
-        qWarning("AbstractPlatformManager::showNormal: Private data not initialised! Call initialise() first.");
-    }
-#endif
-}
-
 bool AbstractPlatformManager::isFullScreen() const
 {
     bool result;
