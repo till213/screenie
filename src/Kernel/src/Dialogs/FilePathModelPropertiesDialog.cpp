@@ -45,7 +45,7 @@ FilePathModelPropertiesDialog::FilePathModelPropertiesDialog(ScreenieFilePathMod
     ScreenieModelPropertiesDialog(screenieFilePathModel, screenieControl, parent, flags),
     d(new FilePathModelPropertiesDialogPrivate(screenieFilePathModel, screenieControl))
 {
-    initializeUi();
+    initialiseUi();
 }
 
 FilePathModelPropertiesDialog::~FilePathModelPropertiesDialog()
@@ -58,10 +58,10 @@ FilePathModelPropertiesDialog::~FilePathModelPropertiesDialog()
 
 // protected
 
-void FilePathModelPropertiesDialog::initializeUi()
+void FilePathModelPropertiesDialog::initialiseUi()
 {
     FilePathModelPropertiesWidget *filePathModelPropertiesWidget = new FilePathModelPropertiesWidget(d->screenieFilePathModel, d->screenieControl, this);
     ui->propertiesTabWidget->addTab(filePathModelPropertiesWidget, tr("&File Path"));
 
-    ScreenieModelPropertiesDialog::initializeUi();
+    ScreenieModelPropertiesDialog::initialiseUi();
 }

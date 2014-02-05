@@ -47,16 +47,16 @@ DefaultPlatformManager::~DefaultPlatformManager()
     }
 }
 
-void DefaultPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
+void DefaultPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
     d = new DefaultPlatformManagerPrivate(mainWindowUi);
-    AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
+    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F11));
 }
 
 // protected
 
-void DefaultPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+void DefaultPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
     Q_UNUSED(mainWindowUi);
 }

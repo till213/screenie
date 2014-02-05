@@ -37,11 +37,11 @@ public:
     AbstractPlatformManager();
     virtual ~AbstractPlatformManager();
 
-    virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
     virtual bool isFullScreen() const;
 
 protected:
-    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi) = 0;
+    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi) = 0;
     QMainWindow *getMainWindow() const;
     Ui::MainWindow *getMainWindowUi();
 

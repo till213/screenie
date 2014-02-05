@@ -44,7 +44,7 @@ private:
     Ui::ReflectionPropertiesWidget *ui;
     ReflectionPropertiesWidgetPrivate *d;
 
-    void initializeUi();
+    void initialiseUi();
     void frenchConnection();
 
 private slots:

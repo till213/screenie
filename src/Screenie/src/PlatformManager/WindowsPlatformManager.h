@@ -37,10 +37,10 @@ public:
     WindowsPlatformManager();
     virtual ~WindowsPlatformManager();
 
-    virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
 
 protected:
-    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
+    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
 
 private:
     WindowsPlatformManagerPrivate *d;

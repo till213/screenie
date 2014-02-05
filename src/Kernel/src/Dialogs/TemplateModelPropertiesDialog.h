@@ -37,7 +37,7 @@ public:
     virtual ~TemplateModelPropertiesDialog();
 
 protected:
-    virtual void initializeUi();
+    virtual void initialiseUi();
 
 private:
     TemplateModelPropertiesDialogPrivate *d;

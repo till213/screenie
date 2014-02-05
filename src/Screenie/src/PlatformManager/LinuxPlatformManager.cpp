@@ -48,16 +48,16 @@ LinuxPlatformManager::~LinuxPlatformManager()
     }
 }
 
-void LinuxPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
+void LinuxPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
     d = new LinuxPlatformManagerPrivate(mainWindowUi);
-    AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
+    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F11));
 }
 
 // protected
 
-void LinuxPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+void LinuxPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
     // File menu
     QIcon newIcon(":/img/document-new.png");

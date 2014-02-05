@@ -37,7 +37,7 @@ public:
     virtual ~FilePathModelPropertiesDialog();
 
 protected:
-    virtual void initializeUi();
+    virtual void initialiseUi();
 
 private:
     FilePathModelPropertiesDialogPrivate *d;

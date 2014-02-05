@@ -36,20 +36,18 @@ class MacPlatformManager : public QObject, public AbstractPlatformManager
 {
     Q_OBJECT
 public:
-    virtual void initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual bool isFullScreen() const;
 
     static bool isFullScreenAPISupported();
 
 protected:
-    virtual void initializePlatformIcons(Ui::MainWindow &mainWindowUi);
+    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
 
 private:
+    void initialiseToolBar(Ui::MainWindow &mainWindowUi);
     void handleWindowActivation(bool active);
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-    void toggleFullScreen();
-#endif
 };
 
 #endif // MACPLATFORMMANAGER_H

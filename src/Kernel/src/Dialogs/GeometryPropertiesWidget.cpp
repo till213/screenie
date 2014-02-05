@@ -51,7 +51,7 @@ GeometryPropertiesWidget::GeometryPropertiesWidget(ScreenieModelInterface &scree
     d(new GeometryPropertiesWidgetPrivate(screenieModel, screenieControl))
 {
     ui->setupUi(this);
-    initializeUi();
+    initialiseUi();
     updateUi();
     frenchConnection();
 }
@@ -67,7 +67,7 @@ GeometryPropertiesWidget::~GeometryPropertiesWidget()
 
 // private
 
-void GeometryPropertiesWidget::initializeUi()
+void GeometryPropertiesWidget::initialiseUi()
 {
     ui->distanceSlider->setMaximum(SceneLimits::MinDistance);
     ui->distanceSlider->setMaximum(SceneLimits::MaxDistance);

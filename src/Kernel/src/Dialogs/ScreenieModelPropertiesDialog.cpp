@@ -68,7 +68,7 @@ ScreenieModelPropertiesDialog::~ScreenieModelPropertiesDialog()
 
 // protected
 
-void ScreenieModelPropertiesDialog::initializeUi()
+void ScreenieModelPropertiesDialog::initialiseUi()
 {
     GeometryPropertiesWidget *geometryPropertiesWidget = new GeometryPropertiesWidget(d->screenieModel, d->screenieControl, this);
     ui->propertiesTabWidget->addTab(geometryPropertiesWidget, tr("&Geometry"));

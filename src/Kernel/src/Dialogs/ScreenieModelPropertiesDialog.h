@@ -51,7 +51,7 @@ protected:
      * after the custom implementation, as to add the new tab
      * after or before the Geometry and Reflection tabs.
      */
-    virtual void initializeUi();
+    virtual void initialiseUi();
 
 private:
     ScreenieModelPropertiesDialogPrivate *d;

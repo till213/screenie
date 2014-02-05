@@ -22,11 +22,12 @@
 #import <AppKit/NSWindow.h>
 #import <AvailabilityMacros.h>
 
-#import <QtCore/QSysInfo>
-#import <QtWidgets/QAction>
-#import <QtGui/QKeySequence>
-#import <QtGui/QIcon>
-#import <QtWidgets/QApplication>
+#import <QSysInfo>
+#import <QAction>
+#import <QKeySequence>
+#import <QIcon>
+#import <QToolBar>
+#import <QApplication>
 
 #import "../../../Utils/src/Settings.h"
 #import "ui_MainWindow.h"
@@ -34,11 +35,12 @@
 
 // public
 
-void MacPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
+void MacPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
-    AbstractPlatformManager::initialize(mainWindow, mainWindowUi);
+    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
     mainWindow.installEventFilter(this);
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
+    initialiseToolBar(mainWindowUi);
 }
 
 bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
@@ -95,12 +97,17 @@ bool MacPlatformManager::isFullScreenAPISupported()
 
 // protected
 
-void MacPlatformManager::initializePlatformIcons(Ui::MainWindow &mainWindowUi)
+void MacPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
     Q_UNUSED(mainWindowUi);
 }
 
 // private
+
+void MacPlatformManager::initialiseToolBar(Ui::MainWindow &mainWindowUi)
+{
+    mainWindowUi.toolBar->setMovable(false);
+}
 
 void MacPlatformManager::handleWindowActivation(bool active)
 {

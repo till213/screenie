@@ -44,7 +44,7 @@ private:
     Ui::GeometryPropertiesWidget *ui;
     GeometryPropertiesWidgetPrivate *d;
 
-    void initializeUi();
+    void initialiseUi();
     void frenchConnection();
 
 private slots:

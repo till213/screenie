@@ -51,7 +51,7 @@ TemplateModelPropertiesWidget::TemplateModelPropertiesWidget(ScreenieTemplateMod
     d(new TemplateModelPropertiesWidgetPrivate(templateModel, screenieControl))
 {
     ui->setupUi(this);
-    initializeUi();
+    initialiseUi();
     updateUi();
     frenchConnection();
 }
@@ -67,7 +67,7 @@ TemplateModelPropertiesWidget::~TemplateModelPropertiesWidget()
 
 // private
 
-void TemplateModelPropertiesWidget::initializeUi()
+void TemplateModelPropertiesWidget::initialiseUi()
 {
     QStringList items;
     items << tr("No Fit") << tr("Fit") << tr("Fit To Width") << tr("Fit To Height") << tr("Exact Fit");

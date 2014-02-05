@@ -93,9 +93,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createScene();
     updateDocumentManager();
-    initializeUi();
+    initialiseUi();
     m_platformManager = PlatformManagerFactory::getInstance().create();
-    m_platformManager->initialize(*this, *ui);
+    m_platformManager->initialise(*this, *ui);
 
     restoreWindowGeometry();
     // call unified toolbar AFTER restoring window geometry!
@@ -202,6 +202,10 @@ void MainWindow::frenchConnection()
     // Settings
     connect(&Settings::getInstance(), SIGNAL(changed()),
             this, SLOT(updateUi()));
+
+    // tool bar
+    connect(ui->toolBar, SIGNAL(visibilityChanged(bool)),
+            this, SLOT(handleToolBarVisibilityChanged(bool)));
 }
 
 void MainWindow::newScene(ScreenieScene &screenieScene)
@@ -233,7 +237,7 @@ bool MainWindow::writeTemplate(const QString &filePath)
     return writeScene(filePath);
 }
 
-void MainWindow::initializeUi()
+void MainWindow::initialiseUi()
 {
     Settings &settings = Settings::getInstance();
     m_minimizeWindowsAction = new QAction(tr("Minimize", "Window menu"), this);
@@ -1113,6 +1117,13 @@ void MainWindow::handleAskBeforeClose(int answer)
     }
 }
 
+void MainWindow::handleToolBarVisibilityChanged(bool visible)
+{
+    Settings &settings = Settings::getInstance();
+
+    settings.setToolBarVisible(visible);
+}
+
 void MainWindow::showError()
 {
     if (!m_errorMessage.isEmpty()) {
@@ -1132,4 +1143,5 @@ void MainWindow::handleErrorClosed()
 {
     DocumentManager::getInstance().removeActiveDialogMainWindow(this);
 }
+
 

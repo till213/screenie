@@ -13,8 +13,6 @@ VERSIONS = $$split(VERSION, ".")
 VERSION_MAJ = $$member(VERSIONS, 0)
 VERSION_MIN = $$member(VERSIONS, 1)
 
-QMAKE_TARGET_BUNDLE_PREFIX = net.tillart
-
 # On Mac we build 64bit Intel only
 macx {
   CONFIG += x86_64

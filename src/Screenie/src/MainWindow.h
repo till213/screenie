@@ -82,7 +82,7 @@ private:
     bool writeScene(const QString &filePath);
     bool writeTemplate(const QString &filePath);
 
-    void initializeUi();
+    void initialiseUi();
     void updateTransformationUi();
     void updateReflectionUi();
     void updateColorUi();
@@ -166,6 +166,7 @@ private slots:
     void handleExportFilePathSelected(const QString &filePath);
 
     void handleAskBeforeClose(int answer);
+    void handleToolBarVisibilityChanged(bool visible);
 
     // Shows the error message stored in m_errorMessage; the later is re-initialised
     // to an empty QString again

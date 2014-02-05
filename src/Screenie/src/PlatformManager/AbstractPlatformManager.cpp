@@ -51,7 +51,7 @@ AbstractPlatformManager::~AbstractPlatformManager()
     cleanUp();
 }
 
-void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
+void AbstractPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
 {
     cleanUp();
 
@@ -138,7 +138,7 @@ void AbstractPlatformManager::intializeIcons(Ui::MainWindow &mainWindowUi)
     QIcon addTemplateIcon(":/img/insert-template.png");
     mainWindowUi.addTemplateAction->setIcon(addTemplateIcon);
 
-    initializePlatformIcons(mainWindowUi);
+    initialisePlatformIcons(mainWindowUi);
 }
 
 void AbstractPlatformManager::cleanUp()

@@ -45,7 +45,7 @@ TemplateModelPropertiesDialog::TemplateModelPropertiesDialog(ScreenieTemplateMod
     ScreenieModelPropertiesDialog(screenieTemplateModel, screenieControl, parent, flags),
     d(new TemplateModelPropertiesDialogPrivate(screenieTemplateModel, screenieControl))
 {
-    initializeUi();
+    initialiseUi();
 }
 
 TemplateModelPropertiesDialog::~TemplateModelPropertiesDialog()
@@ -58,12 +58,12 @@ TemplateModelPropertiesDialog::~TemplateModelPropertiesDialog()
 
 // protected
 
-void TemplateModelPropertiesDialog::initializeUi()
+void TemplateModelPropertiesDialog::initialiseUi()
 {
     TemplateModelPropertiesWidget *templateModelPropertiesWidget = new TemplateModelPropertiesWidget(d->screenieTemplateModel, d->screenieControl, this);
     ui->propertiesTabWidget->addTab(templateModelPropertiesWidget, tr("&Template"));
 
-    ScreenieModelPropertiesDialog::initializeUi();
+    ScreenieModelPropertiesDialog::initialiseUi();
 }
 
 

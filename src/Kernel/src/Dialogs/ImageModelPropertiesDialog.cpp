@@ -44,7 +44,7 @@ ImageModelPropertiesDialog::ImageModelPropertiesDialog(ScreenieImageModel &scree
     ScreenieModelPropertiesDialog(screenieImageModel, screenieControl, parent, flags),
     d(new ImageModelPropertiesDialogPrivate(screenieImageModel, screenieControl))
 {
-    initializeUi();
+    initialiseUi();
 }
 
 ImageModelPropertiesDialog::~ImageModelPropertiesDialog()
@@ -57,9 +57,9 @@ ImageModelPropertiesDialog::~ImageModelPropertiesDialog()
 
 // protected
 
-void ImageModelPropertiesDialog::initializeUi()
+void ImageModelPropertiesDialog::initialiseUi()
 {
-    ScreenieModelPropertiesDialog::initializeUi();
+    ScreenieModelPropertiesDialog::initialiseUi();
 }
 
 

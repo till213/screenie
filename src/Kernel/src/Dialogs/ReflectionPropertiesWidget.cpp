@@ -50,7 +50,7 @@ ReflectionPropertiesWidget::ReflectionPropertiesWidget(ScreenieModelInterface &s
     d(new ReflectionPropertiesWidgetPrivate(screenieModel, screenieControl))
 {
     ui->setupUi(this);
-    initializeUi();
+    initialiseUi();
     updateUi();
     frenchConnection();
 }
@@ -66,7 +66,7 @@ ReflectionPropertiesWidget::~ReflectionPropertiesWidget()
 
 // private
 
-void ReflectionPropertiesWidget::initializeUi()
+void ReflectionPropertiesWidget::initialiseUi()
 {
     QIntValidator *integerValidator = new QIntValidator(this);
     ui->offsetSlider->setMinimum(SceneLimits::MinReflectionOffset);

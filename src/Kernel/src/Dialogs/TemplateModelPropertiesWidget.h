@@ -40,7 +40,7 @@ public:
     TemplateModelPropertiesWidget(ScreenieTemplateModel &screenieTemplateModel, ScreenieControl &screenieControl, QWidget *parent = 0);
     virtual ~TemplateModelPropertiesWidget();
 
-    void initializeUi();
+    void initialiseUi();
     void frenchConnection();
 
 private:
