@@ -18,34 +18,36 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QPointF>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtCore/QList>
-#include <QtCore/QSignalMapper>
-#include <QtCore/QEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QActionGroup>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QWidget>
-#include <QtGui/QColor>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QGraphicsPixmapItem>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QShortcut>
-#include <QtGui/QKeySequence>
-#include <QtGui/QCloseEvent>
-#include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QPushButton>
+#include <QString>
+#include <QPointF>
+#include <QRect>
+#include <QFile>
+#include <QDir>
+#include <QFileInfo>
+#include <QList>
+#include <QSignalMapper>
+#include <QEvent>
+#include <QApplication>
+#include <QMainWindow>
+#include <QAction>
+#include <QActionGroup>
+#include <QMenu>
+#include <QWidget>
+#include <QColor>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QFileDialog>
+#include <QSlider>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QKeySequence>
+#include <QCloseEvent>
+#include <QAbstractButton>
+#include <QPushButton>
+#include <QDesktopWidget>
 
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
@@ -505,7 +507,19 @@ void MainWindow::saveAsBeforeClose()
 
 void MainWindow::restoreWindowGeometry()
 {
-    Settings::WindowGeometry windowGeometry = Settings::getInstance().getWindowGeometry();
+    Settings &settings = Settings::getInstance();
+    Settings::WindowGeometry windowGeometry = settings.getWindowGeometry();
+    QRect availableGeometry;
+    QSize defaultWindowSize;
+
+    if (windowGeometry.position.isNull()) {
+        availableGeometry = QApplication::desktop()->availableGeometry();
+        defaultWindowSize = settings.getDefaultWindowSize();
+        windowGeometry.position = QRect(  availableGeometry.center()
+                                        - QPoint(defaultWindowSize.width(), defaultWindowSize.height()) / 2,
+                                        defaultWindowSize);
+    }
+
     if (windowGeometry.fullScreen) {
 #ifndef Q_OS_OSX
         showFullScreen();
@@ -530,9 +544,9 @@ void MainWindow::restoreWindowGeometry()
         }
 #endif
     } else {
-        resize(windowGeometry.size);
+        resize(windowGeometry.position.size());
         if (!windowGeometry.position.isNull()) {
-            move(windowGeometry.position);
+            move(windowGeometry.position.topLeft());
         }
     }
 }
@@ -577,8 +591,7 @@ void MainWindow::storeWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry;
     windowGeometry.fullScreen = m_platformManager->isFullScreen();
-    windowGeometry.position = pos();
-    windowGeometry.size = size();
+    windowGeometry.position = QRect(pos(), size());
     Settings::getInstance().setWindowGeometry(windowGeometry);
 }
 

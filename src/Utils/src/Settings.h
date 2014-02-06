@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QPoint>
 #include <QSize>
+#include <QRect>
 
 #include "UtilsLib.h"
 
@@ -46,8 +47,7 @@ class Settings : public QObject
 public:
     struct WindowGeometry {
         bool fullScreen;
-        QPoint position;
-        QSize size;
+        QRect position;
     };
 
     /*!

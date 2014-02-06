@@ -25,6 +25,8 @@
 #include <QSettings>
 #include <QDir>
 #include <QStandardPaths>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "Version.h"
 #include "Settings.h"
@@ -46,7 +48,7 @@ public:
     static const bool DefaultToolBarVisible = true;
     static const bool DefaultSidePanelVisible = true;
     static const bool DefaultFullScreen;
-    static const QPoint DefaultMainWindowPosition;
+    static const QRect DefaultMainWindowPosition;
     static const QSize DefaultMainWindowSize;
 
     Version version;
@@ -92,8 +94,8 @@ const qreal SettingsPrivate::DefaultDistanceGestureSensitivity = 10.0;
 const int SettingsPrivate::DefaultMaxRecentFiles = 8;
 const Settings::EditRenderQuality SettingsPrivate::DefaultEditRenderQuality = Settings::LowQuality;
 const bool SettingsPrivate::DefaultFullScreen = false;
-const QPoint SettingsPrivate::DefaultMainWindowPosition = QPoint();
 const QSize SettingsPrivate::DefaultMainWindowSize = QSize(800, 600);
+const QRect SettingsPrivate::DefaultMainWindowPosition = QRect();
 
 // public
 
@@ -298,8 +300,7 @@ Settings::WindowGeometry Settings::getWindowGeometry() const
     d->settings->beginGroup("UI/MainWindow");
     {
         result.fullScreen = d->settings->value("FullScreen", SettingsPrivate::DefaultFullScreen).toBool();
-        result.position = d->settings->value("Position", SettingsPrivate::DefaultMainWindowPosition).toPoint();
-        result.size = d->settings->value("Size", SettingsPrivate::DefaultMainWindowSize).toSize();
+        result.position = d->settings->value("Position", SettingsPrivate::DefaultMainWindowPosition).toRect();
     }
     d->settings->endGroup();
     return result;
@@ -311,7 +312,6 @@ void Settings::setWindowGeometry(const WindowGeometry windowGeometry)
     {
         d->settings->setValue("FullScreen", windowGeometry.fullScreen);
         d->settings->setValue("Position", windowGeometry.position);
-        d->settings->setValue("Size", windowGeometry.size);
     }
     d->settings->endGroup();
 }
