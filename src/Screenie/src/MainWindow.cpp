@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isFullScreenPreviously(false)
 {
     ui->setupUi(this);
+    setUnifiedTitleAndToolBarOnMac(true);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
     ui->graphicsView->setScene(m_screenieGraphicsScene);
@@ -98,8 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_platformManager->initialise(*this, *ui);
 
     restoreWindowGeometry();
-    // call unified toolbar AFTER restoring window geometry!
-    setUnifiedTitleAndToolBarOnMac(true);
+
     updateUi();
     m_screenieControl->setRenderQuality(ScreenieControl::MaximumQuality);
     frenchConnection();
@@ -405,10 +405,11 @@ void MainWindow::updateScene(ScreenieScene &screenieScene)
     delete m_screenieScene;
     delete m_screenieControl;
     delete m_clipboard;
-    m_screenieScene = &screenieScene;
 
+    m_screenieScene = &screenieScene;
     m_screenieControl = new ScreenieControl(*m_screenieScene, *m_screenieGraphicsScene);
     m_clipboard = new Clipboard(*m_screenieControl, this);
+
     m_screenieControl->updateScene();
     updateUi();
     updateDocumentManager();
@@ -559,8 +560,8 @@ MainWindow *MainWindow::createMainWindow()
 {
     MainWindow *result = new MainWindow();
     QPoint position = pos();
-    /*!\todo Bug (Mac): With unified toolbar calling move calculates wrong window positions!
-             Possible workaround: pass along desired position in c'tor */
+
+    // Add a slight offset to the original position
     position += QPoint(28, 28);
     result->move(position);
     result->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -585,6 +586,7 @@ void MainWindow::storeWindowGeometry()
 
 void MainWindow::on_newAction_triggered()
 {
+    storeWindowGeometry();
     MainWindow *mainWindow = createMainWindow();
     mainWindow->show();
 }
@@ -799,8 +801,6 @@ void MainWindow::on_addTemplateAction_triggered()
 void MainWindow::on_showToolBarAction_toggled(bool enable)
 {
     Settings::getInstance().setToolBarVisible(enable);
-    // re-initialising the toolbar to be unified when visible helps in Qt toolbar quirks
-    setUnifiedTitleAndToolBarOnMac(enable);
 }
 
 void MainWindow::on_showSidePanelAction_toggled(bool enable)
@@ -1119,9 +1119,7 @@ void MainWindow::handleAskBeforeClose(int answer)
 
 void MainWindow::handleToolBarVisibilityChanged(bool visible)
 {
-    Settings &settings = Settings::getInstance();
-
-    settings.setToolBarVisible(visible);
+    Settings::getInstance().setToolBarVisible(visible);
 }
 
 void MainWindow::showError()
