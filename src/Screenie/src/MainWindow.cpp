@@ -608,10 +608,6 @@ void MainWindow::on_openAction_triggered()
 {
     Settings &settings = Settings::getInstance();
     QString lastDocumentDirectoryPath = settings.getLastDocumentDirectoryPath();
-    // workaround for QTBUG-35779 (Qt 5.2.0)
-#ifdef Q_OS_OSX
-    lastDocumentDirectoryPath.append("/*");
-#endif
     QString allFilter = tr("Screenie Scenes (*.%1 *.%2)", "Open dialog filter")
                         .arg(FileUtils::SceneExtension)
                         .arg(FileUtils::TemplateExtension);
@@ -714,10 +710,6 @@ void MainWindow::on_exportAction_triggered()
 {
     Settings &settings = Settings::getInstance();
     QString lastExportDirectoryPath = settings.getLastExportDirectoryPath();
-    // workaround for QTBUG-35779 (Qt 5.2.0)
-#ifdef Q_OS_OSX
-    lastExportDirectoryPath.append("/*");
-#endif
     QString filter = FileUtils::getSaveImageFileFilter();
 
     QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
@@ -791,10 +783,6 @@ void MainWindow::on_addImageAction_triggered()
 {
     Settings &settings = Settings::getInstance();
     QString lastImageDirectoryPath = settings.getLastImageDirectoryPath();
-#ifdef Q_OS_OSX
-    // workaround for QTBUG-35779 (Qt 5.2.0)
-    lastImageDirectoryPath.append("/*");
-#endif
     QString filter = FileUtils::getOpenImageFileFilter();
     QStringList filePaths = QFileDialog::getOpenFileNames(this, tr("Add Image"), lastImageDirectoryPath, filter);
     if (filePaths.count() > 0) {
