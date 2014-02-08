@@ -86,9 +86,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // workaround for QTBUG-36719: don't call this for the time being (Qt 5.2.1)
-    // setUnifiedTitleAndToolBarOnMac(true);
-
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
     ui->graphicsView->setScene(m_screenieGraphicsScene);
     ui->graphicsView->setAcceptDrops(true);

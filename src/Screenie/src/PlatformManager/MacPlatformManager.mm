@@ -107,6 +107,10 @@ void MacPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 void MacPlatformManager::initialiseToolBar(Ui::MainWindow &mainWindowUi)
 {
     mainWindowUi.toolBar->setMovable(false);
+    getMainWindow()->setUnifiedTitleAndToolBarOnMac(true);
+    // workaround for QTBUG-36700: sheet dialogs are rendered with a /fixed/ offset
+    // of 50 pixels when calling setUnifiedTitleAndToolBarOnMac in Qt 5.2.1
+    mainWindowUi.toolBar->setMinimumHeight(50);
 }
 
 void MacPlatformManager::handleWindowActivation(bool active)
