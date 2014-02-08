@@ -104,7 +104,7 @@ void Clipboard::paste()
     if (MimeHelper::accept(mimeData, MimeHelper::Relaxed)) {
         // in order of preference
         const ScreenieMimeData *screenieMimeData = qobject_cast<const ScreenieMimeData *>(mimeData);
-        if (screenieMimeData != 0) {
+        if (screenieMimeData != nullptr) {
             // inside the same application instance
             const QList<const ScreenieModelInterface *> copies = screenieMimeData->getScreenieModels();
             foreach (const ScreenieModelInterface *clipboardModel, copies) {
@@ -116,7 +116,7 @@ void Clipboard::paste()
             ScreenieSceneSerializer *screenieSceneSerializer = new XmlScreenieSceneSerializer();
             QByteArray data = mimeData->data(MimeHelper::ScreenieMimeType);
             ScreenieScene *clipboardScreenieScene = screenieSceneSerializer->deserialize(data);
-            if (clipboardScreenieScene != 0) {
+            if (clipboardScreenieScene != nullptr) {
                 const QList<ScreenieModelInterface *> copies = clipboardScreenieScene->getModels();
                 foreach (const ScreenieModelInterface *clipboardModel, copies) {
                     ScreenieModelInterface *copy = clipboardModel->copy();

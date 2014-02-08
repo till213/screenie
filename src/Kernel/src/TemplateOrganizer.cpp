@@ -68,7 +68,7 @@ void TemplateOrganizer::frenchConnection()
 void TemplateOrganizer::handleModelAdded(ScreenieModelInterface &screenieModel)
 {
     ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-    if (screenieTemplateModel != 0) {
+    if (screenieTemplateModel != nullptr) {
         d->templates.append(screenieTemplateModel);
         screenieTemplateModel->setOrder(d->templates.count());
         d->ordered = false;
@@ -78,7 +78,7 @@ void TemplateOrganizer::handleModelAdded(ScreenieModelInterface &screenieModel)
 void TemplateOrganizer::handleModelRemoved(ScreenieModelInterface &screenieModel)
 {
     ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-    if (screenieTemplateModel != 0) {
+    if (screenieTemplateModel != nullptr) {
         int index = d->templates.indexOf(screenieTemplateModel, 0);
         if (index != -1) {
             d->templates.removeAt(index);

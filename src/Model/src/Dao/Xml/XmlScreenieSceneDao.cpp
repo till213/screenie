@@ -81,7 +81,7 @@ bool XmlScreenieSceneDao::write(const ScreenieScene &screenieScene)
 
 ScreenieScene *XmlScreenieSceneDao::read() const
 {
-    ScreenieScene *result = 0;
+    ScreenieScene *result = nullptr;
     if (d->device.open(QIODevice::ReadOnly)) {
         d->streamReader = new QXmlStreamReader(&d->device);
         QXmlStreamReader::TokenType tokenType;
@@ -197,15 +197,15 @@ bool XmlScreenieSceneDao::writeScreenieModels(const ScreenieScene &screenieScene
 
     foreach (ScreenieModelInterface *screenieModel, screenieModels) {
         ScreenieFilePathModel *screenieFilePathModel = qobject_cast<ScreenieFilePathModel *>(screenieModel);
-        if (screenieFilePathModel != 0) {
+        if (screenieFilePathModel != nullptr) {
             result = writeFilePathModel(*screenieFilePathModel);
         } else {
             ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(screenieModel);
-            if (screenieImageModel != 0) {
+            if (screenieImageModel != nullptr) {
                 result = writePixmapModel(*screenieImageModel);
             } else {
                 ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(screenieModel);
-                if (screenieTemplateModel != 0) {
+                if (screenieTemplateModel != nullptr) {
                     result = writeTemplateModel(*screenieTemplateModel);
                 }
 #ifdef DEBUG
@@ -222,7 +222,7 @@ bool XmlScreenieSceneDao::writeScreenieModels(const ScreenieScene &screenieScene
 bool XmlScreenieSceneDao::writeFilePathModel(const ScreenieFilePathModel &screenieFilePathModel)
 {
     bool result;
-    if (d->screenieFilePathModelDao == 0) {
+    if (d->screenieFilePathModelDao == nullptr) {
         d->screenieFilePathModelDao = new XmlScreenieFilePathModelDao(*d->streamWriter);
     }
     d->streamWriter->writeStartElement("filepathmodel");
@@ -237,7 +237,7 @@ bool XmlScreenieSceneDao::writeFilePathModel(const ScreenieFilePathModel &screen
 bool XmlScreenieSceneDao::writePixmapModel(const ScreenieImageModel &screeniePixmapModel)
 {
     bool result;
-    if (d->screeniePixmapModelDao == 0) {
+    if (d->screeniePixmapModelDao == nullptr) {
         d->screeniePixmapModelDao = new XmlScreenieImageModelDao(*d->streamWriter);
     }
     d->streamWriter->writeStartElement("pixmapmodel");
@@ -252,7 +252,7 @@ bool XmlScreenieSceneDao::writePixmapModel(const ScreenieImageModel &screeniePix
 bool XmlScreenieSceneDao::writeTemplateModel(const ScreenieTemplateModel &screenieTemplateModel)
 {
     bool result;
-    if (d->screenieTemplateModelDao == 0) {
+    if (d->screenieTemplateModelDao == nullptr) {
         d->screenieTemplateModelDao = new XmlScreenieTemplateModelDao(*d->streamWriter);
     }
     d->streamWriter->writeStartElement("templatemodel");
@@ -282,21 +282,21 @@ ScreenieScene *XmlScreenieSceneDao::readScreenieScene() const
             d->streamReader->skipCurrentElement();
         } else if (d->streamReader->name() == "filepathmodel") {
             ScreenieFilePathModel *filePathModel = readFilePathModel();
-            if (filePathModel != 0) {
+            if (filePathModel != nullptr) {
                 result->addModel(filePathModel);
             } else {
                 ok = false;
             }
         } else if (d->streamReader->name() == "pixmapmodel") {
             ScreenieImageModel *pixmapModel = readPixmapModel();
-            if (pixmapModel != 0) {
+            if (pixmapModel != nullptr) {
                 result->addModel(pixmapModel);
             } else {
                 ok = false;
             }
         } else if (d->streamReader->name() == "templatemodel") {
             ScreenieTemplateModel *templateModel = readTemplateModel();
-            if (templateModel != 0) {
+            if (templateModel != nullptr) {
                 result->addModel(templateModel);
             } else {
                 ok = false;
@@ -327,7 +327,7 @@ ScreenieFilePathModel *XmlScreenieSceneDao::readFilePathModel() const
 {
     ScreenieFilePathModel *result;
 
-    if (d->screenieFilePathModelDao == 0) {
+    if (d->screenieFilePathModelDao == nullptr) {
         d->screenieFilePathModelDao = new XmlScreenieFilePathModelDao(*d->streamReader);
     }
     result = d->screenieFilePathModelDao->read();
@@ -338,7 +338,7 @@ ScreenieImageModel *XmlScreenieSceneDao::readPixmapModel() const
 {
     ScreenieImageModel *result;
 
-    if (d->screeniePixmapModelDao == 0) {
+    if (d->screeniePixmapModelDao == nullptr) {
         d->screeniePixmapModelDao = new XmlScreenieImageModelDao(*d->streamReader);
     }
     result = d->screeniePixmapModelDao->read();
@@ -349,7 +349,7 @@ ScreenieTemplateModel *XmlScreenieSceneDao::readTemplateModel() const
 {
     ScreenieTemplateModel *result;
 
-    if (d->screenieTemplateModelDao == 0) {
+    if (d->screenieTemplateModelDao == nullptr) {
         d->screenieTemplateModelDao = new XmlScreenieTemplateModelDao(*d->streamReader);
     }
     result = d->screenieTemplateModelDao->read();
@@ -358,24 +358,24 @@ ScreenieTemplateModel *XmlScreenieSceneDao::readTemplateModel() const
 
 void XmlScreenieSceneDao::cleanUp() const
 {
-    if (d->screenieFilePathModelDao != 0) {
+    if (d->screenieFilePathModelDao != nullptr) {
         delete d->screenieFilePathModelDao;
-        d->screenieFilePathModelDao = 0;
+        d->screenieFilePathModelDao = nullptr;
     }
-    if (d->screeniePixmapModelDao != 0) {
+    if (d->screeniePixmapModelDao != nullptr) {
         delete d->screeniePixmapModelDao;
-        d->screeniePixmapModelDao = 0;
+        d->screeniePixmapModelDao = nullptr;
     }
-    if (d->screenieTemplateModelDao != 0) {
+    if (d->screenieTemplateModelDao != nullptr) {
         delete d->screenieTemplateModelDao;
-        d->screenieTemplateModelDao = 0;
+        d->screenieTemplateModelDao = nullptr;
     }
-    if (d->streamWriter != 0) {
+    if (d->streamWriter != nullptr) {
         delete d->streamWriter;
-        d->streamWriter = 0;
+        d->streamWriter = nullptr;
     }
-    if (d->streamReader != 0) {
+    if (d->streamReader != nullptr) {
         delete d->streamReader;
-        d->streamReader = 0;
+        d->streamReader = nullptr;
     }
 }

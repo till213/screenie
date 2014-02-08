@@ -47,7 +47,7 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
 {
     bool result;
     const QMainWindow *mainWindow = qobject_cast<const QMainWindow *>(object);
-    if (mainWindow != 0) {
+    if (mainWindow != nullptr) {
         switch (event->type()) {
         case QEvent::ActivationChange:
             handleWindowActivation(mainWindow->isActiveWindow());
@@ -69,7 +69,7 @@ bool MacPlatformManager::isFullScreen() const
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
     if (isFullScreenAPISupported()) {
         QMainWindow *mainWindow = getMainWindow();
-        if (mainWindow != 0) {
+        if (mainWindow != nullptr) {
             NSView *nsview = (__bridge NSView *)reinterpret_cast<void *>(mainWindow->winId());
             NSWindow *nswindow = [nsview window];
             NSUInteger masks = [nswindow styleMask];
@@ -112,7 +112,7 @@ void MacPlatformManager::initialiseToolBar(Ui::MainWindow &mainWindowUi)
 void MacPlatformManager::handleWindowActivation(bool active)
 {
     Ui::MainWindow *mainWindowUi = getMainWindowUi();
-    if (mainWindowUi != 0) {
+    if (mainWindowUi != nullptr) {
         if (active) {
             mainWindowUi->sidePanel->setStyleSheet("#sidePanel {background-color: rgb(218, 223, 230); border-right: 1px solid rgb(187, 187, 187);}");
         } else {

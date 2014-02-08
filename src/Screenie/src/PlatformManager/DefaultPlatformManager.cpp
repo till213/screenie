@@ -37,12 +37,12 @@ public:
 // public
 
 DefaultPlatformManager::DefaultPlatformManager()
-    :d(0)
+    :d(nullptr)
 {}
 
 DefaultPlatformManager::~DefaultPlatformManager()
 {
-    if (d != 0) {
+    if (d != nullptr) {
         delete d;
     }
 }

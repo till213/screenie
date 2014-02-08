@@ -39,6 +39,8 @@ CONFIG(debug, debug|release) {
     INSTALLS += target
 }
 
+QMAKE_CXXFLAGS += -std=c++11
+
 unix:linux* {
     QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes

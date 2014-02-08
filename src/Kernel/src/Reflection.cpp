@@ -28,7 +28,7 @@ class ReflectionPrivate
 {
 public:
     ReflectionPrivate()
-        : gradient(0),
+        : gradient(nullptr),
           lastWidth(-1),
           lastHeight(-1),
           lastReflectionHeight(-1),
@@ -36,7 +36,7 @@ public:
 
     ~ReflectionPrivate()
     {
-        if (gradient != 0) {
+        if (gradient != nullptr) {
             delete[] gradient;
         }
     }
@@ -69,8 +69,6 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
     int reflectionHeight = qRound(height * offset / 100.0);
     int top = height - 1;
     quint8 gradient;
-
-    qDebug("Reflection::createReflection: called.");
 
     updateGradient(reflectionHeight);
     updateImages(width, height);
@@ -128,7 +126,7 @@ void Reflection::updateGradient(int height)
 {
     if (height > 0) {
         if (height != d->lastReflectionHeight) {
-            if (d->gradient != 0) {
+            if (d->gradient != nullptr) {
                 delete[] d->gradient;
             }
             d->gradient = new quint8[height];
@@ -140,9 +138,9 @@ void Reflection::updateGradient(int height)
                 d->gradient[0] = 128;
             }
         }
-    } else if (d->gradient != 0) {
+    } else if (d->gradient != nullptr) {
         delete[] d->gradient;
-        d->gradient = 0;
+        d->gradient = nullptr;
     }
 }
 

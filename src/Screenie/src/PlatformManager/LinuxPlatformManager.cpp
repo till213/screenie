@@ -38,12 +38,12 @@ public:
 // public
 
 LinuxPlatformManager::LinuxPlatformManager()
-    :d(0)
+    :d(nullptr)
 {}
 
 LinuxPlatformManager::~LinuxPlatformManager()
 {
-    if (d != 0) {
+    if (d != nullptr) {
         delete d;
     }
 }

@@ -33,7 +33,7 @@ class FilePathModelPropertiesDialog : public ScreenieModelPropertiesDialog
 {
     Q_OBJECT
 public:
-    FilePathModelPropertiesDialog(ScreenieFilePathModel &templateModel, ScreenieControl &screenieControl, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    FilePathModelPropertiesDialog(ScreenieFilePathModel &templateModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
     virtual ~FilePathModelPropertiesDialog();
 
 protected:

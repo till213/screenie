@@ -32,19 +32,19 @@ class AbstractXmlScreenieModelDaoPrivate
 public:
     AbstractXmlScreenieModelDaoPrivate(QIODevice *theDevice)
         : device(theDevice),
-          streamWriter(0),
-          streamReader(0)
+          streamWriter(nullptr),
+          streamReader(nullptr)
     {}
 
     AbstractXmlScreenieModelDaoPrivate(QXmlStreamWriter *xmlStreamWriter)
         : device(0),
           streamWriter(xmlStreamWriter),
-          streamReader(0)
+          streamReader(nullptr)
     {}
 
     AbstractXmlScreenieModelDaoPrivate(QXmlStreamReader *xmlStreamReader)
         : device(0),
-          streamWriter(0),
+          streamWriter(nullptr),
           streamReader(xmlStreamReader)
     {}
 
@@ -84,7 +84,7 @@ bool AbstractXmlScreenieModelDao::write(const AbstractScreenieModel &screenieMod
     bool result = true;
     QXmlStreamWriter *streamWriter = getStreamWriter();
 
-    if (streamWriter != 0) {
+    if (streamWriter != nullptr) {
 
         writeSpecific();
 
@@ -121,7 +121,7 @@ bool AbstractXmlScreenieModelDao::read(AbstractScreenieModel &abstractScreenieMo
     bool ok;
     QXmlStreamReader *streamReader = getStreamReader();
 
-    if (streamReader != 0) {
+    if (streamReader != nullptr) {
 
         readSpecific();
 
@@ -188,17 +188,17 @@ bool AbstractXmlScreenieModelDao::read(AbstractScreenieModel &abstractScreenieMo
 QXmlStreamWriter *AbstractXmlScreenieModelDao::getStreamWriter() const
 {
     QXmlStreamWriter *result;
-    if (d->streamWriter != 0) {
+    if (d->streamWriter != nullptr) {
         result = d->streamWriter;
-    } else if (d->device != 0) {
+    } else if (d->device != nullptr) {
         // PRE: if no stream writer is given, device must be valid
         if (d->device->open(QIODevice::WriteOnly)) {
             result = new QXmlStreamWriter(d->device);
         } else {
-            result = 0;
+            result = nullptr;
         }
     } else {
-        result = 0;
+        result = nullptr;
     }
     return result;
 }
@@ -206,16 +206,16 @@ QXmlStreamWriter *AbstractXmlScreenieModelDao::getStreamWriter() const
 QXmlStreamReader *AbstractXmlScreenieModelDao::getStreamReader() const
 {
     QXmlStreamReader *result;
-    if (d->streamReader != 0) {
+    if (d->streamReader != nullptr) {
         result = d->streamReader;
-    } else if (d->device != 0) {
+    } else if (d->device != nullptr) {
         if (d->device->open(QIODevice::ReadOnly)) {
             result = new QXmlStreamReader(d->device);
         } else {
-            result = 0;
+            result = nullptr;
         }
     } else {
-        result = 0;
+        result = nullptr;
     }
     return result;
 }
@@ -227,14 +227,14 @@ void AbstractXmlScreenieModelDao::cleanUp()
     // if a QIODevice was given in the c'tor, then we know
     // that WE created the readers, so we have to deallocate
     // them
-    if (d->device != 0) {
-        if (d->streamReader != 0) {
+    if (d->device != nullptr) {
+        if (d->streamReader != nullptr) {
             delete d->streamReader;
-            d->streamReader = 0;
+            d->streamReader = nullptr;
         }
-        if (d->streamWriter != 0) {
+        if (d->streamWriter != nullptr) {
             delete d->streamWriter;
-            d->streamWriter = 0;
+            d->streamWriter = nullptr;
         }
     }
 }

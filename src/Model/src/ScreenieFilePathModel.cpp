@@ -82,7 +82,7 @@ const QImage &ScreenieFilePathModel::getImage() const
             if (d->image.format() != QImage::Format_ARGB32_Premultiplied) {
                 d->image = d->image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
             }
-            if (d->sizeFitter != 0) {
+            if (d->sizeFitter != nullptr) {
                 QSize fittedSize;
                 bool doResize = d->sizeFitter->fit(d->image.size(), fittedSize);
                 if (doResize) {

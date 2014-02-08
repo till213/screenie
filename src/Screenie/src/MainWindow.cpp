@@ -123,7 +123,7 @@ bool MainWindow::read(const QString &filePath)
     QFile file(filePath);
     ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
     ScreenieScene *screenieScene = screenieSceneDao->read();
-    if (screenieScene != 0) {
+    if (screenieScene != nullptr) {
         m_documentFilePath = filePath;
         newScene(*screenieScene);
         result = true;
@@ -558,7 +558,7 @@ void MainWindow::updateDocumentManager()
     bool created;
     DocumentManager &documentManager = DocumentManager::getInstance();
     DocumentInfo *documentInfo = documentManager.getDocumentInfo(*this);
-    if (documentInfo == 0) {
+    if (documentInfo == nullptr) {
         documentInfo = new DocumentInfo();
         created = true;
     } else {
@@ -735,7 +735,7 @@ void MainWindow::on_quitAction_triggered()
 {
     DocumentManager &documentManager = DocumentManager::getInstance();
     QMainWindow *activeDialogMainWindow = documentManager.getRecentActiveDialogMainWindow();
-    if (activeDialogMainWindow == 0) {
+    if (activeDialogMainWindow == nullptr) {
         DocumentManager::setCloseRequest(DocumentManager::Quit);
         int count = documentManager.count();
         if (count > 1) {

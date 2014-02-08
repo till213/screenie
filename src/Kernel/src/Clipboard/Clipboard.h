@@ -38,7 +38,7 @@ class Clipboard : public QObject
 {
     Q_OBJECT
 public:
-    KERNEL_API explicit Clipboard(ScreenieControl &screenieControl, QObject *parent = 0);
+    KERNEL_API explicit Clipboard(ScreenieControl &screenieControl, QObject *parent = nullptr);
     KERNEL_API virtual ~Clipboard();
 
     /*!

@@ -93,20 +93,20 @@ public slots:
     KERNEL_API void removeAll();
     KERNEL_API void selectAll();
 
-    KERNEL_API void setPositionX(qreal x, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setPositionY(qreal y, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setPosition(QPointF position, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void translate(qreal dx, qreal dy, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setRotation(int angle, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void rotate(int angle, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setDistance(qreal distance, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void addDistance(qreal distance, ScreenieModelInterface *screenieModel = 0);
+    KERNEL_API void setPositionX(qreal x, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setPositionY(qreal y, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setPosition(QPointF position, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void translate(qreal dx, qreal dy, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setRotation(int angle, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void rotate(int angle, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setDistance(qreal distance, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void addDistance(qreal distance, ScreenieModelInterface *screenieModel = nullptr);
 
-    KERNEL_API void setReflectionEnabled(bool enable, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void addReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void setReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = 0);
-    KERNEL_API void addReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = 0);
+    KERNEL_API void setReflectionEnabled(bool enable, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void addReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void addReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = nullptr);
 
     KERNEL_API void setBackgroundEnabled(bool enable);
     KERNEL_API void setBackgroundColor(QColor color);
@@ -114,12 +114,12 @@ public slots:
     KERNEL_API void setGreenBackgroundComponent(int green);
     KERNEL_API void setBlueBackgroundComponent(int blue);
 
-    KERNEL_API void setFilePath(const QString &filePath, ScreenieFilePathModel *screenieFilePathModel = 0);
+    KERNEL_API void setFilePath(const QString &filePath, ScreenieFilePathModel *screenieFilePathModel = nullptr);
 
-    KERNEL_API void setTargetWidth(int width, ScreenieTemplateModel *screenieTemplateModel = 0);
-    KERNEL_API void setTargetHeight(int height, ScreenieTemplateModel *screenieTemplateModel = 0);
-    KERNEL_API void setFitMode(SizeFitter::FitMode fitMode, ScreenieTemplateModel *screenieTemplateModel = 0);
-    KERNEL_API void setFitOptionEnabled(SizeFitter::FitOption fitOption, bool enable, ScreenieTemplateModel *screenieTemplateModel = 0);
+    KERNEL_API void setTargetWidth(int width, ScreenieTemplateModel *screenieTemplateModel = nullptr);
+    KERNEL_API void setTargetHeight(int height, ScreenieTemplateModel *screenieTemplateModel = nullptr);
+    KERNEL_API void setFitMode(SizeFitter::FitMode fitMode, ScreenieTemplateModel *screenieTemplateModel = nullptr);
+    KERNEL_API void setFitOptionEnabled(SizeFitter::FitOption fitOption, bool enable, ScreenieTemplateModel *screenieTemplateModel = nullptr);
 
     KERNEL_API void convertItemsToTemplate(ScreenieScene &screenieScene);
     KERNEL_API void setRenderQuality(RenderQuality renderQuality);
@@ -136,12 +136,12 @@ private:
     void updateImageModel(const QImage &image, ScreenieModelInterface &screenieModel);
     void updateFilePathModel(const QString &filePath, ScreenieModelInterface &screenieModel);
 
-    // returns 'screenieModel' in the list if set to != 0, otherwise all selected models are returned in the list
-    QList<ScreenieModelInterface *> getEditableModels(ScreenieModelInterface *screenieModel = 0);
-    // returns 'screenieFilePathModel' in the list if set to != 0, otherwise all selected filepath models are returned in the list
-    QList<ScreenieFilePathModel *> getEditableFilePathModels(ScreenieFilePathModel *screenieFilePathModel = 0);
-    // returns 'screenieTemplateModel' in the list if set to != 0, otherwise all selected template models are returned in the list
-    QList<ScreenieTemplateModel *> getEditableTemplateModels(ScreenieTemplateModel *screenieTemplateModel = 0);
+    // returns 'screenieModel' in the list if set to != nullptr, otherwise all selected models are returned in the list
+    QList<ScreenieModelInterface *> getEditableModels(ScreenieModelInterface *screenieModel = nullptr);
+    // returns 'screenieFilePathModel' in the list if set to != nullptr, otherwise all selected filepath models are returned in the list
+    QList<ScreenieFilePathModel *> getEditableFilePathModels(ScreenieFilePathModel *screenieFilePathModel = nullptr);
+    // returns 'screenieTemplateModel' in the list if set to != nullptr, otherwise all selected template models are returned in the list
+    QList<ScreenieTemplateModel *> getEditableTemplateModels(ScreenieTemplateModel *screenieTemplateModel = nullptr);
 
 private slots:
     void handleFilePathsDrop(QStringList filePaths, QPointF centerPosition);

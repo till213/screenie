@@ -39,7 +39,7 @@ class ScreenieModelPropertiesDialog : public QDialog
 {
     Q_OBJECT
 public:
-    ScreenieModelPropertiesDialog(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ScreenieModelPropertiesDialog(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
     virtual ~ScreenieModelPropertiesDialog();
 
 protected:

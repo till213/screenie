@@ -46,7 +46,7 @@ class ScreenieGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    KERNEL_API explicit ScreenieGraphicsScene(QObject *parent = 0);
+    KERNEL_API explicit ScreenieGraphicsScene(QObject *parent = nullptr);
     KERNEL_API virtual ~ScreenieGraphicsScene();
 
 signals:
