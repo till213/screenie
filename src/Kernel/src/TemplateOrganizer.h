@@ -21,7 +21,7 @@ class TemplateOrganizer : public QObject
     Q_OBJECT
 public:
     TemplateOrganizer(const ScreenieScene &screenieScene);
-    ~TemplateOrganizer();
+    virtual ~TemplateOrganizer();
 
     QList<ScreenieTemplateModel *> getOrderedTemplates() const;
 

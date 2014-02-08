@@ -26,6 +26,9 @@
 class QMainWindow;
 class ScreenieScene;
 
+/*!
+ * \brief Stores info about the document, such as the name and file path.
+ */
 struct DocumentInfo
 {
     /*!

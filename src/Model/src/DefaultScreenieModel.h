@@ -41,7 +41,7 @@ public:
     static const int ReflectionOpacity;
 
     MODEL_API DefaultScreenieModel();
-    MODEL_API ~DefaultScreenieModel();
+    MODEL_API virtual ~DefaultScreenieModel();
 
     MODEL_API qreal getDistance() const;
     MODEL_API void setDistance(qreal distance);

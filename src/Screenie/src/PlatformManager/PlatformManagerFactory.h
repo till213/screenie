@@ -42,7 +42,7 @@ public:
     PlatformManager *create();
 
 protected:
-   ~PlatformManagerFactory();
+   virtual ~PlatformManagerFactory();
 
 private:
    static PlatformManagerFactory *m_instance;

@@ -29,10 +29,6 @@
 
 // public
 
-SceneGeometry::SceneGeometry()
-{
-}
-
 QPointF SceneGeometry::calculateItemPosition(const ScreenieModelInterface &screenieModel, const QPointF &centerPosition)
 {
     QPointF result;

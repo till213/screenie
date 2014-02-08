@@ -43,7 +43,7 @@ public:
     };
 
     KERNEL_API ExportImage(const ScreenieScene &screenieScene, QGraphicsScene &graphicsScene);
-    KERNEL_API ~ExportImage();
+    KERNEL_API virtual ~ExportImage();
 
     KERNEL_API bool exportImage(const QString &filePath, Selection selection = Scene) const;
     KERNEL_API QImage exportImage(Selection selection) const;

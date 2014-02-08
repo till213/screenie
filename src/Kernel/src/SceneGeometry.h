@@ -35,8 +35,6 @@ class ScreenieTemplateModel;
 class SceneGeometry
 {
 public:
-    SceneGeometry();
-
     static QPointF calculateItemPosition(const ScreenieModelInterface &screenieModel, const QPointF &centerPosition);
     static QImage scaleToTemplate(const ScreenieTemplateModel &templateModel, const QImage &image);
     static QPointF calculateItemPosition(const QPointF &sourcePosition, const QSize &sourceSize, const QSize &targetSize);
