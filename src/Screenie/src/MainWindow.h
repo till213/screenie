@@ -33,6 +33,7 @@ class QCloseEvent;
 class QEvent;
 class QAction;
 class QResizeEvent;
+class QStringList;
 
 class ScreenieModelInterface;
 class ScreenieScene;
@@ -164,6 +165,7 @@ private slots:
     void handleDialogClosed();
 
     void handleExportFilePathSelected(const QString &filePath);
+    void handleImagesSelected(const QStringList &filePaths);
 
     void handleAskBeforeClose(int answer);
     void handleToolBarVisibilityChanged(bool visible);

@@ -85,7 +85,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isFullScreenPreviously(false)
 {
     ui->setupUi(this);
-    setUnifiedTitleAndToolBarOnMac(true);
+
+    // workaround for QTBUG-36719: don't call this for the time being (Qt 5.2.1)
+    // setUnifiedTitleAndToolBarOnMac(true);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
     ui->graphicsView->setScene(m_screenieGraphicsScene);
@@ -165,7 +167,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
-    // workaround (OS X specifically): use the native "isFullScreen" API: QWidget::isFullScreen
+    // workaround for QTBUG-36718 (OS X): use the native "isFullScreen" API: QWidget::isFullScreen
     // reports bogus values when window size is changed with "fullscreen" arrow on OS X
     bool fullScreen = m_platformManager->isFullScreen();
 
@@ -474,7 +476,7 @@ void MainWindow::saveBeforeClose()
             m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
                              .arg(DocumentManager::getInstance().getDocumentFileName(*this))
                              .arg(QDir::toNativeSeparators(m_documentFilePath));
-            // workaround for "Cascading Mac Sheets" bug: use a single shot timer;
+            // workaround for "Cascading Mac Sheets" QTBUG-36721: use a single shot timer;
             // also refer to http://qt-project.org/forums/viewthread/33684
             QTimer::singleShot(0, this, SLOT(showError()));
         }
@@ -490,13 +492,12 @@ void MainWindow::saveAsBeforeClose()
     QString sceneFilter = tr("Screenie Scene (*.%1)", "Save As dialog filter")
                           .arg(FileUtils::SceneExtension);
 
-    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setNameFilter(sceneFilter);
     fileDialog->setDefaultSuffix(FileUtils::SceneExtension);
     fileDialog->setWindowTitle(tr("Save As"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
     fileDialog->selectFile(documentManager.getDocumentName(*this));
-    fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
@@ -513,6 +514,7 @@ void MainWindow::restoreWindowGeometry()
     QSize defaultWindowSize;
 
     if (windowGeometry.position.isNull()) {
+        // Center on primary screen
         availableGeometry = QApplication::desktop()->availableGeometry();
         defaultWindowSize = settings.getDefaultWindowSize();
         windowGeometry.position = QRect(  availableGeometry.center()
@@ -669,13 +671,12 @@ void MainWindow::on_saveAsAction_triggered()
     QString sceneFilter = tr("Screenie Scene (*.%1)", "Save As dialog filter")
                              .arg(FileUtils::SceneExtension);
 
-    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setNameFilter(sceneFilter);
     fileDialog->setDefaultSuffix(FileUtils::SceneExtension);
     fileDialog->setWindowTitle(tr("Save As"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
     fileDialog->selectFile(documentManager.getDocumentName(*this));
-    fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);    
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
@@ -691,13 +692,12 @@ void MainWindow::on_saveAsTemplateAction_triggered()
     QString templateFilter = tr("Screenie Template (*.%1)", "Save As Template dialog filter")
                              .arg(FileUtils::TemplateExtension);
 
-    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setNameFilter(templateFilter);
     fileDialog->setDefaultSuffix(FileUtils::TemplateExtension);
     fileDialog->setWindowTitle(tr("Save As Template"));
     fileDialog->setDirectory(lastDocumentDirectoryPath);
     fileDialog->selectFile(documentManager.getDocumentName(*this));
-    fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
@@ -712,12 +712,11 @@ void MainWindow::on_exportAction_triggered()
     QString lastExportDirectoryPath = settings.getLastExportDirectoryPath();
     QString filter = FileUtils::getSaveImageFileFilter();
 
-    QFileDialog *fileDialog = new QFileDialog(this, Qt::Sheet);
+    QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setNameFilter(filter);
     fileDialog->setDefaultSuffix(FileUtils::PngExtension);
     fileDialog->setWindowTitle(tr("Export Image"));
     fileDialog->setDirectory(lastExportDirectoryPath);
-    fileDialog->setWindowModality(Qt::WindowModal);
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
     fileDialog->setAttribute(Qt::WA_DeleteOnClose);
     DocumentManager::getInstance().addActiveDialogMainWindow(this);
@@ -784,14 +783,18 @@ void MainWindow::on_addImageAction_triggered()
     Settings &settings = Settings::getInstance();
     QString lastImageDirectoryPath = settings.getLastImageDirectoryPath();
     QString filter = FileUtils::getOpenImageFileFilter();
-    QStringList filePaths = QFileDialog::getOpenFileNames(this, tr("Add Image"), lastImageDirectoryPath, filter);
-    if (filePaths.count() > 0) {
-        foreach(QString filePath, filePaths) {
-            m_screenieControl->addImage(filePath, QPointF(0.0, 0.0));
-        }
-        lastImageDirectoryPath = QFileInfo(filePaths.last()).absolutePath();
-        settings.setLastImageDirectoryPath(lastImageDirectoryPath);
-    }
+
+    QFileDialog *fileDialog = new QFileDialog(this);
+    fileDialog->setNameFilter(filter);
+    fileDialog->setWindowTitle(tr("Add Image"));
+    fileDialog->setDirectory(lastImageDirectoryPath);
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog->setFileMode(QFileDialog::ExistingFiles);
+    fileDialog->setAttribute(Qt::WA_DeleteOnClose);
+    DocumentManager::getInstance().addActiveDialogMainWindow(this);
+    fileDialog->connect(fileDialog, SIGNAL(finished(int)),
+                        this, SLOT(handleDialogClosed()));
+    fileDialog->open(this, SLOT(handleImagesSelected(const QStringList &)));
 }
 
 void MainWindow::on_addTemplateAction_triggered()
@@ -1091,6 +1094,19 @@ void MainWindow::handleExportFilePathSelected(const QString &filePath)
                              .arg(QDir::toNativeSeparators(filePath));
             QTimer::singleShot(0, this, SLOT(showError()));
         }
+    }
+}
+
+void MainWindow::handleImagesSelected(const QStringList &filePaths)
+{
+    QString lastImageDirectoryPath;
+
+    if (filePaths.count() > 0) {
+        foreach(QString filePath, filePaths) {
+            m_screenieControl->addImage(filePath, QPointF(0.0, 0.0));
+        }
+        lastImageDirectoryPath = QFileInfo(filePaths.last()).absolutePath();
+        Settings::getInstance().setLastImageDirectoryPath(lastImageDirectoryPath);
     }
 }
 
