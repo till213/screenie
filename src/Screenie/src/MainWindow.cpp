@@ -564,9 +564,9 @@ void MainWindow::updateDocumentManager()
     } else {
         created = false;
     }
-    documentInfo->mainWindow = this;
-    documentInfo->screenieScene = m_screenieScene;
-    documentInfo->saveStrategy = DocumentInfo::Ask;
+    documentInfo->setMainWindow(this);
+    documentInfo->setScreenieScene(m_screenieScene);
+    documentInfo->setSaveStrategy(DocumentInfo::Ask);
     if (created) {
         documentManager.add(documentInfo);
     }

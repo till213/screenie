@@ -40,6 +40,7 @@ SOURCES += $$PWD/src/ExportImage.cpp \
            $$PWD/src/Clipboard/MimeHelper.cpp \
            $$PWD/src/PropertyDialogFactory.cpp \
            $$PWD/src/DocumentManager.cpp \
+           $$PWD/src/DocumentInfo.cpp \
            $$PWD/src/SceneGeometry.cpp \
            $$PWD/src/Dialogs/ScreenieModelPropertiesDialog.cpp \
            $$PWD/src/Dialogs/GeometryPropertiesWidget.cpp \

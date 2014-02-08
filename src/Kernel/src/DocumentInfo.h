@@ -25,12 +25,14 @@
 
 class QMainWindow;
 class ScreenieScene;
+class DocumentInfoPrivate;
 
 /*!
  * \brief Stores info about the document, such as the name and file path.
  */
-struct DocumentInfo
+class DocumentInfo
 {
+public:
     /*!
      * Defines how to deal with unsaved documents before closing the window.
      */
@@ -41,11 +43,29 @@ struct DocumentInfo
         Ask /*!< Ask the user whether to discard or save the modifications before closing the document */
     };
 
-    int id;
-    QMainWindow *mainWindow;
-    ScreenieScene *screenieScene;
-    QString documentFileName;
-    SaveStrategy saveStrategy;
+    DocumentInfo();
+    virtual ~DocumentInfo();
+
+    int getWindowId() const;
+    void setWindowId(int id);
+
+    QMainWindow *getMainWindow() const;
+    void setMainWindow(QMainWindow *mainWindow);
+
+    QString getName() const;
+    void setName(const QString &name);
+
+    QString getFilePath() const;
+    void setFilePath(const QString &filePath);
+
+    ScreenieScene *getScreenieScene() const;
+    void setScreenieScene(ScreenieScene *screenieScene);
+
+    SaveStrategy getSaveStrategy() const;
+    void setSaveStrategy(SaveStrategy SaveStrategy);
+
+private:
+    DocumentInfoPrivate *d;
 };
 
 #endif // DOCUMENTINFO_H
