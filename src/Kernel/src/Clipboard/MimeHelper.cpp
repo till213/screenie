@@ -43,9 +43,9 @@ MimeHelper::MimeHelper()
 bool MimeHelper::accept(const QMimeData *mimeData, Mode mode)
 {
     bool result;
-    if (mimeData != 0) {
+    if (mimeData != nullptr) {
         const ScreenieMimeData *screenieMimeData = qobject_cast<const ScreenieMimeData *>(mimeData);
-        if (screenieMimeData != 0) {
+        if (screenieMimeData != nullptr) {
             result = screenieMimeData->hasScreenieModels();
         }
         else if (mimeData->hasImage()) {

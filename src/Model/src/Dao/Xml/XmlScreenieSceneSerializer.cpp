@@ -61,7 +61,7 @@ QByteArray XmlScreenieSceneSerializer::serialize(const ScreenieScene &screenieSc
 
 ScreenieScene *XmlScreenieSceneSerializer::deserialize(QByteArray &data) const
 {
-   ScreenieScene *result = 0;
+   ScreenieScene *result = nullptr;
    QBuffer buffer(&data);
    XmlScreenieSceneDao screenieSceneDao(buffer);
    result = screenieSceneDao.read();

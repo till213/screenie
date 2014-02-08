@@ -78,7 +78,7 @@ void ScreenieGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
     /*!\todo Proper transform of view! (Qt 5 now requires this) */
     QTransform transform;
-    if (this->itemAt(event->scenePos().x(), event->scenePos().y(), transform) == 0) {
+    if (this->itemAt(event->scenePos().x(), event->scenePos().y(), transform) == nullptr) {
         d->itemDragDrop = false;
     } else {
         QGraphicsScene::dragMoveEvent(event);
@@ -138,7 +138,7 @@ bool ScreenieGraphicsScene::gestureEvent(const QGestureEvent *event)
     bool result = false;
     if (selectedItems().size() > 0) {
         QGesture *pinch = event->gesture(Qt::PinchGesture);
-        if (pinch != 0) {
+        if (pinch != nullptr) {
             result = pinchTriggered(static_cast<QPinchGesture *>(pinch));
         }
     } else {

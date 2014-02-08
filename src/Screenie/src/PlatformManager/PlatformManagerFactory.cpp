@@ -21,13 +21,13 @@
 #include "PlatformManager.h"
 #include "PlatformManagerFactory.h"
 
-PlatformManagerFactory *PlatformManagerFactory::m_instance = 0;
+PlatformManagerFactory *PlatformManagerFactory::m_instance = nullptr;
 
 // public
 
 PlatformManagerFactory &PlatformManagerFactory::getInstance()
 {
-    if (m_instance == 0) {
+    if (m_instance == nullptr) {
         m_instance = new PlatformManagerFactory();
     }
     return *m_instance;
@@ -35,9 +35,9 @@ PlatformManagerFactory &PlatformManagerFactory::getInstance()
 
 void PlatformManagerFactory::destroyInstance()
 {
-    if (m_instance != 0) {
+    if (m_instance != nullptr) {
         delete m_instance;
-        m_instance = 0;
+        m_instance = nullptr;
     }
 }
 

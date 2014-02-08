@@ -252,7 +252,7 @@ bool SizeFitter::fitIt(QSize size, QSize &fittedSize, QRect *clippedRect) const
         size.width() <= orientedTargetSize.width() &&
         size.height() <= orientedTargetSize.height()) {
         fittedSize = size;
-        if (clippedRect != 0) {
+        if (clippedRect != nullptr) {
             clippedRect->setTopLeft(QPoint(0, 0));
             clippedRect->setSize(fittedSize);
         }
@@ -305,7 +305,7 @@ bool SizeFitter::fitIt(QSize size, QSize &fittedSize, QRect *clippedRect) const
         }
     }
 
-    if (clippedRect != 0) {
+    if (clippedRect != nullptr) {
         // no clipping, select entire image
         clippedRect->setTopLeft(QPoint(0, 0));
         clippedRect->setSize(size);
@@ -324,7 +324,7 @@ bool SizeFitter::fitToWidth(QSize size, QSize &fittedSize, QRect *clippedRect) c
     if (!isFitOptionEnabled(Enlarge) &&
         size.width() <= d->targetSize.width()) {
         fittedSize = size;
-        if (clippedRect != 0) {
+        if (clippedRect != nullptr) {
             clippedRect->setTopLeft(QPoint(0, 0));
             clippedRect->setSize(fittedSize);
         }
@@ -340,7 +340,7 @@ bool SizeFitter::fitToWidth(QSize size, QSize &fittedSize, QRect *clippedRect) c
         result = false;
     }
 
-    if (clippedRect != 0) {
+    if (clippedRect != nullptr) {
         if (isFitOptionEnabled(RespectMaxTargetSize) && fittedSize.height() > d->maxTargetSize.height()) {
             fittedSize.setHeight(d->maxTargetSize.height());
             clip(size, fittedSize, clippedRect);
@@ -363,7 +363,7 @@ bool SizeFitter::fitToHeight(QSize size, QSize &fittedSize, QRect *clippedRect) 
     if (isFitOptionEnabled(Enlarge) == false &&
         size.height() <= d->targetSize.height()) {
         fittedSize = size;
-        if (clippedRect != 0) {
+        if (clippedRect != nullptr) {
             clippedRect->setTopLeft(QPoint(0, 0));
             clippedRect->setSize(fittedSize);
         }
@@ -379,7 +379,7 @@ bool SizeFitter::fitToHeight(QSize size, QSize &fittedSize, QRect *clippedRect) 
         result = false;
     }
 
-    if (clippedRect != 0) {
+    if (clippedRect != nullptr) {
         if (isFitOptionEnabled(RespectMaxTargetSize) && fittedSize.width() > d->maxTargetSize.width()) {
             fittedSize.setWidth(d->maxTargetSize.width());
             clip(size, fittedSize, clippedRect);
@@ -404,7 +404,7 @@ bool SizeFitter::exactFit(QSize size, QSize &fittedSize, QRect *clippedRect) con
         size.width() <= orientedTargetSize.width() &&
         size.height() <= orientedTargetSize.height()) {
         fittedSize = size;
-        if (clippedRect != 0) {
+        if (clippedRect != nullptr) {
             clippedRect->setTopLeft(QPoint(0, 0));
             clippedRect->setSize(fittedSize);
         }
@@ -418,7 +418,7 @@ bool SizeFitter::exactFit(QSize size, QSize &fittedSize, QRect *clippedRect) con
         result = false;
     }
 
-    if (clippedRect != 0) {
+    if (clippedRect != nullptr) {
         clip(size, orientedTargetSize, clippedRect);
     }
     return result;

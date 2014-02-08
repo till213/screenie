@@ -80,7 +80,7 @@ public:
     }
 };
 
-Settings *SettingsPrivate::instance = 0;
+Settings *SettingsPrivate::instance = nullptr;
 
 const QSize SettingsPrivate::DefaultMaximumImageSize = QSize(1024, 1024);
 const QSize SettingsPrivate::DefaultTemplateSize = QSize(400, 300);
@@ -99,16 +99,16 @@ const QSize SettingsPrivate::DefaultMainWindowSize = QSize(800, 600);
 
 Settings &Settings::getInstance()
 {
-    if (SettingsPrivate::instance == 0) {
+    if (SettingsPrivate::instance == nullptr) {
         SettingsPrivate::instance = new Settings();
     }
     return *SettingsPrivate::instance;
 }
 
 void Settings::destroyInstance() {
-    if (SettingsPrivate::instance != 0) {
+    if (SettingsPrivate::instance != nullptr) {
         delete SettingsPrivate::instance;
-        SettingsPrivate::instance = 0;
+        SettingsPrivate::instance = nullptr;
     }
 }
 

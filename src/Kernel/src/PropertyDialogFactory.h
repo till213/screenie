@@ -39,7 +39,7 @@ class PropertyDialogFactory : public QObject
 {
     Q_OBJECT
 public:
-    PropertyDialogFactory(ScreenieControl &screenieControl, QObject *parent = 0);
+    PropertyDialogFactory(ScreenieControl &screenieControl, QObject *parent = nullptr);
     virtual ~PropertyDialogFactory();
 
     /*!
@@ -53,7 +53,7 @@ public:
      * \return a QDialog for the given \p screenieModel; can be \c deleted by the
      *         caller; has \c Qt::WA_DeleteOnClose set; may be 0 (no properties)
      */
-    QDialog *createDialog(ScreenieModelInterface &screenieModel, QWidget *parent = 0);
+    QDialog *createDialog(ScreenieModelInterface &screenieModel, QWidget *parent = nullptr);
 
 private:
     PropertyDialogFactoryPrivate *d;

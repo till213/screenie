@@ -37,7 +37,7 @@ class GeometryPropertiesWidget : public PropertyValidatorWidget
 {
     Q_OBJECT
 public:
-    explicit GeometryPropertiesWidget(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = 0);
+    explicit GeometryPropertiesWidget(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = nullptr);
     virtual ~GeometryPropertiesWidget();
 
 private:

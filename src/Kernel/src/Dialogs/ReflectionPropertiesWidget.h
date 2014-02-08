@@ -37,7 +37,7 @@ class ReflectionPropertiesWidget : public PropertyValidatorWidget
 {
     Q_OBJECT
 public:
-    ReflectionPropertiesWidget(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = 0);
+    ReflectionPropertiesWidget(ScreenieModelInterface &screenieModel, ScreenieControl &screenieControl, QWidget *parent = nullptr);
     virtual ~ReflectionPropertiesWidget();
 
 private:

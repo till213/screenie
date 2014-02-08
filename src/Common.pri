@@ -42,7 +42,7 @@ CONFIG(debug, debug|release) {
 }
 
 unix:linux* {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
+    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -std=c++11
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
     QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
 }

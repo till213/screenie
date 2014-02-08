@@ -42,7 +42,7 @@ public:
     static QDialog *lastDialog;
 };
 
-QDialog *PropertyDialogFactoryPrivate::lastDialog = 0;
+QDialog *PropertyDialogFactoryPrivate::lastDialog = nullptr;
 
 // public
 
@@ -59,32 +59,32 @@ PropertyDialogFactory::~PropertyDialogFactory()
 
 QDialog *PropertyDialogFactory::createDialog(ScreenieModelInterface &screenieModel, QWidget *parent)
 {
-    QDialog *result = 0;
+    QDialog *result = nullptr;
     ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-    if (screenieTemplateModel != 0) {
+    if (screenieTemplateModel != nullptr) {
         result = new TemplateModelPropertiesDialog(*screenieTemplateModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
         result->setWindowTitle(QObject::tr("Template Properties"));
     } else {
         ScreenieFilePathModel *screenieFilePathModel = qobject_cast<ScreenieFilePathModel *>(&screenieModel);
-        if (screenieFilePathModel != 0) {
+        if (screenieFilePathModel != nullptr) {
             result = new FilePathModelPropertiesDialog(*screenieFilePathModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
             result->setWindowTitle(QObject::tr("Image Properties"));
         } else {
             ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(&screenieModel);
-            if (screenieImageModel != 0) {
+            if (screenieImageModel != nullptr) {
                 result = new ImageModelPropertiesDialog(*screenieImageModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
                 result->setWindowTitle(QObject::tr("Image Properties"));
             }
         }
     }
-    if (result != 0) {
+    if (result != nullptr) {
         connect(result, SIGNAL(destroyed()),
                 this, SLOT(handlePropertyDialogDestroyed()));
         result->setAttribute(Qt::WA_DeleteOnClose);
         result->setWindowIcon(QIcon(":/img/application-icon.png"));
         /*!\todo Bad design! The factory should not delete the previous dialog! That "logic" belongs
                  e.g. into the QGraphicsScene/View instance */
-        if (PropertyDialogFactoryPrivate::lastDialog != 0) {
+        if (PropertyDialogFactoryPrivate::lastDialog != nullptr) {
             delete PropertyDialogFactoryPrivate::lastDialog;
         }
         PropertyDialogFactoryPrivate::lastDialog = result;
@@ -95,6 +95,6 @@ QDialog *PropertyDialogFactory::createDialog(ScreenieModelInterface &screenieMod
 // private slots
 
 void PropertyDialogFactory::handlePropertyDialogDestroyed(){
-    PropertyDialogFactoryPrivate::lastDialog = 0;
+    PropertyDialogFactoryPrivate::lastDialog = nullptr;
 }
 

@@ -33,7 +33,7 @@ class PropertyValidatorWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PropertyValidatorWidget(QWidget *parent = 0);
+    explicit PropertyValidatorWidget(QWidget *parent = nullptr);
     virtual ~PropertyValidatorWidget();
 
 protected:

@@ -37,12 +37,12 @@ public:
 // public
 
 WindowsPlatformManager::WindowsPlatformManager()
-    :d(0)
+    :d(nullptr)
 {}
 
 WindowsPlatformManager::~WindowsPlatformManager()
 {
-    if (d != 0) {
+    if (d != nullptr) {
         delete d;
     }
 }

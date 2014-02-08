@@ -37,7 +37,7 @@ class TemplateModelPropertiesWidget : public PropertyValidatorWidget
 {
     Q_OBJECT
 public:
-    TemplateModelPropertiesWidget(ScreenieTemplateModel &screenieTemplateModel, ScreenieControl &screenieControl, QWidget *parent = 0);
+    TemplateModelPropertiesWidget(ScreenieTemplateModel &screenieTemplateModel, ScreenieControl &screenieControl, QWidget *parent = nullptr);
     virtual ~TemplateModelPropertiesWidget();
 
     void initializeUi();

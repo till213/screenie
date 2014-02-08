@@ -38,7 +38,7 @@ class FilePathModelPropertiesWidget : public PropertyValidatorWidget
 {
     Q_OBJECT
 public:
-    FilePathModelPropertiesWidget(ScreenieFilePathModel &filePathModel, ScreenieControl &screenieControl, QWidget *parent = 0);
+    FilePathModelPropertiesWidget(ScreenieFilePathModel &filePathModel, ScreenieControl &screenieControl, QWidget *parent = nullptr);
     virtual ~FilePathModelPropertiesWidget();
 
 private:

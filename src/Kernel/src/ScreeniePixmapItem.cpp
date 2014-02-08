@@ -182,15 +182,9 @@ void ScreeniePixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             event->accept();
             // for now we only allow properties of a single item to be modified at the same time
             selectExclusive();
-            QWidget *parent;
-            if (scene() != 0) {
-                parent = scene()->views().first()->viewport();
-            } else {
-                parent = 0;
-            }
-            if (d->propertyDialog == 0) {
+            if (d->propertyDialog == nullptr) {
                 d->propertyDialog = d->propertyDialogFactory->createDialog(d->screenieModel);
-                if (d->propertyDialog != 0) {
+                if (d->propertyDialog != nullptr) {
                     connect(d->propertyDialog, SIGNAL(destroyed()),
                             this, SLOT(handlePropertyDialogDestroyed()));
                     QPoint position = this->calculateDialogPosition(event->screenPos());

@@ -116,7 +116,7 @@ QList<ScreenieTemplateModel *> ScreenieControl::getSelectedTemplateModels() cons
             ScreeniePixmapItem *screeniePixmapItem = static_cast<ScreeniePixmapItem *>(selectedItem);
             ScreenieModelInterface &screenieModel = screeniePixmapItem->getScreenieModel();
             ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-            if (screenieTemplateModel != 0) {
+            if (screenieTemplateModel != nullptr) {
                 result.append(screenieTemplateModel);
             }
         }
@@ -132,7 +132,7 @@ QList<ScreenieFilePathModel *> ScreenieControl::getSelectedFilePathModels() cons
             ScreeniePixmapItem *screeniePixmapItem = static_cast<ScreeniePixmapItem *>(selectedItem);
             ScreenieModelInterface &screenieModel = screeniePixmapItem->getScreenieModel();
             ScreenieFilePathModel *screenieFilePathModel = qobject_cast<ScreenieFilePathModel *>(&screenieModel);
-            if (screenieFilePathModel != 0) {
+            if (screenieFilePathModel != nullptr) {
                 result.append(screenieFilePathModel);
             }
         }
@@ -548,7 +548,7 @@ void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterfa
     QImage actualImage = image;
     if (!actualImage.isNull()) {
         ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(&screenieModel);
-        if (screenieImageModel != 0) {
+        if (screenieImageModel != nullptr) {
             // First set the image; this also makes sure that the actualImage
             // does not exceed maximum size...
             screenieImageModel->setImage(actualImage);
@@ -559,7 +559,7 @@ void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterfa
         } else {
             // convert to ScreenieImageModel
             ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-            if (screenieTemplateModel != 0) {
+            if (screenieTemplateModel != nullptr) {
                 actualImage = SceneGeometry::scaleToTemplate(*screenieTemplateModel, actualImage);
             }
             ScreenieImageModel *screenieImageModel = new ScreenieImageModel(actualImage);
@@ -575,7 +575,7 @@ void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterfa
 void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModelInterface &screenieModel)
 {
     ScreenieFilePathModel *filePathModel = qobject_cast<ScreenieFilePathModel *>(&screenieModel);
-    if (filePathModel != 0) {
+    if (filePathModel != nullptr) {
         QSize oldSize = filePathModel->getSize();
         filePathModel->setFilePath(filePath);
         QPointF itemPosition = SceneGeometry::calculateItemPosition(filePathModel->getPosition(), oldSize, filePathModel->getSize());
@@ -584,7 +584,7 @@ void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModel
         SizeFitter sizeFitter;
         ScreenieFilePathModel *screenieFilePathModel;
         ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
-        if (screenieTemplateModel != 0) {
+        if (screenieTemplateModel != nullptr) {
             sizeFitter = screenieTemplateModel->getSizeFitter();
             screenieFilePathModel = new ScreenieFilePathModel(filePath, &sizeFitter);
         } else {
@@ -602,7 +602,7 @@ void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModel
 QList<ScreenieModelInterface *> ScreenieControl::getEditableModels(ScreenieModelInterface *screenieModel)
 {
     QList<ScreenieModelInterface *> result;
-    if (screenieModel != 0) {
+    if (screenieModel != nullptr) {
         result.append(screenieModel);
     } else {
         result = getSelectedScreenieModels();
@@ -613,7 +613,7 @@ QList<ScreenieModelInterface *> ScreenieControl::getEditableModels(ScreenieModel
 QList<ScreenieFilePathModel *> ScreenieControl::getEditableFilePathModels(ScreenieFilePathModel *screenieFilePathModel)
 {
     QList<ScreenieFilePathModel *> result;
-    if (screenieFilePathModel != 0) {
+    if (screenieFilePathModel != nullptr) {
         result.append(screenieFilePathModel);
     } else {
         result = getSelectedFilePathModels();
@@ -624,7 +624,7 @@ QList<ScreenieFilePathModel *> ScreenieControl::getEditableFilePathModels(Screen
 QList<ScreenieTemplateModel *> ScreenieControl::getEditableTemplateModels(ScreenieTemplateModel *screenieTemplateModel)
 {
     QList<ScreenieTemplateModel *> result;
-    if (screenieTemplateModel != 0) {
+    if (screenieTemplateModel != nullptr) {
         result.append(screenieTemplateModel);
     } else {
         result = getSelectedTemplateModels();

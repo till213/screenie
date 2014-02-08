@@ -37,7 +37,7 @@ class ScreenieScene : public QObject
 {
     Q_OBJECT
 public:
-    MODEL_API explicit ScreenieScene(QObject *parent = 0);
+    MODEL_API explicit ScreenieScene(QObject *parent = nullptr);
     MODEL_API virtual ~ScreenieScene();
 
     /*!

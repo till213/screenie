@@ -55,7 +55,7 @@ public:
     static DocumentManager::CloseRequest closeRequest;
 };
 
-DocumentManager *DocumentManagerPrivate::instance = 0;
+DocumentManager *DocumentManagerPrivate::instance = nullptr;
 int DocumentManagerPrivate::nextWindowId = 1;
 DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentManager::CloseCurrent;
 
@@ -63,7 +63,7 @@ DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentMan
 
 DocumentManager &DocumentManager::getInstance()
 {
-    if (DocumentManagerPrivate::instance == 0) {
+    if (DocumentManagerPrivate::instance == nullptr) {
         DocumentManagerPrivate::instance = new DocumentManager();
     }
     return *DocumentManagerPrivate::instance;
@@ -71,9 +71,9 @@ DocumentManager &DocumentManager::getInstance()
 
 void DocumentManager::destroyInstance()
 {
-    if (DocumentManagerPrivate::instance != 0) {
+    if (DocumentManagerPrivate::instance != nullptr) {
         delete DocumentManagerPrivate::instance;
-        DocumentManagerPrivate::instance = 0;
+        DocumentManagerPrivate::instance = nullptr;
     }
 }
 
@@ -109,7 +109,7 @@ QString DocumentManager::getDocumentFileName(const QMainWindow &mainWindow) cons
 {
     QString result;
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         result = documentInfo->documentFileName;
     }
     return result;
@@ -132,10 +132,10 @@ QString DocumentManager::getDocumentName(const QMainWindow &mainWindow) const
 void DocumentManager::setDocumentFileName(const QString &documentFileName, const QMainWindow &mainWindow)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         documentInfo->documentFileName = documentFileName;
         QAction *action = getWindowAction(documentInfo->id);
-        if (action != 0) {
+        if (action != nullptr) {
             action->setText(documentFileName);
         }
     }
@@ -166,7 +166,7 @@ DocumentInfo::SaveStrategy DocumentManager::getSaveStrategy(const QMainWindow &m
 {
     DocumentInfo::SaveStrategy result;
     const DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         result = documentInfo->saveStrategy;
     } else {
         result = DocumentInfo::Discard;
@@ -177,7 +177,7 @@ DocumentInfo::SaveStrategy DocumentManager::getSaveStrategy(const QMainWindow &m
 void DocumentManager::setSaveStrategy(const QMainWindow &mainWindow, DocumentInfo::SaveStrategy saveStrategy)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         documentInfo->saveStrategy = saveStrategy;
     }
 }
@@ -207,7 +207,7 @@ QMainWindow *DocumentManager::getRecentActiveDialogMainWindow() const
     if (!d->activeDialogWindows.isEmpty()) {
         result = d->activeDialogWindows.last();
     } else {
-        result = 0;
+        result = nullptr;
     }
     return result;
 }
@@ -226,7 +226,7 @@ bool DocumentManager::eventFilter(QObject *object, QEvent *event)
 {
     bool result;
     const QMainWindow *mainWindow = qobject_cast<const QMainWindow *>(object);
-    if (mainWindow != 0) {
+    if (mainWindow != nullptr) {
         switch (event->type()) {
         case QEvent::ActivationChange:
             updateActionGroup(*mainWindow);
@@ -266,9 +266,9 @@ void DocumentManager::frenchConnection()
 void DocumentManager::updateActionGroup(const QMainWindow &mainWindow)
 {
     const DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         QAction *action = getWindowAction(documentInfo->id);
-        if (action != 0) {
+        if (action != nullptr) {
             action->setChecked(mainWindow.isActiveWindow());
         }
     }
@@ -276,7 +276,7 @@ void DocumentManager::updateActionGroup(const QMainWindow &mainWindow)
 
 QAction *DocumentManager::getWindowAction(int id) const
 {
-    QAction *result = 0;
+    QAction *result = nullptr;
     foreach (QAction *action, d->windowActionGroup->actions()) {
         if (action->data().toInt() == id) {
             result = action;
@@ -288,7 +288,7 @@ QAction *DocumentManager::getWindowAction(int id) const
 
 DocumentInfo *DocumentManager::getDocumentInfoFromObject(const QObject &object) const
 {
-    DocumentInfo *result = 0;
+    DocumentInfo *result = nullptr;
     foreach (DocumentInfo *documentInfo, d->documentInfos) {
         if (documentInfo->mainWindow->objectName() == object.objectName()) {
             result = documentInfo;
@@ -303,7 +303,7 @@ DocumentInfo *DocumentManager::getDocumentInfoFromObject(const QObject &object) 
 void DocumentManager::remove(QObject *object)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(*object);
-    if (documentInfo != 0) {
+    if (documentInfo != nullptr) {
         foreach (QAction *action, d->windowActionGroup->actions()) {
             if (action->data().toInt() == documentInfo->id) {
                 delete action;

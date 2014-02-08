@@ -85,7 +85,7 @@ void AbstractPlatformManager::initialize(QMainWindow &mainWindow, Ui::MainWindow
 bool AbstractPlatformManager::isFullScreen() const
 {
     bool result;
-    if (d != 0) {
+    if (d != nullptr) {
         result = d->mainWindow.isFullScreen();
     } else {
         result = false;
@@ -104,7 +104,7 @@ bool AbstractPlatformManager::isFullScreen() const
 QMainWindow *AbstractPlatformManager::getMainWindow() const
 {
     QMainWindow *result;
-    if (d != 0) {
+    if (d != nullptr) {
         result = &d->mainWindow;
     } else {
         result = 0;
@@ -118,7 +118,7 @@ QMainWindow *AbstractPlatformManager::getMainWindow() const
 Ui::MainWindow *AbstractPlatformManager::getMainWindowUi()
 {
     Ui::MainWindow *result;
-    if (d != 0) {
+    if (d != nullptr) {
         result = &d->mainWindowUi;
     } else {
         result = 0;
@@ -143,8 +143,8 @@ void AbstractPlatformManager::intializeIcons(Ui::MainWindow &mainWindowUi)
 
 void AbstractPlatformManager::cleanUp()
 {
-    if (d != 0) {
+    if (d != nullptr) {
         delete d;
-        d = 0;
+        d = nullptr;
     }
 }
