@@ -1,7 +1,7 @@
 APP_NAME = Screenie
 
 LANGUAGE = C++
-CONFIG += qt warn_on thread
+CONFIG += qt warn_on thread c++11
 
 # Should match with Utils/src/Version.h
 VERSION=1.0.0
@@ -39,24 +39,21 @@ CONFIG(debug, debug|release) {
     INSTALLS += target
 }
 
-QMAKE_CXXFLAGS += -std=c++11
-
 unix:linux* {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
-    QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
+    # Pick up libraries in the same path as the executable
     QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
 }
 
 win32-g++ {
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized
-    QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
+
 }
 
 macx {
-    # Create debug symbols
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -gdwarf-2 -std=c++11
-    QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes gdwarf-2
+    # Create debug symbols in release mode
+    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2
+    QMAKE_CFLAGS_RELEASE += -gdwarf-2
+    QMAKE_OBJECTIVE_CFLAGS_RELEASE += -gdwarf-2
     # Enable ARC
-    QMAKE_OBJECTIVE_CFLAGS += -gdwarf-2 -fobjc-arc
+    QMAKE_OBJECTIVE_CFLAGS += -fobjc-arc
 }
 
