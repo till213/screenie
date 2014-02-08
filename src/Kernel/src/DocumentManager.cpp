@@ -63,7 +63,7 @@ DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentMan
 
 DocumentManager &DocumentManager::getInstance()
 {
-    if (DocumentManagerPrivate::instance == 0) {
+    if (DocumentManagerPrivate::instance == nullptr) {
         DocumentManagerPrivate::instance = new DocumentManager();
     }
     return *DocumentManagerPrivate::instance;

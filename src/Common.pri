@@ -52,7 +52,7 @@ win32-g++ {
 
 macx {
     # Create debug symbols
-    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -gdwarf-2
+    QMAKE_CXXFLAGS += -Wall -Woverloaded-virtual -Wno-deprecated -Wuninitialized -gdwarf-2 -std=c++11
     QMAKE_CFLAGS += -Wstrict-prototypes -Wmissing-prototypes gdwarf-2
     # Enable ARC
     QMAKE_OBJECTIVE_CFLAGS += -gdwarf-2 -fobjc-arc
