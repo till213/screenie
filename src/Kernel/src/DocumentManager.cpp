@@ -151,6 +151,22 @@ void DocumentManager::setDocumentFilePath(const QString &documentFilePath, const
     }
 }
 
+bool DocumentManager::activate(const QString &filePath)
+{
+    bool result;
+
+    result = false;
+    foreach(DocumentInfo *documentInfo, d->documentInfos) {
+        if (documentInfo->getFilePath() == filePath) {
+            documentInfo->getMainWindow().activateWindow();
+            documentInfo->getMainWindow().raise();
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
 QActionGroup &DocumentManager::getActionGroup() const
 {
     return *d->windowActionGroup;

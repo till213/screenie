@@ -608,27 +608,29 @@ void MainWindow::on_openAction_triggered()
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open", "Open file dialog"), lastDocumentDirectoryPath, filter);
 
     if (!filePath.isNull()) {
-        bool ok;
-        if (m_screenieScene->isDefault()) {
-            ok = read(filePath);
-        } else {
-            MainWindow *mainWindow = createMainWindow();
-            ok = mainWindow->read(filePath);
-            if (ok) {
-                mainWindow->show();
+        if (!DocumentManager::getInstance().activate(filePath)) {
+            bool ok;
+            if (m_screenieScene->isDefault()) {
+                ok = read(filePath);
             } else {
-                delete mainWindow;
+                MainWindow *mainWindow = createMainWindow();
+                ok = mainWindow->read(filePath);
+                if (ok) {
+                    mainWindow->show();
+                } else {
+                    delete mainWindow;
+                }
             }
-        }
-        if (ok) {
-            QString lastDocumentFilePath = QFileInfo(filePath).absolutePath();
-            Settings::getInstance().setLastDocumentDirectoryPath(lastDocumentFilePath);
-        } else {
-            m_errorMessage = tr("Could not read document \"%1\"!")
-                             .arg(QDir::toNativeSeparators(filePath));
-            // the Open File dialog above is not shown as Sheet, hence no need for the
-            // workaround QTimer single-shot
-            showError();
+            if (ok) {
+                QString lastDocumentFilePath = QFileInfo(filePath).absolutePath();
+                Settings::getInstance().setLastDocumentDirectoryPath(lastDocumentFilePath);
+            } else {
+                m_errorMessage = tr("Could not read document \"%1\"!")
+                                 .arg(QDir::toNativeSeparators(filePath));
+                // the Open File dialog above is not shown as Sheet, hence no need for the
+                // workaround QTimer single-shot
+                showError();
+            }
         }
     }
 }

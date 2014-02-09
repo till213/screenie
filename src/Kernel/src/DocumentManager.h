@@ -65,10 +65,11 @@ public:
 
     KERNEL_API QString getDocumentFileName(const QMainWindow &mainWindow) const;
     KERNEL_API QString getDocumentName(const QMainWindow &mainWindow) const;
-    //KERNEL_API void setDocumentName(const QString &documentFileName, const QMainWindow &mainWindow);
 
     KERNEL_API QString getDocumentFilePath(const QMainWindow &mainWindow) const;
     KERNEL_API void setDocumentFilePath(const QString &filePath, const QMainWindow &mainWindow);
+
+    KERNEL_API bool activate(const QString &filePath);
 
     KERNEL_API QActionGroup &getActionGroup() const;
     KERNEL_API int count() const;
