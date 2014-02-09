@@ -18,13 +18,13 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QRectF>
-#include <QtCore/QPointF>
-#include <QtCore/QSizeF>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QImage>
-#include <QtGui/QPainter>
+#include <QRectF>
+#include <QPointF>
+#include <QSizeF>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
+#include <QImage>
+#include <QPainter>
 
 #include "../../Model/src/ScreenieScene.h"
 #include "ExportImage.h"

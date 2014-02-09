@@ -21,7 +21,7 @@
 #ifndef TEMPLATEMODELPROPERTIESWIDGET_H
 #define TEMPLATEMODELPROPERTIESWIDGET_H
 
-#include <QtWidgets/QWidget>
+#include <QWidget>
 
 #include "PropertyValidatorWidget.h"
 

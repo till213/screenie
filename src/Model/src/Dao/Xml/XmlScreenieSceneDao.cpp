@@ -18,12 +18,12 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QStringRef>
-#include <QtCore/QIODevice>
-#include <QtCore/QXmlStreamWriter>
-#include <QtCore/QXmlStreamReader>
-#include <QtGui/QColor>
+#include <QString>
+#include <QStringRef>
+#include <QIODevice>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QColor>
 
 #include "../../../../Utils/src/Version.h"
 #include "../../ScreenieScene.h"

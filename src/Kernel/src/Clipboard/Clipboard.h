@@ -21,7 +21,7 @@
 #ifndef CLIPBOARD_H
 #define CLIPBOARD_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class QGraphicsScene;
 

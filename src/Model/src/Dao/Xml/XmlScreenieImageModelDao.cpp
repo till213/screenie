@@ -18,12 +18,12 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QBuffer>
-#include <QtCore/QFile>
-#include <QtCore/QByteArray>
-#include <QtCore/QXmlStreamWriter>
-#include <QtGui/QImage>
+#include <QString>
+#include <QBuffer>
+#include <QFile>
+#include <QByteArray>
+#include <QXmlStreamWriter>
+#include <QImage>
 
 #include "../../ScreenieImageModel.h"
 #include "XmlScreenieImageModelDao.h"

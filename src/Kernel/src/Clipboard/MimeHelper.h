@@ -21,7 +21,7 @@
 #ifndef MIMEHELPER_H
 #define MIMEHELPER_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class QMimeData;
 

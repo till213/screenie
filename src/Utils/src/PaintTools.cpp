@@ -18,12 +18,12 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QSize>
-#include <QtGui/QImage>
-#include <QtGui/QPixmap>
-#include <QtGui/QLinearGradient>
-#include <QtGui/QPainter>
-#include <QtGui/QBrush>
+#include <QSize>
+#include <QImage>
+#include <QPixmap>
+#include <QLinearGradient>
+#include <QPainter>
+#include <QBrush>
 
 #include "PaintTools.h"
 

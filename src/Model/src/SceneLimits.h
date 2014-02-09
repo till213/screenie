@@ -21,7 +21,7 @@
 #ifndef SCENELIMITS_H
 #define SCENELIMITS_H
 
-#include <QtCore/QSize>
+#include <QSize>
 
 #include "ModelLib.h"
 

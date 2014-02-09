@@ -21,10 +21,10 @@
 #ifndef SCREENIEFILEPATHMODEL_H
 #define SCREENIEFILEPATHMODEL_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtGui/QImage>
+#include <QObject>
+#include <QSize>
+#include <QString>
+#include <QImage>
 
 class QString;
 

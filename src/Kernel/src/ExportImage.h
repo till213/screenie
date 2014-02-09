@@ -21,7 +21,7 @@
 #ifndef EXPORTIMAGE_H
 #define EXPORTIMAGE_H
 
-#include <QtGui/QImage>
+#include <QImage>
 
 class QGraphicsScene;
 class QString;

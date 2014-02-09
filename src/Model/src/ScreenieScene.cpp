@@ -18,9 +18,9 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtGui/QColor>
+#include <QObject>
+#include <QList>
+#include <QColor>
 
 #include "ScreenieModelInterface.h"
 #include "SceneDefaults.h"

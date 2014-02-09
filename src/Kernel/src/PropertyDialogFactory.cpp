@@ -18,9 +18,9 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtWidgets/QDialog>
-#include <QtGui/QIcon>
+#include <QObject>
+#include <QDialog>
+#include <QIcon>
 
 #include "../../Model/src/ScreenieModelInterface.h"
 #include "../../Model/src/ScreenieFilePathModel.h"

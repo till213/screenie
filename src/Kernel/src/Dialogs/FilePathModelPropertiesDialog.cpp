@@ -18,7 +18,7 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtWidgets/QTabWidget>
+#include <QTabWidget>
 
 #include "../../../Model/src/ScreenieFilePathModel.h"
 #include "../ScreenieControl.h"

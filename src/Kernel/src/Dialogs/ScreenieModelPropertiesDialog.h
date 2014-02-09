@@ -21,7 +21,7 @@
 #ifndef SCREENIEMODELPROPERTIESDIALOG_H
 #define SCREENIEMODELPROPERTIESDIALOG_H
 
-#include <QtWidgets/QDialog>
+#include <QDialog>
 
 class ScreenieModelInterface;
 class ScreenieControl;

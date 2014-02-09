@@ -1,10 +1,10 @@
 #ifndef SIZEFITTER_H
 #define SIZEFITTER_H
 
-#include <QtCore/QSize>
-#include <QtCore/QRect>
-#include <QtCore/QBitArray>
-#include <QtCore/QObject>
+#include <QSize>
+#include <QRect>
+#include <QBitArray>
+#include <QObject>
 
 #include "UtilsLib.h"
 

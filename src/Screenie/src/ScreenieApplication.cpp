@@ -18,14 +18,14 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QTranslator>
-#include <QtCore/QString>
-#include <QtCore/QLocale>
-#include <QtCore/QStringList>
-#include <QtCore/QLibraryInfo>
-#include <QtGui/QIcon>
-#include <QtCore/QEvent>
-#include <QtGui/QFileOpenEvent>
+#include <QTranslator>
+#include <QString>
+#include <QLocale>
+#include <QStringList>
+#include <QLibraryInfo>
+#include <QIcon>
+#include <QEvent>
+#include <QFileOpenEvent>
 
 #include "../../Utils/src/Settings.h"
 #include "../../Kernel/src/DocumentManager.h"

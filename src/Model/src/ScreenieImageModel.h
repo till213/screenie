@@ -21,10 +21,10 @@
 #ifndef SCREENIEIMAGEMODEL_H
 #define SCREENIEIMAGEMODEL_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtGui/QImage>
+#include <QObject>
+#include <QSize>
+#include <QString>
+#include <QImage>
 
 #include "AbstractScreenieModel.h"
 #include "ModelLib.h"

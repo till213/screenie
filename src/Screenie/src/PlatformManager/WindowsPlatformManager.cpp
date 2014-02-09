@@ -18,8 +18,8 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtWidgets/QAction>
-#include <QtGui/QKeySequence>
+#include <QAction>
+#include <QKeySequence>
 
 #include "ui_MainWindow.h"
 #include "WindowsPlatformManager.h"

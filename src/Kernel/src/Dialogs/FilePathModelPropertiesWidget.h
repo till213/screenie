@@ -21,8 +21,8 @@
 #ifndef FILEPATHMODELPROPERTIESWIDGET_H
 #define FILEPATHMODELPROPERTIESWIDGET_H
 
-#include <QtCore/QString>
-#include <QtWidgets/QWidget>
+#include <QString>
+#include <QWidget>
 
 #include "PropertyValidatorWidget.h"
 

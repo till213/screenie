@@ -18,11 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtWidgets/QAction>
-#include <QtGui/QKeySequence>
-#include <QtWidgets/QShortcut>
-#include <QtWidgets/QMainWindow>
+#include <QObject>
+#include <QAction>
+#include <QKeySequence>
+#include <QShortcut>
+#include <QMainWindow>
 
 #include "ui_MainWindow.h"
 #include "AbstractPlatformManager.h"

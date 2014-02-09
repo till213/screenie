@@ -21,7 +21,7 @@
 #ifndef XMLSCREENIESCENEDAO_H
 #define XMLSCREENIESCENEDAO_H
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 class QIODevice;
 

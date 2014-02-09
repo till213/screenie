@@ -18,10 +18,10 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtCore/QDir>
-#include <QtGui/QImage>
+#include <QSize>
+#include <QString>
+#include <QDir>
+#include <QImage>
 
 #include "../../Utils/src/SizeFitter.h"
 #include "../../Utils/src/PaintTools.h"

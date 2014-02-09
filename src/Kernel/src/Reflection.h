@@ -23,7 +23,7 @@
 
 class ReflectionPrivate;
 
-#include <QtGui/QImage>
+#include <QImage>
 
 #include "KernelLib.h"
 

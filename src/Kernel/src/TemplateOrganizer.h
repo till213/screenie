@@ -1,8 +1,8 @@
 #ifndef TEMPLATEORGANIZER_H
 #define TEMPLATEORGANIZER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QObject>
+#include <QList>
 
 class ScreenieScene;
 class ScreenieModelInterface;

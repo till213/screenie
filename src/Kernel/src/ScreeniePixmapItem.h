@@ -21,10 +21,10 @@
 #ifndef SCREENIEPIXMAPITEM_H
 #define SCREENIEPIXMAPITEM_H
 
-#include <QtCore/QPoint>
-#include <QtCore/QPointF>
-#include <QtCore/QVariant>
-#include <QtWidgets/QGraphicsPixmapItem>
+#include <QPoint>
+#include <QPointF>
+#include <QVariant>
+#include <QGraphicsPixmapItem>
 
 class QSize;
 class QGraphicsSceneMouseEvent;

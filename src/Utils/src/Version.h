@@ -21,8 +21,8 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#include <QtCore/QString>
-#include <QtCore/QDate>
+#include <QString>
+#include <QDate>
 
 #include "UtilsLib.h"
 

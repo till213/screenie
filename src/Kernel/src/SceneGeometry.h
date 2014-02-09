@@ -21,8 +21,8 @@
 #ifndef SCENEGEOMETRY_H
 #define SCENEGEOMETRY_H
 
-#include <QtCore/QPointF>
-#include <QtGui/QImage>
+#include <QPointF>
+#include <QImage>
 
 class QSize;
 

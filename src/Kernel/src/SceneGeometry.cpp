@@ -18,9 +18,9 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QPointF>
-#include <QtCore/QSize>
-#include <QtGui/QImage>
+#include <QPointF>
+#include <QSize>
+#include <QImage>
 
 #include "../../Utils/src/SizeFitter.h"
 #include "../../Model/src/ScreenieModelInterface.h"

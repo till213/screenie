@@ -18,11 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QLineEdit>
-#include <QtGui/QIntValidator>
+#include <QString>
+#include <QStringList>
+#include <QSlider>
+#include <QLineEdit>
+#include <QIntValidator>
 
 #include "../../../Utils/src/SizeFitter.h"
 #include "../../../Model/src/ScreenieTemplateModel.h"

@@ -21,8 +21,8 @@
 #ifndef DOCUMENTMANAGER_H
 #define DOCUMENTMANAGER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QObject>
+#include <QString>
 
 class QAction;
 class QActionGroup;

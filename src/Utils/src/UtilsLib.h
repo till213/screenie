@@ -21,7 +21,7 @@
 #ifndef UTILSLIB_H
 #define UTILSLIB_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 #ifdef UTILS_EXPORT
 # define UTILS_API Q_DECL_EXPORT

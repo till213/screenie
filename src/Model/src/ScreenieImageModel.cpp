@@ -18,9 +18,9 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtGui/QImage>
+#include <QSize>
+#include <QString>
+#include <QImage>
 
 #include "../../Utils/src/PaintTools.h"
 #include "ScreenieImageModel.h"

@@ -18,11 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QFileDialog>
+#include <QFileInfo>
+#include <QDir>
+#include <QFileInfo>
+#include <QWidget>
+#include <QFileDialog>
 
 #include "../../../Utils/src/FileUtils.h"
 #include "../../../Model/src/ScreenieFilePathModel.h"

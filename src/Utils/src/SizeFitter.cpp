@@ -1,8 +1,8 @@
 #include <limits>
 
-#include <QtCore/QSize>
-#include <QtCore/QRect>
-#include <QtCore/QBitArray>
+#include <QSize>
+#include <QRect>
+#include <QBitArray>
 
 #include "SizeFitter.h"
 

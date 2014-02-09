@@ -21,7 +21,7 @@
 #ifndef MACPLATFORMMANAGER_H
 #define MACPLATFORMMANAGER_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class QMainWindow;
 class QEvent;

@@ -18,11 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QIODevice>
-#include <QtCore/QXmlStreamWriter>
-#include <QtCore/QXmlStreamReader>
-#include <QtCore/QXmlStreamAttributes>
+#include <QString>
+#include <QIODevice>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QXmlStreamAttributes>
 
 #include "../../AbstractScreenieModel.h"
 #include "AbstractXmlScreenieModelDao.h"

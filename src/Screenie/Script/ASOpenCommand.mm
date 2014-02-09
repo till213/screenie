@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 
-#import <QtCore/QtGlobal>
+#import <QtGlobal>
 
 #import "ASOpenCommand.h"
 

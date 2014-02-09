@@ -21,7 +21,7 @@
 #ifndef SCREENIETEMPLATEMODEL_H
 #define SCREENIETEMPLATEMODEL_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class QImage;
 class QSize;

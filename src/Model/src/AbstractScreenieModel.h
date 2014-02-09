@@ -21,8 +21,8 @@
 #ifndef ABSTRACTSCREENIEMODEL_H
 #define ABSTRACTSCREENIEMODEL_H
 
-#include <QtCore/QPointF>
-#include <QtGui/QImage>
+#include <QPointF>
+#include <QImage>
 
 class AbstractScreenieModelPrivate;
 

@@ -21,7 +21,7 @@
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
-#include <QtCore/QString>
+#include <QString>
 
 #include "UtilsLib.h"
 

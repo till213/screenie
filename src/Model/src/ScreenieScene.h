@@ -21,9 +21,9 @@
 #ifndef SCREENIESCENE_H
 #define SCREENIESCENE_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtGui/QColor>
+#include <QObject>
+#include <QList>
+#include <QColor>
 
 #include "ModelLib.h"
 

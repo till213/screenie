@@ -21,7 +21,7 @@
 #ifndef DOCUMENTINFO_H
 #define DOCUMENTINFO_H
 
-#include <QtCore/QString>
+#include <QString>
 
 class QMainWindow;
 class ScreenieScene;

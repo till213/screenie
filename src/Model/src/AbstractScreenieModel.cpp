@@ -20,8 +20,8 @@
 
 #include <cmath>
 
-#include <QtCore/QPointF>
-#include <QtGui/QImage>
+#include <QPointF>
+#include <QImage>
 
 #include "../../Utils/src/Settings.h"
 #include "SceneLimits.h"

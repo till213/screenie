@@ -21,9 +21,9 @@
 #ifndef SCREENIEGRAPHICSSCENE_H
 #define SCREENIEGRAPHICSSCENE_H
 
-#include <QtCore/QList>
-#include <QtGui/QImage>
-#include <QtWidgets/QGraphicsScene>
+#include <QList>
+#include <QImage>
+#include <QGraphicsScene>
 
 class QGraphicsSceneDragDropEvent;
 class QEvent;

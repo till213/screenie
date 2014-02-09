@@ -21,7 +21,7 @@
 #ifndef PROPERTYDIALOGFACTORY_H
 #define PROPERTYDIALOGFACTORY_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class QDialog;
 class QWidget;

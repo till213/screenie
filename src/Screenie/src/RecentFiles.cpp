@@ -18,12 +18,12 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtCore/QFileInfo>
-#include <QtCore/QVariant>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QActionGroup>
-#include <QtGui/QKeySequence>
+#include <QObject>
+#include <QFileInfo>
+#include <QVariant>
+#include <QAction>
+#include <QActionGroup>
+#include <QKeySequence>
 
 #include "../../Utils/src/Settings.h"
 #include "RecentFiles.h"

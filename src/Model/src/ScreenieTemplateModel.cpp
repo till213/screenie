@@ -20,8 +20,8 @@
 
 #include <limits>
 
-#include <QtCore/QSize>
-#include <QtCore/QString>
+#include <QSize>
+#include <QString>
 
 #include "../../Utils/src/SizeFitter.h"
 #include "../../Utils/src/Settings.h"

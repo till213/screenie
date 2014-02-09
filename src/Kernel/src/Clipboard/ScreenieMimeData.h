@@ -21,8 +21,8 @@
 #ifndef SCREENIEMIMEDATA_H
 #define SCREENIEMIMEDATA_H
 
-#include <QtCore/QMimeData>
-#include <QtCore/QList>
+#include <QMimeData>
+#include <QList>
 
 class ScreenieModelInterface;
 class ScreenieMimeDataPrivate;

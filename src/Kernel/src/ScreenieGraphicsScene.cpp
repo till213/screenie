@@ -18,23 +18,23 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtCore/QUrl>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QList>
-#include <QtCore/QPointF>
-#include <QtCore/QTimer>
-#include <QtCore/QMimeData>
-#include <QtGui/QImage>
-#include <QtWidgets/QGraphicsSceneDragDropEvent>
-#include <QtGui/QDropEvent>
-#include <QtWidgets/QWidget>
-#include <QtCore/QEvent>
-#include <QtWidgets/QGestureEvent>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QPinchGesture>
-#include <QtWidgets/QGraphicsView>
+#include <QObject>
+#include <QUrl>
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QPointF>
+#include <QTimer>
+#include <QMimeData>
+#include <QImage>
+#include <QGraphicsSceneDragDropEvent>
+#include <QDropEvent>
+#include <QWidget>
+#include <QEvent>
+#include <QGestureEvent>
+#include <QGraphicsScene>
+#include <QPinchGesture>
+#include <QGraphicsView>
 
 #include "../../Utils/src/Settings.h"
 #include "Clipboard/MimeHelper.h"

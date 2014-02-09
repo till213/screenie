@@ -21,7 +21,7 @@
 #ifndef SCENEDEFAULTS_H
 #define SCENEDEFAULTS_H
 
-#include <QtGui/QColor>
+#include <QColor>
 
 class SceneDefaults
 {

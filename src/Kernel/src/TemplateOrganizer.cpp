@@ -1,5 +1,5 @@
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QList>
+#include <QtAlgorithms>
+#include <QList>
 
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/ScreenieTemplateModel.h"

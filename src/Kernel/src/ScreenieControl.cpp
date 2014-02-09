@@ -18,24 +18,24 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QPoint>
-#include <QtCore/QPointF>
-#include <QtCore/QRectF>
-#include <QtCore/QStringList>
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QMimeData>
-#include <QtCore/QUrl>
-#include <QtCore/QDir>
-#include <QtGui/QColor>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QGraphicsItem>
-#include <QtGui/QBrush>
-#include <QtGui/QImage>
-#include <QtGui/QPainter>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSlider>
+#include <QObject>
+#include <QList>
+#include <QPoint>
+#include <QPointF>
+#include <QRectF>
+#include <QStringList>
+#include <QtAlgorithms>
+#include <QMimeData>
+#include <QUrl>
+#include <QDir>
+#include <QColor>
+#include <QGraphicsView>
+#include <QGraphicsItem>
+#include <QBrush>
+#include <QImage>
+#include <QPainter>
+#include <QMainWindow>
+#include <QSlider>
 
 #include "../../Utils/src/PaintTools.h"
 #include "../../Utils/src/Settings.h"

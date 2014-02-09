@@ -18,11 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QIODevice>
-#include <QtCore/QBitArray>
-#include <QtCore/QXmlStreamWriter>
-#include <QtCore/QSize>
+#include <QString>
+#include <QIODevice>
+#include <QBitArray>
+#include <QXmlStreamWriter>
+#include <QSize>
 
 #include "../../../../Utils/src/SizeFitter.h"
 #include "../../ScreenieTemplateModel.h"

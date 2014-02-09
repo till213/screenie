@@ -18,16 +18,16 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QMimeData>
-#include <QtCore/QUrl>
-#include <QtCore/QString>
+#include <QMimeData>
+#include <QUrl>
+#include <QString>
 
 #include "../../../Utils/src/Version.h"
 #include "ScreenieMimeData.h"
 #include "MimeHelper.h"
 
 #ifdef DEBUG
-#include <QtCore/QStringList>
+#include <QStringList>
 #endif
 
 // public

@@ -20,26 +20,26 @@
 
 #include <cmath>
 
-#include <QtCore/QPoint>
-#include <QtCore/QMimeData>
-#include <QtCore/QUrl>
-#include <QtCore/QEvent>
-#include <QtCore/QRectF>
-#include <QtWidgets/QGraphicsPixmapItem>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QBrush>
-#include <QtGui/QColor>
-#include <QtGui/QPixmap>
-#include <QtGui/QImage>
-#include <QtGui/QFont>
-#include <QtGui/QFontMetrics>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
+#include <QPoint>
+#include <QMimeData>
+#include <QUrl>
+#include <QEvent>
+#include <QRectF>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QBrush>
+#include <QColor>
+#include <QPixmap>
+#include <QImage>
+#include <QFont>
+#include <QFontMetrics>
+#include <QDialog>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include "../../Utils/src/PaintTools.h"
 #include "../../Model/src/ScreenieModelInterface.h"

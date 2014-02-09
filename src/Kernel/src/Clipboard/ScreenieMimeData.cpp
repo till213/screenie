@@ -18,8 +18,8 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QtAlgorithms>
-#include <QtCore/QList>
+#include <QtAlgorithms>
+#include <QList>
 
 #include "../../../Model/src/ScreenieModelInterface.h"
 #include "ScreenieMimeData.h"

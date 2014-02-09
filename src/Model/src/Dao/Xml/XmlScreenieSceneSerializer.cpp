@@ -18,8 +18,8 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QByteArray>
-#include <QtCore/QBuffer>
+#include <QByteArray>
+#include <QBuffer>
 
 #include "../../ScreenieScene.h"
 #include "XmlScreenieSceneDao.h"

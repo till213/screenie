@@ -21,9 +21,9 @@
 #ifndef PAINTTOOLS_H
 #define PAINTTOOLS_H
 
-#include <QtGui/QPixmap>
-#include <QtGui/QImage>
-#include <QtGui/QBrush>
+#include <QPixmap>
+#include <QImage>
+#include <QBrush>
 
 class QPainter;
 class QString;

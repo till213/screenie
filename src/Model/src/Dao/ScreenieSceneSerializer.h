@@ -1,7 +1,7 @@
 #ifndef SCREENIESCENESERIALISATION_H
 #define SCREENIESCENESERIALISATION_H
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 class ScreenieScene;
 

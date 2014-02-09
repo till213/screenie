@@ -21,7 +21,7 @@
 #ifndef MODELLIB_H
 #define MODELLIB_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 #ifdef MODEL_EXPORT
 # define MODEL_API Q_DECL_EXPORT

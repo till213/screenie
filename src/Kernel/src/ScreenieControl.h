@@ -21,15 +21,15 @@
 #ifndef SCREENIECONTROL_H
 #define SCREENIECONTROL_H
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-#include <QtCore/QPointF>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QList>
-#include <QtGui/QBrush>
-#include <QtGui/QColor>
-#include <QtGui/QImage>
+#include <QObject>
+#include <QTimer>
+#include <QPointF>
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QBrush>
+#include <QColor>
+#include <QImage>
 
 class QImage;
 class QString;

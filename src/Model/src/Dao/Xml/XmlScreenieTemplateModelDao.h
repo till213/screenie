@@ -21,8 +21,8 @@
 #ifndef XMLSCREENIETEMPLATEMODELDAO_H
 #define XMLSCREENIETEMPLATEMODELDAO_H
 
-#include <QtCore/QString>
-#include <QtCore/QBitArray>
+#include <QString>
+#include <QBitArray>
 
 class QXmlStreamWriter;
 class QXmlStreamReader;

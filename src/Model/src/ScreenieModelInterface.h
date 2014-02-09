@@ -21,9 +21,9 @@
 #ifndef SCREENIEMODELINTERFACE_H
 #define SCREENIEMODELINTERFACE_H
 
-#include <QtCore/QObject>
-#include <QtCore/QPointF>
-#include <QtGui/QImage>
+#include <QObject>
+#include <QPointF>
+#include <QImage>
 
 #include "ModelLib.h"
 
