@@ -43,6 +43,9 @@ public:
 
     ~DocumentManagerPrivate()
     {
+        foreach (DocumentInfo *documentInfo, documentInfos) {
+            delete documentInfo;
+        }
         delete windowActionGroup;
     }
 
@@ -79,22 +82,23 @@ void DocumentManager::destroyInstance()
 
 void DocumentManager::add(DocumentInfo *documentInfo)
 {
-    QMainWindow *mainWindow = documentInfo->getMainWindow();
+    QMainWindow &mainWindow = documentInfo->getMainWindow();
     d->documentInfos.append(documentInfo);
-    connect(mainWindow, SIGNAL(destroyed(QObject *)),
+    connect(&mainWindow, SIGNAL(destroyed(QObject *)),
             this, SLOT(remove(QObject *)));
     // update object name ("window ID")
-    mainWindow->setObjectName(mainWindow->objectName() + QString::number(d->nextWindowId));
-    mainWindow->installEventFilter(this);
-    /*!\todo This gets messy: make DocumentInfo a proper class. */
-    documentInfo->setWindowId(d->nextWindowId);
-    ++d->nextWindowId;
-    documentInfo->setName(tr("New %1", "New document title + ID").arg(documentInfo->getWindowId()));
+    mainWindow.setObjectName(mainWindow.objectName() + QString::number(d->nextWindowId));
+    mainWindow.installEventFilter(this);
+
+    documentInfo->setId(d->nextWindowId);
+    d->nextWindowId++;
+    documentInfo->setFileName(tr("New %1", "New document title + ID").arg(documentInfo->getId()));
+
     QAction *action = new QAction(d->windowActionGroup);
     action->setCheckable(true);
-    action->setData(documentInfo->getWindowId());
+    action->setData(documentInfo->getId());
     action->setText(documentInfo->getName());
-    d->windowMapper.setMapping(action, documentInfo->getWindowId());
+    d->windowMapper.setMapping(action, documentInfo->getId());
     connect(action, SIGNAL(triggered()),
             &d->windowMapper, SLOT(map()));
     emit changed();
@@ -110,7 +114,7 @@ QString DocumentManager::getDocumentFileName(const QMainWindow &mainWindow) cons
     QString result;
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
     if (documentInfo != nullptr) {
-        result = documentInfo->getName();
+        result = documentInfo->getFileName();
     }
     return result;
 }
@@ -118,25 +122,31 @@ QString DocumentManager::getDocumentFileName(const QMainWindow &mainWindow) cons
 QString DocumentManager::getDocumentName(const QMainWindow &mainWindow) const
 {
     QString result;
-    result = getDocumentFileName(mainWindow);
-    if (result.endsWith(FileUtils::SceneExtension)) {
-        // chop including the dot (.) -> +1
-        result.chop(FileUtils::SceneExtension.length() + 1);
-    } else if (result.endsWith(FileUtils::TemplateExtension)) {
-        // chop including the dot (.) -> +1
-        result.chop(FileUtils::TemplateExtension.length() + 1);
+    DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
+    if (documentInfo != nullptr) {
+        result = documentInfo->getName();
     }
     return result;
 }
 
-void DocumentManager::setDocumentFileName(const QString &documentFileName, const QMainWindow &mainWindow)
+QString DocumentManager::getDocumentFilePath(const QMainWindow &mainWindow) const
+{
+    QString result;
+    DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
+    if (documentInfo != nullptr) {
+        result = documentInfo->getFilePath();
+    }
+    return result;
+}
+
+void DocumentManager::setDocumentFilePath(const QString &documentFilePath, const QMainWindow &mainWindow)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
     if (documentInfo != nullptr) {
-        documentInfo->setName(documentFileName);
-        QAction *action = getWindowAction(documentInfo->getWindowId());
+        documentInfo->setFilePath(documentFilePath);
+        QAction *action = getWindowAction(documentInfo->getId());
         if (action != nullptr) {
-            action->setText(documentFileName);
+            action->setText(documentInfo->getFileName());
         }
     }
 }
@@ -155,7 +165,7 @@ int DocumentManager::getModifiedCount() const
 {
     int result = 0;
     foreach (const DocumentInfo *documentInfo, d->documentInfos) {
-        if (documentInfo->getScreenieScene()->isModified()) {
+        if (documentInfo->isModified()) {
             result++;
         }
     }
@@ -267,7 +277,7 @@ void DocumentManager::updateActionGroup(const QMainWindow &mainWindow)
 {
     const DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
     if (documentInfo != nullptr) {
-        QAction *action = getWindowAction(documentInfo->getWindowId());
+        QAction *action = getWindowAction(documentInfo->getId());
         if (action != nullptr) {
             action->setChecked(mainWindow.isActiveWindow());
         }
@@ -290,7 +300,7 @@ DocumentInfo *DocumentManager::getDocumentInfoFromObject(const QObject &object) 
 {
     DocumentInfo *result = nullptr;
     foreach (DocumentInfo *documentInfo, d->documentInfos) {
-        if (documentInfo->getMainWindow()->objectName() == object.objectName()) {
+        if (documentInfo->getMainWindow().objectName() == object.objectName()) {
             result = documentInfo;
             break;
         }
@@ -305,12 +315,13 @@ void DocumentManager::remove(QObject *object)
     DocumentInfo *documentInfo = getDocumentInfoFromObject(*object);
     if (documentInfo != nullptr) {
         foreach (QAction *action, d->windowActionGroup->actions()) {
-            if (action->data().toInt() == documentInfo->getWindowId()) {
+            if (action->data().toInt() == documentInfo->getId()) {
                 delete action;
                 break;
             }
         }
         d->documentInfos.removeOne(documentInfo);
+        delete documentInfo;
         emit changed();
     }
 }
@@ -318,9 +329,9 @@ void DocumentManager::remove(QObject *object)
 void DocumentManager::activate(int id) const
 {
     foreach(DocumentInfo *documentInfo, d->documentInfos) {
-        if (documentInfo->getWindowId() == id) {
-            documentInfo->getMainWindow()->activateWindow();
-            documentInfo->getMainWindow()->raise();
+        if (documentInfo->getId() == id) {
+            documentInfo->getMainWindow().activateWindow();
+            documentInfo->getMainWindow().raise();
             break;
         }
     }

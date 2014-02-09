@@ -121,7 +121,7 @@ bool MainWindow::read(const QString &filePath)
     ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
     ScreenieScene *screenieScene = screenieSceneDao->read();
     if (screenieScene != nullptr) {
-        m_documentFilePath = filePath;
+        DocumentManager::getInstance().setDocumentFilePath(filePath, *this);
         newScene(*screenieScene);
         result = true;
     } else {
@@ -225,7 +225,7 @@ bool MainWindow::writeScene(const QString &filePath)
     if (result) {
         m_screenieScene->setModified(false);
         setWindowModified(false);
-        m_documentFilePath = filePath;
+        DocumentManager::getInstance().setDocumentFilePath(filePath, *this);
         updateTitle();
     }
 
@@ -382,12 +382,7 @@ void MainWindow::updateTitle()
 {
     QString title;
     DocumentManager &documentManager = DocumentManager::getInstance();
-    if (!m_documentFilePath.isNull()) {
-        title = QFileInfo(m_documentFilePath).fileName();
-        documentManager.setDocumentFileName(title, *this);
-    } else {
-        title = documentManager.getDocumentFileName(*this);
-    }
+    title = documentManager.getDocumentFileName(*this);
     title.append("[*] - ");
     title.append(Version::getApplicationName());
     setWindowTitle(title);
@@ -465,16 +460,16 @@ void MainWindow::askBeforeClose()
 
 void MainWindow::saveBeforeClose()
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     if (!isFilePathRequired()) {
-        bool ok = writeScene(m_documentFilePath);
+        bool ok = writeScene(documentManager.getDocumentFilePath(*this));
         if (ok) {
             close();
         } else {
             m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
-                             .arg(DocumentManager::getInstance().getDocumentFileName(*this))
-                             .arg(QDir::toNativeSeparators(m_documentFilePath));
-            // workaround for "Cascading Mac Sheets" QTBUG-36721: use a single shot timer;
-            // also refer to http://qt-project.org/forums/viewthread/33684
+                             .arg(documentManager.getDocumentFileName(*this))
+                             .arg(QDir::toNativeSeparators(documentManager.getDocumentFilePath(*this)));
+            // workaround for "Cascading Mac Sheets" QTBUG-36721: use a single shot timer
             QTimer::singleShot(0, this, SLOT(showError()));
         }
     } else {
@@ -552,20 +547,13 @@ void MainWindow::restoreWindowGeometry()
 
 void MainWindow::updateDocumentManager()
 {
-    bool created;
     DocumentManager &documentManager = DocumentManager::getInstance();
     DocumentInfo *documentInfo = documentManager.getDocumentInfo(*this);
     if (documentInfo == nullptr) {
-        documentInfo = new DocumentInfo();
-        created = true;
-    } else {
-        created = false;
-    }
-    documentInfo->setMainWindow(this);
-    documentInfo->setScreenieScene(m_screenieScene);
-    documentInfo->setSaveStrategy(DocumentInfo::Ask);
-    if (created) {
+        documentInfo = new DocumentInfo(*this, m_screenieScene);
         documentManager.add(documentInfo);
+    } else {
+        documentInfo->setScreenieScene(m_screenieScene);
     }
 }
 
@@ -583,7 +571,8 @@ MainWindow *MainWindow::createMainWindow()
 
 bool MainWindow::isFilePathRequired() const
 {
-    return m_documentFilePath.isNull() || (m_screenieScene->isTemplate() && !m_screenieScene->hasTemplatesExclusively());
+    DocumentManager &documentManager = DocumentManager::getInstance();
+    return documentManager.getDocumentFilePath(*this).isNull() || (m_screenieScene->isTemplate() && !m_screenieScene->hasTemplatesExclusively());
 }
 
 void MainWindow::storeWindowGeometry()
@@ -646,13 +635,14 @@ void MainWindow::on_openAction_triggered()
 
 void MainWindow::on_saveAction_triggered()
 {
-    // save with given 'm_documentFilePath', if scene is not a template or if so, has only template items
+    DocumentManager &documentManager = DocumentManager::getInstance();
+    // save with document file path, if scene is not a template or if so, has only template items
     if (!isFilePathRequired()) {
-        bool ok = writeScene(m_documentFilePath);
+        bool ok = writeScene(documentManager.getDocumentFilePath(*this));
         if (!ok) {
             m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
-                            .arg(DocumentManager::getInstance().getDocumentFileName(*this))
-                            .arg(QDir::toNativeSeparators(m_documentFilePath));
+                            .arg(documentManager.getDocumentFileName(*this))
+                            .arg(QDir::toNativeSeparators(documentManager.getDocumentFilePath(*this)));
             QTimer::singleShot(0, this, SLOT(showError()));
 
         }

@@ -20,7 +20,9 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <QFileInfo>
 
+#include "../../../Utils/src/FileUtils.h"
 #include "../../../Model/src/ScreenieScene.h"
 
 #include "DocumentInfo.h"
@@ -28,70 +30,99 @@
 class DocumentInfoPrivate
 {
 public:
-    DocumentInfoPrivate()
+    DocumentInfoPrivate(QMainWindow &theMainWindow, const ScreenieScene *theScreenieScene)
+        : mainWindow(theMainWindow),
+          screenieScene(theScreenieScene),
+          saveStrategy(DocumentInfo::SaveStrategy::Ask)
     {}
     ~DocumentInfoPrivate() {}
 
     int id;
-    QMainWindow *mainWindow;
-    ScreenieScene *screenieScene;
-    QString name;
+    QMainWindow &mainWindow;
+    const ScreenieScene *screenieScene;
+    QString fileName;
+    QString filePath;
     DocumentInfo::SaveStrategy saveStrategy;
 };
 
 // public
 
-DocumentInfo::DocumentInfo()
+DocumentInfo::DocumentInfo(QMainWindow &mainWindow, const ScreenieScene *screenieScene)
 {
-    d = new DocumentInfoPrivate();
+    d = new DocumentInfoPrivate(mainWindow, screenieScene);
 }
 
 DocumentInfo::~DocumentInfo()
 {
 #ifdef DEBUG
-    qDebug("DocumentInfo::~DocumentInfo(): CALLED.");
+    qDebug("DocumentInfo::~DocumentInfo(): called.");
 #endif
     delete d;
 }
 
-int DocumentInfo::getWindowId() const
+int DocumentInfo::getId() const
 {
     return d->id;
 }
 
-void DocumentInfo::setWindowId(int id)
+void DocumentInfo::setId(int id)
 {
     d->id = id;
 }
 
-QMainWindow *DocumentInfo::getMainWindow() const
+QMainWindow &DocumentInfo::getMainWindow() const
 {
     return d->mainWindow;
 }
 
-void DocumentInfo::setMainWindow(QMainWindow *mainWindow)
-{
-    d->mainWindow = mainWindow;
-}
-
-ScreenieScene *DocumentInfo::getScreenieScene() const
+const ScreenieScene *DocumentInfo::getScreenieScene() const
 {
     return d->screenieScene;
 }
 
-void DocumentInfo::setScreenieScene(ScreenieScene *screenieScene)
+void DocumentInfo::setScreenieScene(const ScreenieScene *screenieScene)
 {
     d->screenieScene = screenieScene;
 }
 
 QString DocumentInfo::getName() const
 {
-    return d->name;
+    QString result;
+    result = getFileName();
+    if (result.endsWith(FileUtils::SceneExtension)) {
+        // chop including the dot (.) -> +1
+        result.chop(FileUtils::SceneExtension.length() + 1);
+    } else if (result.endsWith(FileUtils::TemplateExtension)) {
+        // chop including the dot (.) -> +1
+        result.chop(FileUtils::TemplateExtension.length() + 1);
+    }
+    return result;
 }
 
-void DocumentInfo::setName(const QString &name)
+QString DocumentInfo::getFileName() const
 {
-    d->name = name;
+    return d->fileName;
+}
+
+void DocumentInfo::setFileName(const QString &fileName)
+{
+    if (d->fileName != fileName) {
+        d->fileName = fileName;
+        d->filePath = QString();
+    }
+}
+
+QString DocumentInfo::getFilePath() const
+{
+    return d->filePath;
+}
+
+void DocumentInfo::setFilePath(const QString &filePath)
+{
+    if (d->filePath != filePath) {
+        d->filePath = filePath;
+        d->fileName = QFileInfo(d->filePath).fileName();
+    }
 }
 
 DocumentInfo::SaveStrategy DocumentInfo::getSaveStrategy() const
@@ -102,4 +133,9 @@ DocumentInfo::SaveStrategy DocumentInfo::getSaveStrategy() const
 void DocumentInfo::setSaveStrategy(SaveStrategy saveStrategy)
 {
     d->saveStrategy = saveStrategy;
+}
+
+bool DocumentInfo::isModified() const
+{
+    return d->screenieScene->isModified();
 }

@@ -43,28 +43,32 @@ public:
         Ask /*!< Ask the user whether to discard or save the modifications before closing the document */
     };
 
-    DocumentInfo();
+    DocumentInfo(QMainWindow &mainWindow, const ScreenieScene *screenieScene);
     virtual ~DocumentInfo();
 
-    int getWindowId() const;
-    void setWindowId(int id);
+    int getId() const;
+    void setId(int id);
 
-    QMainWindow *getMainWindow() const;
-    void setMainWindow(QMainWindow *mainWindow);
+    QMainWindow &getMainWindow() const;
+
+    const ScreenieScene *getScreenieScene() const;
+    void setScreenieScene(const ScreenieScene *screenieScene);
 
     QString getName() const;
-    void setName(const QString &name);
+    QString getFileName() const;
+    void setFileName(const QString &fileName);
 
     QString getFilePath() const;
     void setFilePath(const QString &filePath);
 
-    ScreenieScene *getScreenieScene() const;
-    void setScreenieScene(ScreenieScene *screenieScene);
-
     SaveStrategy getSaveStrategy() const;
     void setSaveStrategy(SaveStrategy SaveStrategy);
 
+    bool isModified() const;
+
 private:
+    Q_DISABLE_COPY(DocumentInfo)
+
     DocumentInfoPrivate *d;
 };
 

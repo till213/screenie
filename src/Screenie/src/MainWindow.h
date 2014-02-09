@@ -70,7 +70,7 @@ private:
     ScreenieControl *m_screenieControl;
     bool m_ignoreUpdateSignals;
     Clipboard *m_clipboard;
-    QString m_documentFilePath;
+    //QString m_documentFilePath;
     RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
