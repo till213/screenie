@@ -58,6 +58,6 @@ void WindowsPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow 
 
 void WindowsPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
-
+    Q_UNUSED(mainWindowUi);
 }
 
