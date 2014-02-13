@@ -24,6 +24,9 @@
 #include <QString>
 
 class QMainWindow;
+
+#include "KernelLib.h"
+
 class ScreenieScene;
 class DocumentInfoPrivate;
 
@@ -43,28 +46,28 @@ public:
         Ask /*!< Ask the user whether to discard or save the modifications before closing the document */
     };
 
-    DocumentInfo(QMainWindow &mainWindow, const ScreenieScene *screenieScene);
-    virtual ~DocumentInfo();
+    KERNEL_API DocumentInfo(QMainWindow &mainWindow, const ScreenieScene *screenieScene);
+    KERNEL_API virtual ~DocumentInfo();
 
-    int getId() const;
-    void setId(int id);
+    KERNEL_API int getId() const;
+    KERNEL_API void setId(int id);
 
-    QMainWindow &getMainWindow() const;
+    KERNEL_API QMainWindow &getMainWindow() const;
 
-    const ScreenieScene *getScreenieScene() const;
-    void setScreenieScene(const ScreenieScene *screenieScene);
+    KERNEL_API const ScreenieScene *getScreenieScene() const;
+    KERNEL_API void setScreenieScene(const ScreenieScene *screenieScene);
 
-    QString getName() const;
-    QString getFileName() const;
-    void setFileName(const QString &fileName);
+    KERNEL_API QString getName() const;
+    KERNEL_API QString getFileName() const;
+    KERNEL_API void setFileName(const QString &fileName);
 
-    QString getFilePath() const;
-    void setFilePath(const QString &filePath);
+    KERNEL_API QString getFilePath() const;
+    KERNEL_API void setFilePath(const QString &filePath);
 
-    SaveStrategy getSaveStrategy() const;
-    void setSaveStrategy(SaveStrategy SaveStrategy);
+    KERNEL_API SaveStrategy getSaveStrategy() const;
+    KERNEL_API void setSaveStrategy(SaveStrategy SaveStrategy);
 
-    bool isModified() const;
+    KERNEL_API bool isModified() const;
 
 private:
     Q_DISABLE_COPY(DocumentInfo)
