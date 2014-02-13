@@ -21,7 +21,10 @@
 #ifndef PLATFORMMANAGERFACTORY_H
 #define PLATFORMMANAGERFACTORY_H
 
+#include <QtGlobal>
+
 class PlatformManager;
+class PlatformManagerFactoryPrivate;
 
 /*!
  * Creates a concrete platform-specific instance of the
@@ -45,8 +48,10 @@ protected:
    virtual ~PlatformManagerFactory();
 
 private:
-   static PlatformManagerFactory *m_instance;
-   PlatformManagerFactory();
+    Q_DISABLE_COPY(PlatformManagerFactory)
+    PlatformManagerFactoryPrivate *d;
+
+    PlatformManagerFactory();
 };
 
 #endif // PLATFORMMANAGERFACTORY_H

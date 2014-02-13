@@ -21,23 +21,29 @@
 #include "PlatformManager.h"
 #include "PlatformManagerFactory.h"
 
-PlatformManagerFactory *PlatformManagerFactory::m_instance = nullptr;
+class PlatformManagerFactoryPrivate
+{
+public:
+    static PlatformManagerFactory *instance;
+};
+
+PlatformManagerFactory *PlatformManagerFactoryPrivate::instance = nullptr;
 
 // public
 
 PlatformManagerFactory &PlatformManagerFactory::getInstance()
 {
-    if (m_instance == nullptr) {
-        m_instance = new PlatformManagerFactory();
+    if (d->instance == nullptr) {
+        d->instance = new PlatformManagerFactory();
     }
-    return *m_instance;
+    return *d->instance;
 }
 
 void PlatformManagerFactory::destroyInstance()
 {
-    if (m_instance != nullptr) {
-        delete m_instance;
-        m_instance = nullptr;
+    if (d->instance != nullptr) {
+        delete d->instance;
+        d->instance = nullptr;
     }
 }
 
@@ -49,5 +55,4 @@ PlatformManagerFactory::~PlatformManagerFactory()
 // private
 
 PlatformManagerFactory::PlatformManagerFactory()
-{
-}
+{}
