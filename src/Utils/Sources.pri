@@ -13,3 +13,9 @@ SOURCES += $$PWD/src/PaintTools.cpp \
            $$PWD/src/Version.cpp \
            $$PWD/src/SizeFitter.cpp \
            $$PWD/src/FileUtils.cpp
+
+if (macx) {
+    OBJECTIVE_SOURCES += $$PWD/src/FileUtils_Mac.mm
+} else {
+    SOURCES += $$PWD/src/FileUtils_Default.cpp
+}

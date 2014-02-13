@@ -127,6 +127,8 @@ public:
     UTILS_API static QString getApplicationName();
 
 private:
+    Q_DISABLE_COPY(Version)
+
     VersionPrivate *d;
 };
 

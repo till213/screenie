@@ -72,7 +72,8 @@
 #ifdef Q_OS_MAC
 #include "PlatformManager/MacPlatformManager.h"
 #endif
-#include "RecentFiles.h"
+#include "RecentFile.h"
+#include "RecentFileMenu.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -85,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isFullScreenPreviously(false)
 {
     ui->setupUi(this);
+    m_recentFileMenu = new RecentFileMenu(this);
 
     m_screenieGraphicsScene = new ScreenieGraphicsScene(this);
     ui->graphicsView->setScene(m_screenieGraphicsScene);
@@ -191,7 +193,7 @@ void MainWindow::frenchConnection()
             this, SLOT(updateWindowMenu()));
 
     // recent files
-    connect(&m_recentFiles, SIGNAL(openRecentFile(const QString &)),
+    connect(m_recentFileMenu, SIGNAL(openRecentFile(const QString &)),
             this, SLOT(handleRecentFile(const QString &)));
 
     // Window menu
@@ -250,7 +252,7 @@ void MainWindow::initialiseUi()
     updateWindowMenu();
 
     // recent files menu
-    foreach (QAction *recentFileAction, m_recentFiles.getRecentFilesActionGroup().actions()) {
+    foreach (QAction *recentFileAction, m_recentFileMenu->getRecentFileActionGroup().actions()) {
         ui->recentFilesMenu->addAction(recentFileAction);
     }
 
@@ -624,6 +626,7 @@ void MainWindow::on_openAction_triggered()
             if (ok) {
                 QString lastDocumentFilePath = QFileInfo(filePath).absolutePath();
                 Settings::getInstance().setLastDocumentDirectoryPath(lastDocumentFilePath);
+                RecentFile::getInstance().addRecentFile(filePath);
             } else {
                 m_errorMessage = tr("Could not read document \"%1\"!")
                                  .arg(QDir::toNativeSeparators(filePath));
@@ -968,21 +971,24 @@ void MainWindow::updateDefaultValues()
 void MainWindow::handleRecentFile(const QString &filePath)
 {
     bool ok;
-    if (m_screenieScene->isDefault()) {
-        ok = read(filePath);
-    } else {
-        MainWindow *mainWindow = createMainWindow();
-        ok = mainWindow->read(filePath);
-        if (ok) {
-            mainWindow->show();
+    if (!DocumentManager::getInstance().activate(filePath)) {
+        if (m_screenieScene->isDefault()) {
+            ok = read(filePath);
         } else {
-            delete mainWindow;
+            MainWindow *mainWindow = createMainWindow();
+            ok = mainWindow->read(filePath);
+            if (ok) {
+                mainWindow->show();
+            } else {
+                delete mainWindow;
+            }
         }
-    }
-    if (!ok) {
-        m_errorMessage = tr("Could not read document \"%1\"!")
-                         .arg(filePath);
-        QTimer::singleShot(0, this, SLOT(showError()));
+        if (!ok) {
+            RecentFile::getInstance().removeRecentFile(filePath);
+            m_errorMessage = tr("Could not read document \"%1\"!")
+                             .arg(filePath);
+            QTimer::singleShot(0, this, SLOT(showError()));
+        }
     }
 }
 
@@ -1009,7 +1015,7 @@ void MainWindow::handleFileSaveAsSelected(const QString &filePath)
             QString lastDocumentDirectoryPath = QFileInfo(filePath).absolutePath();
             Settings &settings = Settings::getInstance();
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
-            settings.addRecentFile(filePath);
+            RecentFile::getInstance().addRecentFile(filePath);
         } else {
             m_errorMessage = tr("Could not save document \"%1\" to file \"%2\"!")
                              .arg(DocumentManager::getInstance().getDocumentFileName(*this))
@@ -1029,7 +1035,7 @@ void MainWindow::handleFileSaveAsTemplateSelected(const QString &filePath)
             QString lastDocumentDirectoryPath = QFileInfo(filePath).absolutePath();
             Settings &settings = Settings::getInstance();
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
-            settings.addRecentFile(filePath);
+            RecentFile::getInstance().addRecentFile(filePath);
         } else {
             m_errorMessage = tr("Could not save template \"%1\" to file \"%2\"!")
                              .arg(DocumentManager::getInstance().getDocumentFileName(*this))
@@ -1049,7 +1055,7 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
             QString lastDocumentDirectoryPath = QFileInfo(filePath).absolutePath();
             Settings &settings = Settings::getInstance();
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
-            settings.addRecentFile(filePath);
+            RecentFile::getInstance().addRecentFile(filePath);
             if (DocumentManager::getCloseRequest() == DocumentManager::CloseCurrent) {
                 close();
             } else {

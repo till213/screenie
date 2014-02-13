@@ -26,8 +26,6 @@
 #include <QWidget>
 #include <QMainWindow>
 
-#include "RecentFiles.h"
-
 class QWidget;
 class QCloseEvent;
 class QEvent;
@@ -42,6 +40,7 @@ class ScreenieControl;
 class ScreenieGraphicsScene;
 class Clipboard;
 class PlatformManager;
+class RecentFileMenu;
 
 namespace Ui {
     class MainWindow;
@@ -64,14 +63,13 @@ private:
     Q_DISABLE_COPY(MainWindow)
 
     Ui::MainWindow *ui;
+    RecentFileMenu *m_recentFileMenu;
     PlatformManager *m_platformManager;
     ScreenieGraphicsScene *m_screenieGraphicsScene;
     ScreenieScene *m_screenieScene;
     ScreenieControl *m_screenieControl;
     bool m_ignoreUpdateSignals;
     Clipboard *m_clipboard;
-    //QString m_documentFilePath;
-    RecentFiles m_recentFiles;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
     bool m_isFullScreenPreviously;

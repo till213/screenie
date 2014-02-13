@@ -22,9 +22,12 @@
 #define MACPLATFORMMANAGER_H
 
 #include <QObject>
+#include <QByteArray>
 
+class QObject;
 class QMainWindow;
 class QEvent;
+class QString;
 
 #include "AbstractPlatformManager.h"
 
@@ -40,7 +43,7 @@ public:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual bool isFullScreen() const;
 
-    static bool isFullScreenAPISupported();
+    static bool isFullScreenAPISupported();    
 
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);

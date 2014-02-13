@@ -31,6 +31,7 @@
 #include "../../Kernel/src/DocumentManager.h"
 #include "PlatformManager/PlatformManagerFactory.h"
 #include "MainWindow.h"
+#include "RecentFile.h"
 #include "ScreenieApplication.h"
 
 // public
@@ -89,6 +90,10 @@ void ScreenieApplication::frenchConnection()
 void ScreenieApplication::handleLastWindowClosed()
 {
     // destroy singletons
+
+    // RecentFile stores its settings using the Settings instance, hence it
+    // must be destroyed before Settings
+    RecentFile::destroyInstance();
     Settings::destroyInstance();
     DocumentManager::destroyInstance();
     PlatformManagerFactory::destroyInstance();

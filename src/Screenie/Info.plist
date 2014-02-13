@@ -15,7 +15,7 @@
 	<key>CFBundleExecutable</key>
         <string>@EXECUTABLE@</string>
 	<key>CFBundleIdentifier</key>
-        <string>net.tillart.@EXECUTABLE@</string>
+        <string>net.till-art.@EXECUTABLE@</string>
 	<key>CFBundleName</key>
         <string>@EXECUTABLE@</string>
 	<key>CFBundleDocumentTypes</key>

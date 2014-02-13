@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2014 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,29 +18,40 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLATFORMMANAGER_H
-#define PLATFORMMANAGER_H
+#ifndef RECENTFILEMENU_H
+#define RECENTFILEMENU_H
 
-#include <QByteArray>
+#include <QObject>
+#include <QActionGroup>
 
-class QMainWindow;
-class QString;
+class RecentFileMenuPrivate;
 
-namespace Ui {
-    class MainWindow;
-}
-
-/*!
- * The PlatformManager applies platform-specific GUI settings. Among them
- * are icons, stylesheets and shortcuts.
- */
-class PlatformManager
+class RecentFileMenu : public QObject
 {
+    Q_OBJECT
 public:
-    virtual ~PlatformManager() {}
+    explicit RecentFileMenu(QObject *parent = 0);
+    virtual ~RecentFileMenu();
 
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) = 0;
-    virtual bool isFullScreen() const = 0;
+    QActionGroup &getRecentFileActionGroup() const;
+
+signals:
+    void openRecentFile(const QString &filePath);
+
+public slots:
+
+private:
+    Q_DISABLE_COPY(RecentFileMenu)
+
+    RecentFileMenuPrivate *d;
+
+    void initialise();
+    void frenchConnections();
+
+private slots:
+    void updateRecentFileActions();
+    void handleRecentFileAction();
+    void clearRecentFileMenu();
 };
 
-#endif // PLATFORMMANAGER_H
+#endif // RECENTFILEMENU_H

@@ -20,6 +20,7 @@
 
 #import <AppKit/NSView.h>
 #import <AppKit/NSWindow.h>
+#import <Foundation/NSURL.h>
 #import <AvailabilityMacros.h>
 
 #import <QSysInfo>

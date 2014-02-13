@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2014 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,29 +18,11 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLATFORMMANAGER_H
-#define PLATFORMMANAGER_H
-
 #include <QByteArray>
+#include <QString>
 
-class QMainWindow;
-class QString;
-
-namespace Ui {
-    class MainWindow;
-}
-
-/*!
- * The PlatformManager applies platform-specific GUI settings. Among them
- * are icons, stylesheets and shortcuts.
- */
-class PlatformManager
+QByteArray FileUtils::createFileAccessBookmark(const QString &filePath)
 {
-public:
-    virtual ~PlatformManager() {}
-
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) = 0;
-    virtual bool isFullScreen() const = 0;
-};
-
-#endif // PLATFORMMANAGER_H
+    Q_UNUSED(filePath);
+    return QByteArray();
+}

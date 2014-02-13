@@ -19,10 +19,12 @@
  */
 
 #include <QObject>
+#include <QString>
 #include <QAction>
 #include <QKeySequence>
 #include <QShortcut>
 #include <QMainWindow>
+#include <QByteArray>
 
 #include "ui_MainWindow.h"
 #include "AbstractPlatformManager.h"

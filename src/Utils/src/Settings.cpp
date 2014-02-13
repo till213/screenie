@@ -34,8 +34,6 @@
 class SettingsPrivate
 {
 public:
-    static Settings *instance;
-
     static const QSize DefaultMaximumImageSize;
     static const QSize DefaultTemplateSize;
     static const QString DefaultLastImageDirectoryPath;
@@ -43,7 +41,6 @@ public:
     static const QString DefaultLastDocumentDirectoryPath;
     static const qreal DefaultRotationGestureSensitivity;
     static const qreal DefaultDistanceGestureSensitivity;
-    static const int DefaultMaxRecentFiles;
     static const Settings::EditRenderQuality DefaultEditRenderQuality;
     static const bool DefaultToolBarVisible = true;
     static const bool DefaultSidePanelVisible = true;
@@ -59,13 +56,14 @@ public:
     QString lastDocumenDirectoryPath;
     qreal rotationGestureSensitivity;
     qreal distanceGestureSensitivity;
-    int maxRecentFiles;
+
     Settings::EditRenderQuality editRenderQuality;
     bool toolBarVisible;
     bool sidePanelVisible;
-    QStringList recentFiles;
 
     QSettings *settings;
+
+    static Settings *instance;
 
     SettingsPrivate() : maximumImageSize(DefaultMaximumImageSize) {
 #ifdef Q_OS_WIN
@@ -91,7 +89,6 @@ const QString SettingsPrivate::DefaultLastExportDirectoryPath = SettingsPrivate:
 const QString SettingsPrivate::DefaultLastDocumentDirectoryPath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first();
 const qreal SettingsPrivate::DefaultRotationGestureSensitivity = 2.0; // these values work well on a MacBook Pro ;)
 const qreal SettingsPrivate::DefaultDistanceGestureSensitivity = 10.0;
-const int SettingsPrivate::DefaultMaxRecentFiles = 8;
 const Settings::EditRenderQuality SettingsPrivate::DefaultEditRenderQuality = Settings::LowQuality;
 const bool SettingsPrivate::DefaultFullScreen = false;
 const QSize SettingsPrivate::DefaultMainWindowSize = QSize(800, 600);
@@ -107,14 +104,21 @@ Settings &Settings::getInstance()
     return *SettingsPrivate::instance;
 }
 
-void Settings::destroyInstance() {
+void Settings::destroyInstance()
+{
     if (SettingsPrivate::instance != nullptr) {
         delete SettingsPrivate::instance;
         SettingsPrivate::instance = nullptr;
     }
 }
 
-const QSize &Settings::getMaximumImageSize() const {
+QSettings &Settings::getSettings()
+{
+    return *d->settings;
+}
+
+const QSize &Settings::getMaximumImageSize() const
+{
     return d->maximumImageSize;
 }
 
@@ -126,7 +130,8 @@ void Settings::setMaximumImageSize(const QSize &maximumImageSize)
     }
 }
 
-const QSize &Settings::getTemplateSize() const {
+const QSize &Settings::getTemplateSize() const
+{
     return d->templateSize;
 }
 
@@ -202,55 +207,6 @@ void Settings::setDistanceGestureSensitivity(qreal distanceGestureSensitivity)
 {
     if (d->distanceGestureSensitivity != distanceGestureSensitivity) {
         d->distanceGestureSensitivity = distanceGestureSensitivity;
-        emit changed();
-    }
-}
-
-void Settings::setRecentFiles(const QStringList &recentFiles) {
-    if (d->recentFiles != recentFiles) {
-        d->recentFiles = recentFiles;
-        emit changed();
-    }
-}
-
-void Settings::addRecentFile(const QString &filePath)
-{
-    if (d->recentFiles.contains(filePath) == false) {
-        d->recentFiles.prepend(filePath);
-        if (d->recentFiles.count() > d->maxRecentFiles) {
-            d->recentFiles.removeLast();
-        }
-        emit changed();
-    }
-}
-
-void Settings::removeRecentFile(const QString &filePath)
-{
-    int index = d->recentFiles.indexOf(filePath);
-    if (index != -1) {
-        d->recentFiles.removeAt(index);
-        emit changed();
-    }
-}
-
-QStringList Settings::getRecentFiles() const
-{
-    return d->recentFiles;
-}
-
-int Settings::getMaxRecentFiles() const {
-    return d->maxRecentFiles;
-}
-
-void Settings::setMaxRecentFiles(int maxRecentFiles)
-{
-    if (d->maxRecentFiles != maxRecentFiles) {
-        if (d->maxRecentFiles > maxRecentFiles) {
-            while (d->recentFiles.count() > maxRecentFiles) {
-                d->recentFiles.removeLast();
-            }
-        }
-        d->maxRecentFiles = maxRecentFiles;
         emit changed();
     }
 }
@@ -333,12 +289,6 @@ void Settings::store()
         d->settings->setValue("LastImageDirectoryPath", d->lastImageDirectoryPath);
         d->settings->setValue("LastExportDirectoryPath", d->lastExportDirectoryPath);
         d->settings->setValue("LastDocumentDirectoryPath", d->lastDocumenDirectoryPath);
-        d->settings->beginGroup("Recent");
-        {
-            d->settings->setValue("MaxRecentFiles", d->maxRecentFiles);
-            d->settings->setValue("RecentFiles", d->recentFiles);
-        }
-        d->settings->endGroup();
     }
     d->settings->endGroup();
     d->settings->beginGroup("UI");
@@ -376,12 +326,6 @@ void Settings::restore()
         d->lastImageDirectoryPath = d->settings->value("LastImageDirectoryPath", SettingsPrivate::DefaultLastImageDirectoryPath).toString();
         d->lastExportDirectoryPath = d->settings->value("LastExportDirectoryPath", SettingsPrivate::DefaultLastExportDirectoryPath).toString();
         d->lastDocumenDirectoryPath = d->settings->value("LastDocumentDirectoryPath", SettingsPrivate::DefaultLastDocumentDirectoryPath).toString();
-        d->settings->beginGroup("Recent");
-        {
-            d->maxRecentFiles = d->settings->value("MaxRecentFiles", SettingsPrivate::DefaultMaxRecentFiles).toInt();
-            d->recentFiles = d->settings->value("RecentFiles", QStringList()).toStringList();
-        }
-        d->settings->endGroup();
     }
     d->settings->endGroup();
     d->settings->beginGroup("UI");

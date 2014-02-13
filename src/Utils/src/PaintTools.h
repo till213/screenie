@@ -62,8 +62,10 @@ public:
     UTILS_API static QBrush createCheckerPattern();
 
 private:
-   static void drawBackground(QPainter &painter, QImage &image);
-   static void drawText(const QString &text, QPainter &painter, QImage &image);
+    Q_DISABLE_COPY(PaintTools)
+
+    static void drawBackground(QPainter &painter, QImage &image);
+    static void drawText(const QString &text, QPainter &painter, QImage &image);
 };
 
 #endif // PAINTTOOLS_H

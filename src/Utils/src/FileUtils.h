@@ -22,6 +22,7 @@
 #define FILEUTILS_H
 
 #include <QString>
+#include <QByteArray>
 
 #include "UtilsLib.h"
 
@@ -35,6 +36,11 @@ public:
 
     UTILS_API QString static getOpenImageFileFilter();
     UTILS_API QString static getSaveImageFileFilter();
+
+    UTILS_API static QByteArray createFileAccessBookmark(const QString &filePath);
+
+private:
+    Q_DISABLE_COPY(FileUtils)
 };
 
 #endif // FILEUTILS_H

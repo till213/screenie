@@ -25,6 +25,7 @@
 #include <QPoint>
 #include <QSize>
 #include <QRect>
+#include <QSettings>
 
 #include "UtilsLib.h"
 
@@ -65,6 +66,8 @@ public:
      */
     UTILS_API static Settings &getInstance();
     UTILS_API static void destroyInstance();
+
+    UTILS_API QSettings &getSettings();
 
     UTILS_API const QSize &getMaximumImageSize() const;
 
@@ -110,17 +113,11 @@ public:
 
     UTILS_API qreal getDistanceGestureSensitivity() const;
 
-    UTILS_API void setRecentFiles(const QStringList &newRecentFiles);
-    UTILS_API void addRecentFile(const QString &filePath);
-    UTILS_API void removeRecentFile(const QString &filePath);
-    UTILS_API QStringList getRecentFiles() const;
-
     /*!
      * \sa #changed()
      */
     UTILS_API void setDistanceGestureSensitivity(qreal distanceGestureSensitivity);
 
-    UTILS_API int getMaxRecentFiles() const;
 
     /*!
      * \sa #changed()
