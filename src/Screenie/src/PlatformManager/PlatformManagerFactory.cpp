@@ -33,17 +33,17 @@ PlatformManagerFactory *PlatformManagerFactoryPrivate::instance = nullptr;
 
 PlatformManagerFactory &PlatformManagerFactory::getInstance()
 {
-    if (d->instance == nullptr) {
-        d->instance = new PlatformManagerFactory();
+    if (PlatformManagerFactoryPrivate::instance == nullptr) {
+        PlatformManagerFactoryPrivate::instance = new PlatformManagerFactory();
     }
-    return *d->instance;
+    return *PlatformManagerFactoryPrivate::instance;
 }
 
 void PlatformManagerFactory::destroyInstance()
 {
-    if (d->instance != nullptr) {
-        delete d->instance;
-        d->instance = nullptr;
+    if (PlatformManagerFactoryPrivate::instance != nullptr) {
+        delete PlatformManagerFactoryPrivate::instance;
+        PlatformManagerFactoryPrivate::instance = nullptr;
     }
 }
 
