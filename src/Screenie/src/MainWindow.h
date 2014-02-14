@@ -173,7 +173,6 @@ private slots:
     // to an empty QString again
     void showError();
     void handleErrorClosed();
-
 };
 
 #endif // MAINWINDOW_H

@@ -74,12 +74,9 @@ void RecentFileMenu::initialise()
     updateNofRecentFileActions(maxRecentFiles);
     updateRecentFileActions();
 
-    QAction *separator = new QAction(this);
+    QAction *separator = new QAction(d->recentFileActionGroup);
     separator->setSeparator(true);
-    d->recentFileActionGroup->addAction(separator);
-
     d->clearRecentFileAction = new QAction(tr("Clear &menu", "Clear the recent files menu"), d->recentFileActionGroup);
-    d->recentFileActionGroup->addAction(d->clearRecentFileAction);
 }
 
 void RecentFileMenu::frenchConnections()
@@ -134,7 +131,9 @@ void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
 
     changed = false;
     max = qMin(maxRecentFiles, ActionKeys.length());
-    nofRecentFilesActions = recentFileActions.count();
+    nofRecentFilesActions = recentFileActions.count() - 2; // two extra actions: separator and "clear" entry
+
+    // add menu entries
     for (int i = nofRecentFilesActions; i < max; ++i) {
         action = new QAction(d->recentFileActionGroup);
         action->setVisible(false);
@@ -146,14 +145,12 @@ void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
     qDebug("RecentFileMenu::updateNofRecentFileActions: created %d actions (max: %d nofRecentFilesActions: %d)", max - nofRecentFilesActions, max, nofRecentFilesActions);
 #endif
 
-    for (int i = nofRecentFilesActions; i > max; --i) {
-        delete recentFileActions.last();
-        recentFileActions.removeLast();
+    // remove menu entries - index starts at 0 (-> -1)
+    for (int i = nofRecentFilesActions - 1; i >= max; --i) {
+        delete recentFileActions.at(i);
+        recentFileActions.removeAt(i);
         changed = true;
     }
-#ifdef DEBUG
-    qDebug("RecentFileMenu::updateNofRecentFileActions: removed %d actions (max: %d nofRecentFilesActions: %d)", nofRecentFilesActions - max, max, nofRecentFilesActions);
-#endif
 
     if (changed) {
         emit actionGroupChanged();
