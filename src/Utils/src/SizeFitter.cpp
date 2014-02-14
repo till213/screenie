@@ -360,7 +360,7 @@ bool SizeFitter::fitToHeight(QSize size, QSize &fittedSize, QRect *clippedRect) 
     bool result;
 
     // enlarge?
-    if (isFitOptionEnabled(Enlarge) == false &&
+    if (!isFitOptionEnabled(Enlarge) &&
         size.height() <= d->targetSize.height()) {
         fittedSize = size;
         if (clippedRect != nullptr) {
