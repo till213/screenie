@@ -162,7 +162,7 @@ QString XmlScreenieTemplateModelDao::serializeBitArray(const QBitArray &bitArray
     QString result;
     int n = bitArray.count();
     for (int i = 0; i < n; ++i) {
-        result.append(bitArray.at(i) == true ? "1" : "0");
+        result.append(bitArray.at(i) ? "1" : "0");
     }
     return result;
 }
