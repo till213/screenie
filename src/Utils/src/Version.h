@@ -120,6 +120,15 @@ public:
     UTILS_API static QString getUserVersion();
 
     /*!
+     * The version number which follows the pattern version.minor.subminor.
+     *
+     * Example: 1.2.3
+     *
+     * \return a QString containing the application version.
+     */
+    UTILS_API static QString getApplicationVersion();
+
+    /*!
      * Returns the application name which can be displayed in dialog captions.
      *
      * \return a QString containing the application name

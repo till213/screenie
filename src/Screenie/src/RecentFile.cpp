@@ -35,6 +35,7 @@ public:
     ~RecentFilePrivate()
     {}
 
+    QSettings settings;
     QStringList recentFiles;
     int maxRecentFiles;
 
@@ -143,31 +144,29 @@ RecentFile::RecentFile()
 
 void RecentFile::store()
 {
-    QSettings &settings = Settings::getInstance().getSettings();
-    settings.beginGroup("Paths");
+    d->settings.beginGroup("Paths");
     {
-        settings.beginGroup("Recent");
+        d->settings.beginGroup("Recent");
         {
-            settings.setValue("maxRecentFiles", d->maxRecentFiles);
-            settings.setValue("RecentFile", d->recentFiles);
+            d->settings.setValue("maxRecentFiles", d->maxRecentFiles);
+            d->settings.setValue("RecentFile", d->recentFiles);
         }
-        settings.endGroup();
+        d->settings.endGroup();
     }
-    settings.endGroup();
+    d->settings.endGroup();
 }
 
 void RecentFile::restore()
 {
-    QSettings &settings = Settings::getInstance().getSettings();
-    settings.beginGroup("Paths");
+    d->settings.beginGroup("Paths");
     {
-        settings.beginGroup("Recent");
+        d->settings.beginGroup("Recent");
         {
-            d->maxRecentFiles = settings.value("maxRecentFiles", RecentFilePrivate::DefaultmaxRecentFiles).toInt();
-            d->recentFiles = settings.value("RecentFile", QStringList()).toStringList();
+            d->maxRecentFiles = d->settings.value("maxRecentFiles", RecentFilePrivate::DefaultmaxRecentFiles).toInt();
+            d->recentFiles = d->settings.value("RecentFile", QStringList()).toStringList();
         }
-        settings.endGroup();
+        d->settings.endGroup();
     }
-    settings.endGroup();
+    d->settings.endGroup();
 }
 

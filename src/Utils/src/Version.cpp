@@ -149,6 +149,12 @@ QString Version::getUserVersion()
     return VersionPrivate::UserVersion;
 }
 
+QString Version::getApplicationVersion()
+{
+    Version version;
+    return version.toString();
+}
+
 QString Version::getApplicationName()
 {
     return VersionPrivate::ApplicationTitle;

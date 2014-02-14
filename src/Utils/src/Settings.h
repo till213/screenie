@@ -67,8 +67,6 @@ public:
     UTILS_API static Settings &getInstance();
     UTILS_API static void destroyInstance();
 
-    UTILS_API QSettings &getSettings();
-
     UTILS_API const QSize &getMaximumImageSize() const;
 
     /*!

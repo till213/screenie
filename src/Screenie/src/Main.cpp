@@ -18,16 +18,26 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtGlobal>
+#include <QCoreApplication>
+#ifdef Q_OS_WIN
+#include <QSettings>
+#endif
 
+#include "../../Utils/src/Version.h"
 #include "ScreenieApplication.h"
 
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(Resources);
 
-    QApplication::setOrganizationName("till-art.net");
-    QApplication::setApplicationName("Screenie");
+    QCoreApplication::setOrganizationName("till-art.net");
+    QCoreApplication::setOrganizationDomain("till-art.net");
+    QCoreApplication::setApplicationName(Version::getApplicationName());
+    QCoreApplication::setApplicationVersion(Version::getApplicationVersion());
+#ifdef Q_OS_WIN
+    // On Windows prefer INI format over Registry (= NativeFormat)
+    QSettings::setDefaultFormat(QSettings::IniFormat);
+#endif
 
     ScreenieApplication app(argc, argv);
     app.show();

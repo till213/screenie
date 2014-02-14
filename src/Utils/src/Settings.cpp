@@ -61,23 +61,16 @@ public:
     bool toolBarVisible;
     bool sidePanelVisible;
 
-    QSettings *settings;
+    QSettings settings;
 
     static Settings *instance;
 
-    SettingsPrivate() : maximumImageSize(DefaultMaximumImageSize) {
-#ifdef Q_OS_WIN
-        // On Windows prefer INI format over Registry (= NativeFormat)
-        QSettings::Format format = QSettings::IniFormat;
-#else
-        QSettings::Format format = QSettings::NativeFormat;
-#endif
-        settings = new QSettings(format, QSettings::UserScope, "till-art.net", Version::getApplicationName());
-    }
+    SettingsPrivate()
+        : maximumImageSize(DefaultMaximumImageSize)
+    {}
 
-    ~SettingsPrivate() {
-        delete settings;
-    }
+    ~SettingsPrivate()
+    {}
 };
 
 Settings *SettingsPrivate::instance = nullptr;
@@ -110,11 +103,6 @@ void Settings::destroyInstance()
         delete SettingsPrivate::instance;
         SettingsPrivate::instance = nullptr;
     }
-}
-
-QSettings &Settings::getSettings()
-{
-    return *d->settings;
 }
 
 const QSize &Settings::getMaximumImageSize() const
@@ -253,23 +241,23 @@ void Settings::setSidePanelVisible(bool enable)
 Settings::WindowGeometry Settings::getWindowGeometry() const
 {
     WindowGeometry result;
-    d->settings->beginGroup("UI/MainWindow");
+    d->settings.beginGroup("UI/MainWindow");
     {
-        result.fullScreen = d->settings->value("FullScreen", SettingsPrivate::DefaultFullScreen).toBool();
-        result.position = d->settings->value("Position", SettingsPrivate::DefaultMainWindowPosition).toRect();
+        result.fullScreen = d->settings.value("FullScreen", SettingsPrivate::DefaultFullScreen).toBool();
+        result.position = d->settings.value("Position", SettingsPrivate::DefaultMainWindowPosition).toRect();
     }
-    d->settings->endGroup();
+    d->settings.endGroup();
     return result;
 }
 
 void Settings::setWindowGeometry(const WindowGeometry windowGeometry)
 {
-    d->settings->beginGroup("UI/MainWindow");
+    d->settings.beginGroup("UI/MainWindow");
     {
-        d->settings->setValue("FullScreen", windowGeometry.fullScreen);
-        d->settings->setValue("Position", windowGeometry.position);
+        d->settings.setValue("FullScreen", windowGeometry.fullScreen);
+        d->settings.setValue("Position", windowGeometry.position);
     }
-    d->settings->endGroup();
+    d->settings.endGroup();
 }
 
 QSize Settings::getDefaultWindowSize()
@@ -281,36 +269,36 @@ QSize Settings::getDefaultWindowSize()
 
 void Settings::store()
 {
-    d->settings->setValue("Version", d->version.toString());
-    d->settings->setValue("Scene/MaximumImageSize", d->maximumImageSize);
-    d->settings->setValue("Scene/TemplateSize", d->templateSize);
-    d->settings->beginGroup("Paths");
+    d->settings.setValue("Version", d->version.toString());
+    d->settings.setValue("Scene/MaximumImageSize", d->maximumImageSize);
+    d->settings.setValue("Scene/TemplateSize", d->templateSize);
+    d->settings.beginGroup("Paths");
     {
-        d->settings->setValue("LastImageDirectoryPath", d->lastImageDirectoryPath);
-        d->settings->setValue("LastExportDirectoryPath", d->lastExportDirectoryPath);
-        d->settings->setValue("LastDocumentDirectoryPath", d->lastDocumenDirectoryPath);
+        d->settings.setValue("LastImageDirectoryPath", d->lastImageDirectoryPath);
+        d->settings.setValue("LastExportDirectoryPath", d->lastExportDirectoryPath);
+        d->settings.setValue("LastDocumentDirectoryPath", d->lastDocumenDirectoryPath);
     }
-    d->settings->endGroup();
-    d->settings->beginGroup("UI");
+    d->settings.endGroup();
+    d->settings.beginGroup("UI");
     {
-        d->settings->setValue("EditRenderQuality", d->editRenderQuality);
-        d->settings->setValue("ToolBarVisible", d->toolBarVisible);
-        d->settings->setValue("SidePanelVisible", d->sidePanelVisible);
-        d->settings->beginGroup("Gestures");
+        d->settings.setValue("EditRenderQuality", d->editRenderQuality);
+        d->settings.setValue("ToolBarVisible", d->toolBarVisible);
+        d->settings.setValue("SidePanelVisible", d->sidePanelVisible);
+        d->settings.beginGroup("Gestures");
         {
-            d->settings->setValue("RotationSensitivity", d->rotationGestureSensitivity);
-            d->settings->setValue("DistanceSensitivity", d->distanceGestureSensitivity);
+            d->settings.setValue("RotationSensitivity", d->rotationGestureSensitivity);
+            d->settings.setValue("DistanceSensitivity", d->distanceGestureSensitivity);
         }
-        d->settings->endGroup();
+        d->settings.endGroup();
     }
-    d->settings->endGroup();
+    d->settings.endGroup();
 }
 
 void Settings::restore()
 {
     QString version;
     Version appVersion;
-    version = d->settings->value("Version", appVersion.toString()).toString();
+    version = d->settings.value("Version", appVersion.toString()).toString();
     Version settingsVersion(version);
     if (settingsVersion < appVersion) {
 #ifdef DEBUG
@@ -319,28 +307,28 @@ void Settings::restore()
         /*!\todo Settings conversion as necessary */
 #endif
     }
-    d->maximumImageSize = d->settings->value("Scene/MaximumImageSize", SettingsPrivate::DefaultMaximumImageSize).toSize();
-    d->templateSize = d->settings->value("Scene/TemplateSize", SettingsPrivate::DefaultTemplateSize).toSize();
-    d->settings->beginGroup("Paths");
+    d->maximumImageSize = d->settings.value("Scene/MaximumImageSize", SettingsPrivate::DefaultMaximumImageSize).toSize();
+    d->templateSize = d->settings.value("Scene/TemplateSize", SettingsPrivate::DefaultTemplateSize).toSize();
+    d->settings.beginGroup("Paths");
     {
-        d->lastImageDirectoryPath = d->settings->value("LastImageDirectoryPath", SettingsPrivate::DefaultLastImageDirectoryPath).toString();
-        d->lastExportDirectoryPath = d->settings->value("LastExportDirectoryPath", SettingsPrivate::DefaultLastExportDirectoryPath).toString();
-        d->lastDocumenDirectoryPath = d->settings->value("LastDocumentDirectoryPath", SettingsPrivate::DefaultLastDocumentDirectoryPath).toString();
+        d->lastImageDirectoryPath = d->settings.value("LastImageDirectoryPath", SettingsPrivate::DefaultLastImageDirectoryPath).toString();
+        d->lastExportDirectoryPath = d->settings.value("LastExportDirectoryPath", SettingsPrivate::DefaultLastExportDirectoryPath).toString();
+        d->lastDocumenDirectoryPath = d->settings.value("LastDocumentDirectoryPath", SettingsPrivate::DefaultLastDocumentDirectoryPath).toString();
     }
-    d->settings->endGroup();
-    d->settings->beginGroup("UI");
+    d->settings.endGroup();
+    d->settings.beginGroup("UI");
     {
-        d->editRenderQuality = static_cast<EditRenderQuality>(d->settings->value("EditRenderQuality", SettingsPrivate::DefaultEditRenderQuality).toInt());
-        d->toolBarVisible = d->settings->value("ToolBarVisible", SettingsPrivate::DefaultToolBarVisible).toBool();
-        d->sidePanelVisible = d->settings->value("SidePanelVisible", SettingsPrivate::DefaultSidePanelVisible).toBool();
-        d->settings->beginGroup("Gestures");
+        d->editRenderQuality = static_cast<EditRenderQuality>(d->settings.value("EditRenderQuality", SettingsPrivate::DefaultEditRenderQuality).toInt());
+        d->toolBarVisible = d->settings.value("ToolBarVisible", SettingsPrivate::DefaultToolBarVisible).toBool();
+        d->sidePanelVisible = d->settings.value("SidePanelVisible", SettingsPrivate::DefaultSidePanelVisible).toBool();
+        d->settings.beginGroup("Gestures");
         {
-            d->rotationGestureSensitivity = d->settings->value("RotationSensitivity", SettingsPrivate::DefaultRotationGestureSensitivity).toReal();
-            d->distanceGestureSensitivity = d->settings->value("DistanceSensitivity", SettingsPrivate::DefaultDistanceGestureSensitivity).toReal();
+            d->rotationGestureSensitivity = d->settings.value("RotationSensitivity", SettingsPrivate::DefaultRotationGestureSensitivity).toReal();
+            d->distanceGestureSensitivity = d->settings.value("DistanceSensitivity", SettingsPrivate::DefaultDistanceGestureSensitivity).toReal();
         }
-        d->settings->endGroup();
+        d->settings.endGroup();
     }
-    d->settings->endGroup();
+    d->settings.endGroup();
 }
 
 // protected
