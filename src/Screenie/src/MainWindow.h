@@ -153,6 +153,7 @@ private slots:
     void on_htmlBGColorLineEdit_editingFinished();
 
     void updateUi();
+    void updateRecentFileMenu();
     void updateDefaultValues();
     void handleRecentFile(const QString &filePath);
     void updateWindowMenu();

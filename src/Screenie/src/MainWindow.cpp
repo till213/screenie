@@ -195,6 +195,8 @@ void MainWindow::frenchConnection()
     // recent files
     connect(m_recentFileMenu, SIGNAL(openRecentFile(const QString &)),
             this, SLOT(handleRecentFile(const QString &)));
+    connect(m_recentFileMenu, SIGNAL(actionGroupChanged()),
+            this, SLOT(updateRecentFileMenu()));
 
     // Window menu
     connect(m_minimizeWindowsAction, SIGNAL(triggered()),
@@ -250,11 +252,7 @@ void MainWindow::initialiseUi()
     setWindowIcon(QIcon(":/img/application-icon.png"));
     updateTitle();
     updateWindowMenu();
-
-    // recent files menu
-    foreach (QAction *recentFileAction, m_recentFileMenu->getRecentFileActionGroup().actions()) {
-        ui->recentFilesMenu->addAction(recentFileAction);
-    }
+    updateRecentFileMenu();
 
     ui->distanceSlider->setMinimum(SceneLimits::MinDistance);
     ui->distanceSlider->setMaximum(SceneLimits::MaxDistance);
@@ -956,6 +954,14 @@ void MainWindow::updateUi()
     }
     updateDefaultValues();
     setWindowModified(m_screenieScene->isModified());
+}
+
+void MainWindow::updateRecentFileMenu()
+{
+    ui->recentFilesMenu->clear();;
+    foreach (QAction *recentFileAction, m_recentFileMenu->getRecentFileActionGroup().actions()) {
+        ui->recentFilesMenu->addAction(recentFileAction);
+    }
 }
 
 void MainWindow::updateDefaultValues()

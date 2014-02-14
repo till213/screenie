@@ -27,7 +27,8 @@
 
 class RecentFilePrivate {
 public:
-    static const int DefaultmaxRecentFiles;
+    static const int DefaultMaxRecentFiles;
+    static const int MaxRecentFiles;
 
     RecentFilePrivate()
     {}
@@ -42,7 +43,8 @@ public:
     static RecentFile *instance;
 };
 
-const int RecentFilePrivate::DefaultmaxRecentFiles = 8;
+const int RecentFilePrivate::DefaultMaxRecentFiles = 8;
+const int RecentFilePrivate::MaxRecentFiles = 10; // There are 10 action shortcuts, keys 0...9
 RecentFile *RecentFilePrivate::instance = nullptr;
 
 // public
@@ -72,7 +74,7 @@ void RecentFile::addRecentFile(const QString &filePath)
         if (d->recentFiles.count() > d->maxRecentFiles) {
             d->recentFiles.removeLast();
         }
-        emit changed();
+        emit recentFilesChanged();
     }
 }
 
@@ -81,7 +83,7 @@ void RecentFile::removeRecentFile(const QString &filePath)
     int index = d->recentFiles.indexOf(filePath);
     if (index != -1) {
         d->recentFiles.removeAt(index);
-        emit changed();
+        emit recentFilesChanged();
     }
 }
 
@@ -99,7 +101,7 @@ void RecentFile::clear()
 {
     if (d->recentFiles.count() > 0) {
         d->recentFiles.clear();
-        emit changed();
+        emit recentFilesChanged();
     }
 }
 
@@ -115,14 +117,14 @@ int RecentFile::getMaxRecentFiles() const
 
 void RecentFile::setMaxRecentFiles(int maxRecentFiles)
 {
-    if (d->maxRecentFiles != maxRecentFiles) {
+    if (d->maxRecentFiles != maxRecentFiles && maxRecentFiles >= 1 && maxRecentFiles <= RecentFilePrivate::MaxRecentFiles) {
         if (d->maxRecentFiles > maxRecentFiles) {
             while (d->recentFiles.count() > maxRecentFiles) {
                 d->recentFiles.removeLast();
             }
-            emit changed();
         }
         d->maxRecentFiles = maxRecentFiles;
+        emit maxRecentFilesChanged(d->maxRecentFiles);
     }
 }
 
@@ -162,7 +164,7 @@ void RecentFile::restore()
     {
         d->settings.beginGroup("Recent");
         {
-            d->maxRecentFiles = d->settings.value("maxRecentFiles", RecentFilePrivate::DefaultmaxRecentFiles).toInt();
+            d->maxRecentFiles = d->settings.value("maxRecentFiles", RecentFilePrivate::DefaultMaxRecentFiles).toInt();
             d->recentFiles = d->settings.value("RecentFile", QStringList()).toStringList();
         }
         d->settings.endGroup();

@@ -70,18 +70,8 @@ QActionGroup &RecentFileMenu::getRecentFileActionGroup() const
 
 void RecentFileMenu::initialise()
 {
-    QAction *action;
     int maxRecentFiles = RecentFile::getInstance().getMaxRecentFiles();
-    int n;
-
-    n = qMin(maxRecentFiles, ActionKeys.length());
-    for (int i = 0; i < n; i++) {
-        action = new QAction(this);
-        action->setVisible(false);
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(handleRecentFileAction()));
-        d->recentFileActionGroup->addAction(action);
-    }
+    updateNofRecentFileActions(maxRecentFiles);
     updateRecentFileActions();
 
     QAction *separator = new QAction(this);
@@ -94,8 +84,11 @@ void RecentFileMenu::initialise()
 
 void RecentFileMenu::frenchConnections()
 {
-    connect(&RecentFile::getInstance(), SIGNAL(changed()),
+    RecentFile &recentFile = RecentFile::getInstance();
+    connect(&recentFile, SIGNAL(recentFilesChanged()),
             this, SLOT(updateRecentFileActions()));
+    connect(&recentFile, SIGNAL(maxRecentFilesChanged(int)),
+            this, SLOT(updateNofRecentFileActions(int)));
     connect(d->clearRecentFileAction, SIGNAL(triggered()),
             this, SLOT(clearRecentFileMenu()));
 }
@@ -128,6 +121,42 @@ void RecentFileMenu::updateRecentFileActions()
     n = qMin(maxRecentFiles, ActionKeys.length());
     for (int i = nofRecentFiles; i < n; ++i) {
         recentFileActions[i]->setVisible(false);
+    }
+}
+
+void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
+{
+    int max;
+    int nofRecentFilesActions;
+    QList<QAction *> recentFileActions = d->recentFileActionGroup->actions();
+    QAction *action;
+    bool changed;
+
+    changed = false;
+    max = qMin(maxRecentFiles, ActionKeys.length());
+    nofRecentFilesActions = recentFileActions.count();
+    for (int i = nofRecentFilesActions; i < max; ++i) {
+        action = new QAction(d->recentFileActionGroup);
+        action->setVisible(false);
+        connect(action, SIGNAL(triggered()),
+                this, SLOT(handleRecentFileAction()));
+        changed = true;
+    }
+#ifdef DEBUG
+    qDebug("RecentFileMenu::updateNofRecentFileActions: created %d actions (max: %d nofRecentFilesActions: %d)", max - nofRecentFilesActions, max, nofRecentFilesActions);
+#endif
+
+    for (int i = nofRecentFilesActions; i > max; --i) {
+        delete recentFileActions.last();
+        recentFileActions.removeLast();
+        changed = true;
+    }
+#ifdef DEBUG
+    qDebug("RecentFileMenu::updateNofRecentFileActions: removed %d actions (max: %d nofRecentFilesActions: %d)", nofRecentFilesActions - max, max, nofRecentFilesActions);
+#endif
+
+    if (changed) {
+        emit actionGroupChanged();
     }
 }
 

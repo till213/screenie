@@ -32,7 +32,7 @@ class RecentFilePrivate;
 /*!
  * \brief The recently opened files.
  *
- * Provides a menu with QActions which give access to the recently opened files.
+ * Keeps track of recently opened files.
  */
 class RecentFile : public QObject
 {
@@ -43,19 +43,21 @@ public:
     static void destroyInstance();
 
     /*!
-     * \sa #changed()
+     * \sa #recentFilesChanged()
      */
     void addRecentFile(const QString &filePath);
 
     /*!
-     * \sa #changed()
+     * \sa #recentFilesChanged()
      */
     void removeRecentFile(const QString &filePath);
 
     /*!
-     * Moves the \c filePath to the most recent file position.
+     * Moves the \em existing \c filePath to the most recent file position.
+     * The \c filePath is not added in case it does not already exist in the
+     * recent files list.
      *
-     * \sa #changed()
+     * \sa #recentFilesChanged()
      */
     void moveToFront(const QString &filePath);
 
@@ -64,22 +66,35 @@ public:
     /*!
      * Clears the list of recent files.
      *
-     * \sa #changed()
+     * \sa #recentFilesChanged()
      */
     void clear();
 
     int getMaxRecentFiles() const;
 
     /*!
-     * \sa #changed()
+     * Sets the maximum menu entries of recent files which must be in [1, 10].
+     *
+     * \sa #maxRecentFilesChanged(int)
      */
     void setMaxRecentFiles(int maxRecentFile);
 
 signals:
     /*!
-     * Emitted whenever the recent file list has changed.
+     * Emitted whenever the recent file list has changed. Existing QActionGroup
+     * entries must be set in-/visible.
      */
-    void changed();
+    void recentFilesChanged();
+
+    /*!
+     * Emitted whenever the maximum number of recent files has changed. In this
+     * cases new QAction entries must be either created or existing ones must
+     * be deleted. In any case the application menu must be updated accordingly.
+     *
+     * \p maxRecentFiles
+     *    the new number of maximum recent files
+     */
+    void maxRecentFilesChanged(int maxRecentFiles);
 
 protected:
     virtual ~RecentFile();

@@ -26,6 +26,12 @@
 
 class RecentFileMenuPrivate;
 
+/*!
+ * \brief Provides QAction menu entries for a recent files menu.
+ *
+ * The QActions are updated by connecting to the corresponding changes
+ * in the RecentFile instance.
+ */
 class RecentFileMenu : public QObject
 {
     Q_OBJECT
@@ -38,7 +44,11 @@ public:
 signals:
     void openRecentFile(const QString &filePath);
 
-public slots:
+    /*!
+     * Emitted whenever the QActionGroup has changed, that is when QAction items
+     * have been added or removed.
+     */
+    void actionGroupChanged();
 
 private:
     Q_DISABLE_COPY(RecentFileMenu)
@@ -50,6 +60,7 @@ private:
 
 private slots:
     void updateRecentFileActions();
+    void updateNofRecentFileActions(int maxRecentFiles);
     void handleRecentFileAction();
     void clearRecentFileMenu();
 };
