@@ -21,6 +21,8 @@
 #include <QByteArray>
 #include <QString>
 
+#include "FileUtils.h"
+
 QByteArray FileUtils::createFileAccessBookmark(const QString &filePath)
 {
     Q_UNUSED(filePath);
