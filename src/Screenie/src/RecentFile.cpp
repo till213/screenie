@@ -20,6 +20,7 @@
 
 #include <QObject>
 #include <QFileInfo>
+#include <QStringList>
 
 #include "../../Utils/src/FileUtils.h"
 #include "../../Utils/src/Settings.h"
