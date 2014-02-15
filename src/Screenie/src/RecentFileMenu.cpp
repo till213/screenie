@@ -102,7 +102,7 @@ void RecentFileMenu::updateRecentFileActions()
     const QList<QAction *> recentFileActions = d->recentFileActionGroup->actions();
 
     nofRecentFiles = recentFiles.count();
-    n = qMin(nofRecentFiles, ActionKeys.length());
+    n = qMin(nofRecentFiles, ActionKeys.size());
     for (int i = 0; i < n; ++i) {
         const QFileInfo fileInfo(recentFiles[i]);
         const QString text = fileInfo.fileName();
@@ -115,7 +115,7 @@ void RecentFileMenu::updateRecentFileActions()
 
     // set all not yet used actions to invisible
     maxRecentFiles = recentFile.getMaxRecentFiles();
-    n = qMin(maxRecentFiles, ActionKeys.length());
+    n = qMin(maxRecentFiles, ActionKeys.size());
     for (int i = nofRecentFiles; i < n; ++i) {
         recentFileActions[i]->setVisible(false);
     }
@@ -130,7 +130,7 @@ void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
     bool changed;
 
     changed = false;
-    max = qMin(maxRecentFiles, ActionKeys.length());
+    max = qMin(maxRecentFiles, ActionKeys.size());
     nofRecentFilesActions = recentFileActions.count() - 2; // two extra actions: separator and "clear" entry
 
     // add menu entries
@@ -141,9 +141,6 @@ void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
                 this, SLOT(handleRecentFileAction()));
         changed = true;
     }
-#ifdef DEBUG
-    qDebug("RecentFileMenu::updateNofRecentFileActions: created %d actions (max: %d nofRecentFilesActions: %d)", max - nofRecentFilesActions, max, nofRecentFilesActions);
-#endif
 
     // remove menu entries - index starts at 0 (-> -1)
     for (int i = nofRecentFilesActions - 1; i >= max; --i) {

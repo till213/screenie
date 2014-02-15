@@ -22,8 +22,8 @@
 #include <QString>
 #include <QFileInfo>
 
-#include "../../../Utils/src/FileUtils.h"
-#include "../../../Model/src/ScreenieScene.h"
+#include "../../Utils/src/FileUtils.h"
+#include "../../Model/src/ScreenieScene.h"
 
 #include "DocumentInfo.h"
 
