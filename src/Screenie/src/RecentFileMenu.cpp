@@ -141,9 +141,6 @@ void RecentFileMenu::updateNofRecentFileActions(int maxRecentFiles)
                 this, SLOT(handleRecentFileAction()));
         changed = true;
     }
-#ifdef DEBUG
-    qDebug("RecentFileMenu::updateNofRecentFileActions: created %d actions (max: %d nofRecentFilesActions: %d)", max - nofRecentFilesActions, max, nofRecentFilesActions);
-#endif
 
     // remove menu entries - index starts at 0 (-> -1)
     for (int i = nofRecentFilesActions - 1; i >= max; --i) {
