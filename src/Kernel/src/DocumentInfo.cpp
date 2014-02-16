@@ -23,6 +23,7 @@
 #include <QFileInfo>
 
 #include "../../Utils/src/FileUtils.h"
+#include "../../Utils/src/SecurityToken.h"
 #include "../../Model/src/ScreenieScene.h"
 
 #include "DocumentInfo.h"
@@ -33,15 +34,18 @@ public:
     DocumentInfoPrivate(QMainWindow &theMainWindow, const ScreenieScene *theScreenieScene)
         : mainWindow(theMainWindow),
           screenieScene(theScreenieScene),
+          securityToken(nullptr),
           saveStrategy(DocumentInfo::SaveStrategy::Ask)
     {}
-    ~DocumentInfoPrivate() {}
+    ~DocumentInfoPrivate()
+    {}
 
     int id;
     QMainWindow &mainWindow;
     const ScreenieScene *screenieScene;
     QString fileName;
     QString filePath;
+    SecurityToken *securityToken;
     DocumentInfo::SaveStrategy saveStrategy;
 };
 
@@ -123,6 +127,16 @@ void DocumentInfo::setFilePath(const QString &filePath)
         d->filePath = filePath;
         d->fileName = QFileInfo(d->filePath).fileName();
     }
+}
+
+SecurityToken *DocumentInfo::getSecurityToken() const
+{
+    return d->securityToken;
+}
+
+void DocumentInfo::setSecurityToken(SecurityToken *securityToken)
+{
+     d->securityToken = securityToken;
 }
 
 DocumentInfo::SaveStrategy DocumentInfo::getSaveStrategy() const

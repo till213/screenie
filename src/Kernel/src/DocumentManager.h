@@ -69,6 +69,16 @@ public:
     KERNEL_API QString getDocumentFilePath(const QMainWindow &mainWindow) const;
     KERNEL_API void setDocumentFilePath(const QString &filePath, const QMainWindow &mainWindow);
 
+    /*!
+     * Returns the SecurityToken for the file associated with the \p mainWindow.
+     *
+     * \param mainWIndow
+     *        the QMainWindow for whose associated file the SecurityToken is to be returned
+     * \return a pointer to the SecurityToken for the file associated with the \p mainWindow
+     */
+    KERNEL_API SecurityToken *getSecurityToken(const QMainWindow &mainWindow);
+    KERNEL_API void setSecurityToken(SecurityToken *securityToken, const QMainWindow &mainWindow);
+
     KERNEL_API bool activate(const QString &filePath);
 
     KERNEL_API QActionGroup &getActionGroup() const;

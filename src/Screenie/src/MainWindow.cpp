@@ -117,20 +117,31 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-bool MainWindow::read(const QString &filePath)
+bool MainWindow::read(const QString &filePath, SecurityToken *securityToken)
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     bool result;
     QFile file(filePath);
+    if (securityToken != nullptr) {
+        // start access to recent file
+        securityToken->retain();
+        documentManager.setSecurityToken(securityToken, *this);
+    }
     ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
     ScreenieScene *screenieScene = screenieSceneDao->read();
     if (screenieScene != nullptr) {
-        DocumentManager::getInstance().setDocumentFilePath(filePath, *this);
+        documentManager.setDocumentFilePath(filePath, *this);
         newScene(*screenieScene);
         result = true;
     } else {
         result = false;
+        if (securityToken != nullptr) {
+            // stop access to failed recent file
+            securityToken->release();
+            securityToken = nullptr;
+            documentManager.setSecurityToken(securityToken, *this);
+        }
     }
-
     return result;
 }
 
@@ -138,8 +149,10 @@ bool MainWindow::read(const QString &filePath)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
+    SecurityToken *securityToken;
     if (m_screenieScene->isModified()) {
-        DocumentInfo::SaveStrategy saveStrategy = DocumentManager::getInstance().getSaveStrategy(*this);
+        DocumentInfo::SaveStrategy saveStrategy = documentManager.getSaveStrategy(*this);
         switch (saveStrategy) {
         case DocumentInfo::Save:
             event->ignore();
@@ -159,6 +172,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     } else {
+        securityToken = documentManager.getSecurityToken(*this);
+        if (securityToken != nullptr) {
+            // stop access to recent file
+            securityToken->release();
+            securityToken = nullptr;
+        }
         storeWindowGeometry();
         event->accept();
     }
@@ -977,14 +996,15 @@ void MainWindow::updateDefaultValues()
 
 void MainWindow::handleRecentFileSelected(const QString &filePath, SecurityToken *securityToken)
 {
+    DocumentManager &documentManager = DocumentManager::getInstance();
     /*! \todo Store the 'securityToken' for further access (save!) later on - delete the token once no more access is desired (close) */
     bool ok;
-    if (!DocumentManager::getInstance().activate(filePath)) {
+    if (!documentManager.activate(filePath)) {
         if (m_screenieScene->isDefault()) {
-            ok = read(filePath);
+            ok = read(filePath, securityToken);
         } else {
             MainWindow *mainWindow = createMainWindow();
-            ok = mainWindow->read(filePath);
+            ok = mainWindow->read(filePath, securityToken);
             if (ok) {
                 mainWindow->show();
             } else {

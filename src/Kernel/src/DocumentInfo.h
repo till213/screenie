@@ -28,6 +28,7 @@ class QMainWindow;
 #include "KernelLib.h"
 
 class ScreenieScene;
+class SecurityToken;
 class DocumentInfoPrivate;
 
 /*!
@@ -63,6 +64,9 @@ public:
 
     KERNEL_API QString getFilePath() const;
     KERNEL_API void setFilePath(const QString &filePath);
+
+    KERNEL_API SecurityToken *getSecurityToken() const;
+    KERNEL_API void setSecurityToken(SecurityToken *securityToken);
 
     KERNEL_API SaveStrategy getSaveStrategy() const;
     KERNEL_API void setSaveStrategy(SaveStrategy SaveStrategy);

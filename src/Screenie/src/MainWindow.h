@@ -54,7 +54,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
-    bool read(const QString &filePath);
+    bool read(const QString &filePath, SecurityToken *securityToken = nullptr);
 
 protected:
     virtual void closeEvent(QCloseEvent *event);

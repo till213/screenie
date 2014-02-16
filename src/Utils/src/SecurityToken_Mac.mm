@@ -83,13 +83,15 @@ namespace
 class SecurityTokenPrivate
 {
 public:
-    SecurityTokenPrivate(const QByteArray &theSecurityTokenData)
+    SecurityTokenPrivate(const QByteArray theSecurityTokenData)
         : securityTokenData(theSecurityTokenData),
           refCount(1),
           valid(false)
     {}
 
-    const QByteArray &securityTokenData;
+    // make a copy of the original security token data, as the original data
+    // in RecentFile might get deleted while moving position in the recent file list
+    const QByteArray securityTokenData;
     int refCount;
     bool valid;
 };
@@ -176,12 +178,17 @@ SecurityToken::SecurityToken(const QByteArray &securityTokenData)
 {
     d = new SecurityTokenPrivate(securityTokenData);
     d->valid = startAccess(securityTokenData);
+#ifdef DEBUG
+    qDebug("SecurityToken::SecurityToken(): called. Valid: %d", d->valid);
+    debugTokenToFilePath(d->securityTokenData);
+#endif
 }
 
 SecurityToken::~SecurityToken()
 {
 #ifdef DEBUG
     qDebug("SecurityToken::~SecurityToken(): called.");
+    debugTokenToFilePath(d->securityTokenData);
 #endif
     stopAccess(d->securityTokenData);
     delete d;

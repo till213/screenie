@@ -151,6 +151,26 @@ void DocumentManager::setDocumentFilePath(const QString &documentFilePath, const
     }
 }
 
+SecurityToken *DocumentManager::getSecurityToken(const QMainWindow &mainWindow)
+{
+    SecurityToken *result;
+    DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
+    if (documentInfo != nullptr) {
+        result = documentInfo->getSecurityToken();
+    } else {
+        result = nullptr;
+    }
+    return result;
+}
+
+void DocumentManager::setSecurityToken(SecurityToken *securityToken, const QMainWindow &mainWindow)
+{
+    DocumentInfo *documentInfo = getDocumentInfoFromObject(mainWindow);
+    if (documentInfo != nullptr) {
+        documentInfo->setSecurityToken(securityToken);
+    }
+}
+
 bool DocumentManager::activate(const QString &filePath)
 {
     bool result;
