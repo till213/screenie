@@ -112,6 +112,9 @@ void MacPlatformManager::initialiseToolBar(Ui::MainWindow &mainWindowUi)
     // workaround for QTBUG-36700: sheet dialogs are rendered with a /fixed/ offset
     // of 50 pixels when calling setUnifiedTitleAndToolBarOnMac in Qt 5.2.1
     mainWindowUi.toolBar->setMinimumHeight(50);
+    // once the above QTBUG-36700 is fixed then enable tool button text
+    // mainWindowUi.toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 }
 
 void MacPlatformManager::handleWindowActivation(bool active)
@@ -120,8 +123,10 @@ void MacPlatformManager::handleWindowActivation(bool active)
     if (mainWindowUi != nullptr) {
         if (active) {
             mainWindowUi->sidePanel->setStyleSheet("#sidePanel {background-color: rgb(218, 223, 230); border-right: 1px solid rgb(187, 187, 187);}");
+            mainWindowUi->toolBar->setStyleSheet("color:#434343;");
         } else {
             mainWindowUi->sidePanel->setStyleSheet("#sidePanel {background-color: rgb(237, 237, 237); border-right: 1px solid rgb(187, 187, 187);}");
+            mainWindowUi->toolBar->setStyleSheet("color:#7e7e7e;");
         }
     }
 }
