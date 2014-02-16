@@ -18,13 +18,8 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QByteArray>
-#include <QString>
+#include "SecurityToken.h"
 
-#include "FileUtils.h"
-
-QByteArray FileUtils::createFileAccessBookmark(const QString &filePath)
+SecurityToken::SecurityToken()
 {
-    Q_UNUSED(filePath);
-    return QByteArray();
 }

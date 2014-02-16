@@ -50,5 +50,4 @@ if (macx) {
                $$PWD/src/PlatformManager/DefaultPlatformManager.cpp
 }
 
-OTHER_FILES += \
 

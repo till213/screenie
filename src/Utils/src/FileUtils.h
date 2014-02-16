@@ -26,6 +26,11 @@
 
 #include "UtilsLib.h"
 
+/*!
+ * \brief Utilities for file operations.
+ *
+ * Also provides various file name extensions for application and other files.
+ */
 class FileUtils
 { 
 public:
@@ -36,8 +41,6 @@ public:
 
     UTILS_API QString static getOpenImageFileFilter();
     UTILS_API QString static getSaveImageFileFilter();
-
-    UTILS_API static QByteArray createFileAccessBookmark(const QString &filePath);
 
 private:
     Q_DISABLE_COPY(FileUtils)

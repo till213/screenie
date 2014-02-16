@@ -6,7 +6,8 @@ HEADERS += $$PWD/src/UtilsLib.h \
            $$PWD/src/Settings.h \
            $$PWD/src/Version.h \
            $$PWD/src/SizeFitter.h \
-           $$PWD/src/FileUtils.h
+           $$PWD/src/FileUtils.h \
+           $$PWD/src/SecurityToken.h
 
 SOURCES += $$PWD/src/PaintTools.cpp \
            $$PWD/src/Settings.cpp \
@@ -15,7 +16,8 @@ SOURCES += $$PWD/src/PaintTools.cpp \
            $$PWD/src/FileUtils.cpp
 
 if (macx) {
-    OBJECTIVE_SOURCES += $$PWD/src/FileUtils_Mac.mm
+    OBJECTIVE_SOURCES += $$PWD/src/SecurityToken_Mac.mm
 } else {
-    SOURCES += $$PWD/src/FileUtils_Default.cpp
+    SOURCES += $$PWD/src/SecurityToken_Default.cpp
 }
+

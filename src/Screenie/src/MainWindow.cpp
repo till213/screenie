@@ -52,6 +52,7 @@
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
 #include "../../Utils/src/FileUtils.h"
+#include "../../Utils/src/SecurityToken.h"
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/SceneLimits.h"
 #include "../../Model/src/ScreenieModelInterface.h"
@@ -193,8 +194,8 @@ void MainWindow::frenchConnection()
             this, SLOT(updateWindowMenu()));
 
     // recent files
-    connect(m_recentFileMenu, SIGNAL(openRecentFile(const QString &)),
-            this, SLOT(handleRecentFile(const QString &)));
+    connect(&RecentFile::getInstance(), SIGNAL(recentFileSelected(QString, SecurityToken *)),
+            this, SLOT(handleRecentFileSelected(const QString &, SecurityToken *)));
     connect(m_recentFileMenu, SIGNAL(actionGroupChanged()),
             this, SLOT(updateRecentFileMenu()));
 
@@ -974,8 +975,9 @@ void MainWindow::updateDefaultValues()
     defaultScreenieModel.setReflectionOpacity(ui->reflectionOpacitySlider->value());
 }
 
-void MainWindow::handleRecentFile(const QString &filePath)
+void MainWindow::handleRecentFileSelected(const QString &filePath, SecurityToken *securityToken)
 {
+    /*! \todo Store the 'securityToken' for further access (save!) later on - delete the token once no more access is desired (close) */
     bool ok;
     if (!DocumentManager::getInstance().activate(filePath)) {
         if (m_screenieScene->isDefault()) {

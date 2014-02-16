@@ -21,10 +21,16 @@
 #include <QObject>
 #include <QFileInfo>
 #include <QStringList>
+#include <QList>
 
-#include "../../Utils/src/FileUtils.h"
+#include "../../Utils/src/SecurityToken.h"
 #include "../../Utils/src/Settings.h"
 #include "RecentFile.h"
+
+namespace
+{
+    const int InvalidIndex = -1;
+}
 
 class RecentFilePrivate {
 public:
@@ -38,14 +44,15 @@ public:
     {}
 
     QSettings settings;
-    QStringList recentFiles;
+    QStringList recentFiles;             // the items in recentFiles must always be in sync
+    QList<QByteArray> securityTokenData; // with the items in securityTokenData
     int maxRecentFiles;
 
     static RecentFile *instance;
 };
 
 const int RecentFilePrivate::DefaultMaxRecentFiles = 8;
-const int RecentFilePrivate::MaxRecentFiles = 10; // There are 10 action shortcuts, keys 0...9
+const int RecentFilePrivate::MaxRecentFiles = 10; // There are 10 action shortcuts keys: 0...9
 RecentFile *RecentFilePrivate::instance = nullptr;
 
 // public
@@ -68,12 +75,13 @@ void RecentFile::destroyInstance()
 
 void RecentFile::addRecentFile(const QString &filePath)
 {
-    if (!d->recentFiles.contains(filePath)) {
-        /*!\todo Add security scoped bookmark */
-        // QByteArray bookmark = FileUtils::createFileAccessBookmark(fileInfo.filePath());
-        d->recentFiles.prepend(filePath);
+    bool added = prependToRecentFiles(filePath);
+    if (added) {
+        QByteArray securityTokenData = SecurityToken::createSecurityTokenData(filePath);
+        d->securityTokenData.prepend(securityTokenData);
         if (d->recentFiles.count() > d->maxRecentFiles) {
             d->recentFiles.removeLast();
+            d->securityTokenData.removeLast();
         }
         emit recentFilesChanged();
     }
@@ -81,20 +89,26 @@ void RecentFile::addRecentFile(const QString &filePath)
 
 void RecentFile::removeRecentFile(const QString &filePath)
 {
-    int index = d->recentFiles.indexOf(filePath);
-    if (index != -1) {
-        d->recentFiles.removeAt(index);
+    int index = removeFromRecentFiles(filePath);
+    if (index != ::InvalidIndex) {
+        d->securityTokenData.removeAt(index);
         emit recentFilesChanged();
     }
 }
 
 void RecentFile::moveToFront(const QString &filePath)
 {
-    if (d->recentFiles.contains(filePath)) {
-        blockSignals(true);
-        removeRecentFile(filePath);
-        blockSignals(false);
-        addRecentFile(filePath);
+    int index = removeFromRecentFiles(filePath);
+    QByteArray securityTokenData;
+    if (index != ::InvalidIndex) {
+        // helper functions do not emit signals...
+        prependToRecentFiles(filePath);
+        // ... nor modify the security token data...
+        securityTokenData = d->securityTokenData.at(index);
+
+        // ... so we have to move the token data separately
+        d->securityTokenData.removeAt(index);
+        d->securityTokenData.prepend(securityTokenData);
     }
 }
 
@@ -102,6 +116,7 @@ void RecentFile::clear()
 {
     if (d->recentFiles.count() > 0) {
         d->recentFiles.clear();
+        d->securityTokenData.clear();
         emit recentFilesChanged();
     }
 }
@@ -122,11 +137,23 @@ void RecentFile::setMaxRecentFiles(int maxRecentFiles)
         if (d->maxRecentFiles > maxRecentFiles) {
             while (d->recentFiles.count() > maxRecentFiles) {
                 d->recentFiles.removeLast();
+                d->securityTokenData.removeLast();
             }
         }
         d->maxRecentFiles = maxRecentFiles;
         emit maxRecentFilesChanged(d->maxRecentFiles);
     }
+}
+
+void RecentFile::selectRecentFile(const QString &filePath)
+{
+    QByteArray securityTokenData;
+    moveToFront(filePath);
+    securityTokenData = d->securityTokenData.first();
+    SecurityToken *securityToken = SecurityToken::create(securityTokenData);
+    emit recentFileSelected(filePath, securityToken);
+    securityToken->release();
+    securityToken = nullptr;
 }
 
 // protected
@@ -147,12 +174,22 @@ RecentFile::RecentFile()
 
 void RecentFile::store()
 {
+    int count;
     d->settings.beginGroup("Paths");
     {
         d->settings.beginGroup("Recent");
         {
             d->settings.setValue("maxRecentFiles", d->maxRecentFiles);
-            d->settings.setValue("RecentFile", d->recentFiles);
+            d->settings.setValue("recentFiles", d->recentFiles);
+            count = d->securityTokenData.count();
+            d->settings.beginWriteArray("security", count);
+            {
+                for (int i = 0; i < count; ++i) {
+                    d->settings.setArrayIndex(i);
+                    d->settings.setValue("data", d->securityTokenData.at(i));
+                }
+            }
+            d->settings.endArray();
         }
         d->settings.endGroup();
     }
@@ -161,15 +198,52 @@ void RecentFile::store()
 
 void RecentFile::restore()
 {
+    int count;
+    QByteArray data;
+
     d->settings.beginGroup("Paths");
     {
         d->settings.beginGroup("Recent");
         {
             d->maxRecentFiles = d->settings.value("maxRecentFiles", RecentFilePrivate::DefaultMaxRecentFiles).toInt();
-            d->recentFiles = d->settings.value("RecentFile", QStringList()).toStringList();
+            d->recentFiles = d->settings.value("recentFiles", QStringList()).toStringList();
+            count = d->settings.beginReadArray("security");
+            {
+                for (int i = 0; i < count; ++i) {
+                    d->settings.setArrayIndex(i);
+                    data = d->settings.value(("data")).toByteArray();
+                    d->securityTokenData.append(data);
+                }
+            }
+            d->settings.endArray();
         }
         d->settings.endGroup();
     }
     d->settings.endGroup();
+}
+
+bool RecentFile::prependToRecentFiles(const QString &filePath)
+{
+    bool result;
+    if (!d->recentFiles.contains(filePath)) {
+        d->recentFiles.prepend(filePath);
+        if (d->recentFiles.count() > d->maxRecentFiles) {
+            d->recentFiles.removeLast();
+            d->securityTokenData.removeLast();
+        }
+        result = true;
+    } else {
+        result = false;
+    }
+    return result;
+}
+
+int RecentFile::removeFromRecentFiles(const QString &filePath)
+{
+    int index = d->recentFiles.indexOf(filePath);
+    if (index != ::InvalidIndex) {
+        d->recentFiles.removeAt(index);
+    }
+    return index;
 }
 

@@ -41,6 +41,7 @@ class ScreenieGraphicsScene;
 class Clipboard;
 class PlatformManager;
 class RecentFileMenu;
+class SecurityToken;
 
 namespace Ui {
     class MainWindow;
@@ -155,7 +156,7 @@ private slots:
     void updateUi();
     void updateRecentFileMenu();
     void updateDefaultValues();
-    void handleRecentFile(const QString &filePath);
+    void handleRecentFileSelected(const QString &filePath, SecurityToken *securityToken);
     void updateWindowMenu();
 
     void handleFileSaveAsSelected(const QString &filePath);

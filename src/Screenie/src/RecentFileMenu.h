@@ -42,8 +42,6 @@ public:
     QActionGroup &getRecentFileActionGroup() const;
 
 signals:
-    void openRecentFile(const QString &filePath);
-
     /*!
      * Emitted whenever the QActionGroup has changed, that is when QAction items
      * have been added or removed.

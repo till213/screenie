@@ -160,8 +160,7 @@ void RecentFileMenu::handleRecentFileAction()
 
     if (const QAction *action = qobject_cast<const QAction *>(sender())) {
         QString filePath = action->data().toString();
-        recentFile.moveToFront(filePath);
-        emit openRecentFile(filePath);
+        recentFile.selectRecentFile(filePath);
     }
 }
 
