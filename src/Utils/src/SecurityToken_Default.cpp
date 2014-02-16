@@ -56,7 +56,6 @@ SecurityToken *SecurityToken::create(const QByteArray &securityTokenData)
     return result;
 }
 
-
 QByteArray SecurityToken::createSecurityTokenData(const QString &filePath)
 {
     Q_UNUSED(filePath);

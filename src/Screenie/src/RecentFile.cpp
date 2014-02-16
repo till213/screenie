@@ -220,6 +220,8 @@ void RecentFile::restore()
         d->settings.endGroup();
     }
     d->settings.endGroup();
+
+    reconcileData();
 }
 
 bool RecentFile::prependToRecentFiles(const QString &filePath)
@@ -245,5 +247,18 @@ int RecentFile::removeFromRecentFiles(const QString &filePath)
         d->recentFiles.removeAt(index);
     }
     return index;
+}
+
+void RecentFile::reconcileData()
+{
+    int nofSecurityTokenData;
+    int n;
+
+    n = d->recentFiles.count();
+    nofSecurityTokenData = d->securityTokenData.count();
+    while (n > nofSecurityTokenData) {
+        d->recentFiles.removeLast();
+        --n;
+    }
 }
 

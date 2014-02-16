@@ -159,6 +159,10 @@ private:
     // to the returned original index (the original location of 'filePath');
     // the returned index is -1 if 'filePath' was not contained in the list
     int removeFromRecentFiles(const QString &filePath);
+
+    // make sure the number of 'recentFiles' and 'securityTokenData' is the
+    // same, in case the application settings have been tampered with
+    void reconcileData();
 };
 
 #endif // RECENTFILE_H
