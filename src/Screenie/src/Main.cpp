@@ -34,12 +34,14 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("till-art.net");
     QCoreApplication::setApplicationName(Version::getApplicationName());
     QCoreApplication::setApplicationVersion(Version::getApplicationVersion());
+
 #ifdef Q_OS_WIN
     // On Windows prefer INI format over Registry (= NativeFormat)
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
     ScreenieApplication app(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     app.show();
 
     return app.exec();

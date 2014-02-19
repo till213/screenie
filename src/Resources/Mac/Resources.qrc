@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>img/insert-image.png</file>
         <file>img/insert-template.png</file>
+        <file>img/insert-image@2x.png</file>
+        <file>img/insert-template@2x.png</file>
     </qresource>
 </RCC>
