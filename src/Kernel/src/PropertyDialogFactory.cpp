@@ -60,19 +60,20 @@ PropertyDialogFactory::~PropertyDialogFactory()
 QDialog *PropertyDialogFactory::createDialog(ScreenieModelInterface &screenieModel, QWidget *parent)
 {
     QDialog *result = nullptr;
+    Qt::WindowFlags windowFlags = Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint;
     ScreenieTemplateModel *screenieTemplateModel = qobject_cast<ScreenieTemplateModel *>(&screenieModel);
     if (screenieTemplateModel != nullptr) {
-        result = new TemplateModelPropertiesDialog(*screenieTemplateModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
+        result = new TemplateModelPropertiesDialog(*screenieTemplateModel, d->screenieControl, parent, windowFlags);
         result->setWindowTitle(QObject::tr("Template Properties"));
     } else {
         ScreenieFilePathModel *screenieFilePathModel = qobject_cast<ScreenieFilePathModel *>(&screenieModel);
         if (screenieFilePathModel != nullptr) {
-            result = new FilePathModelPropertiesDialog(*screenieFilePathModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
+            result = new FilePathModelPropertiesDialog(*screenieFilePathModel, d->screenieControl, parent, windowFlags);
             result->setWindowTitle(QObject::tr("Image Properties"));
         } else {
             ScreenieImageModel *screenieImageModel = qobject_cast<ScreenieImageModel *>(&screenieModel);
             if (screenieImageModel != nullptr) {
-                result = new ImageModelPropertiesDialog(*screenieImageModel, d->screenieControl, parent, Qt::WindowStaysOnTopHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint);
+                result = new ImageModelPropertiesDialog(*screenieImageModel, d->screenieControl, parent, windowFlags);
                 result->setWindowTitle(QObject::tr("Image Properties"));
             }
         }
