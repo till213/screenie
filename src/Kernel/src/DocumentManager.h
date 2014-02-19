@@ -121,6 +121,7 @@ public:
 
     KERNEL_API static CloseRequest getCloseRequest();
     KERNEL_API static void setCloseRequest(CloseRequest closeRequest);
+
 signals:
     void changed();
 
