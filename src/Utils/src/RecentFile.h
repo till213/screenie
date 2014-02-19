@@ -30,6 +30,8 @@ class QStringList;
 class SecurityToken;
 class RecentFilePrivate;
 
+#include "UtilsLib.h"
+
 /*!
  * \brief The recently opened files.
  *
@@ -40,18 +42,18 @@ class RecentFile : public QObject
     Q_OBJECT
 
 public:
-    static RecentFile &getInstance();
-    static void destroyInstance();
+    UTILS_API static RecentFile &getInstance();
+    UTILS_API static void destroyInstance();
 
     /*!
      * \sa #recentFilesChanged()
      */
-    void addRecentFile(const QString &filePath);
+    UTILS_API void addRecentFile(const QString &filePath);
 
     /*!
      * \sa #recentFilesChanged()
      */
-    void removeRecentFile(const QString &filePath);
+    UTILS_API void removeRecentFile(const QString &filePath);
 
     /*!
      * Moves the \em existing \p filePath to the most recent file position.
@@ -60,25 +62,25 @@ public:
      *
      * \sa #recentFilesChanged()
      */
-    void moveToFront(const QString &filePath);
+    UTILS_API void moveToFront(const QString &filePath);
 
-    const QStringList &getRecentFiles() const;
+    UTILS_API const QStringList &getRecentFiles() const;
 
     /*!
      * Clears the list of recent files.
      *
      * \sa #recentFilesChanged()
      */
-    void clear();
+    UTILS_API void clear();
 
-    int getMaxRecentFiles() const;
+    UTILS_API int getMaxRecentFiles() const;
 
     /*!
      * Sets the maximum menu entries of recent files which must be in [1, 10].
      *
      * \sa #maxRecentFilesChanged(int)
      */
-    void setMaxRecentFiles(int maxRecentFile);
+    UTILS_API void setMaxRecentFiles(int maxRecentFile);
 
     /*!
      * This will select \p filePath for opening. The \p filePath is moved to front
@@ -88,7 +90,7 @@ public:
      *        the file path to be opened
      * \sa #recentFileSelected(const QString &, SecurityToken *)
      */
-    void selectRecentFile(const QString &filePath);
+    UTILS_API void selectRecentFile(const QString &filePath);
 
 signals:
     /*!

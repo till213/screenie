@@ -23,8 +23,8 @@
 #include <QStringList>
 #include <QList>
 
-#include "../../Utils/src/SecurityToken.h"
-#include "../../Utils/src/Settings.h"
+#include "SecurityToken.h"
+#include "Settings.h"
 #include "RecentFile.h"
 
 namespace

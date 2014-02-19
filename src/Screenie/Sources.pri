@@ -13,7 +13,6 @@ DEPENDPATH += $$PWD/../Utils/src \
 HEADERS += $$PWD/src/Main.h \
            $$PWD/src/MainWindow.h \
            $$PWD/src/ScreenieApplication.h \
-           $$PWD/src/RecentFile.h \
            $$PWD/src/RecentFileMenu.h \
            $$PWD/src/PlatformManager/PlatformManager.h \
            $$PWD/src/PlatformManager/PlatformManagerFactory.h \
@@ -22,7 +21,6 @@ HEADERS += $$PWD/src/Main.h \
 SOURCES += $$PWD/src/Main.cpp \
            $$PWD/src/MainWindow.cpp \
            $$PWD/src/ScreenieApplication.cpp \
-           $$PWD/src/RecentFile.cpp \
            $$PWD/src/RecentFileMenu.cpp \
            $$PWD/src/PlatformManager/PlatformManagerFactory.cpp \
            $$PWD/src/PlatformManager/AbstractPlatformManager.cpp

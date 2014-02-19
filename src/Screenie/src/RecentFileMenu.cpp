@@ -24,7 +24,7 @@
 #include <QFileInfo>
 #include <QVector>
 
-#include "RecentFile.h"
+#include "../../Utils/src/RecentFile.h"
 #include "RecentFileMenu.h"
 
 namespace

@@ -44,7 +44,6 @@ class SettingsPrivate;
 class Settings : public QObject
 {
     Q_OBJECT
-
 public:
     struct WindowGeometry {
         bool fullScreen;

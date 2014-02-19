@@ -28,10 +28,10 @@
 #include <QFileOpenEvent>
 
 #include "../../Utils/src/Settings.h"
+#include "../../Utils/src/RecentFile.h"
 #include "../../Kernel/src/DocumentManager.h"
 #include "PlatformManager/PlatformManagerFactory.h"
 #include "MainWindow.h"
-#include "RecentFile.h"
 #include "ScreenieApplication.h"
 
 // public

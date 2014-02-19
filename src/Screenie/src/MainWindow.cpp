@@ -52,6 +52,7 @@
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
 #include "../../Utils/src/FileUtils.h"
+#include "../../Utils/src/RecentFile.h"
 #include "../../Utils/src/SecurityToken.h"
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/SceneLimits.h"
@@ -73,7 +74,6 @@
 #ifdef Q_OS_MAC
 #include "PlatformManager/MacPlatformManager.h"
 #endif
-#include "RecentFile.h"
 #include "RecentFileMenu.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
