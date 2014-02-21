@@ -3,7 +3,7 @@
 
 #include <QSize>
 #include <QRect>
-#include <QBitArray>
+#include <QFlags>
 #include <QObject>
 
 #include "UtilsLib.h"
@@ -29,12 +29,12 @@ public:
         ExactFit    = 4
     };
 
-    enum FitOption {
-        RespectOrientation   = 0,
-        Enlarge              = 1,
-        RespectMaxTargetSize = 2, /*!< Respects the values as set by #setMaxTargetSize() by clipping the resulting image as needed. */
-        NofFitOptions
+    enum class FitOption {
+        RespectOrientation   = 1 << 1,
+        Enlarge              = 2 << 1,
+        RespectMaxTargetSize = 3 << 1, /*!< Respects the values as set by #setMaxTargetSize() by clipping the resulting image as needed. */
     };
+    Q_DECLARE_FLAGS(FitOptions, FitOption)
 
     UTILS_API SizeFitter(QSize targetSize, FitMode fitMode = FitMode::Fit);
 
@@ -70,9 +70,9 @@ public:
     UTILS_API FitMode getFitMode() const;
 
     UTILS_API bool isFitOptionEnabled(FitOption fitOption) const;
-    UTILS_API QBitArray getFitOptions() const;
+    UTILS_API FitOptions getFitOptions() const;
     UTILS_API void setFitOptionEnabled(FitOption fitOption, bool enable);
-    UTILS_API void setFitOptions(const QBitArray &fitOptions);
+    UTILS_API void setFitOptions(FitOptions fitOptions);
 
     /*!
      * \param size
@@ -106,6 +106,8 @@ private:
 
     void clip(const QSize &size, const QSize &targetSize, QRect *clippedRect) const;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(SizeFitter::FitOptions)
 
 #endif // SIZEFITTER_H
 

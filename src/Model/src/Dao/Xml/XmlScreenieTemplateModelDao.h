@@ -58,9 +58,6 @@ private:
 
     bool writeSizeFitter(const SizeFitter &sizeFitter);
     bool readSizeFitter(SizeFitter &sizeFitter);
-
-    static QString serializeBitArray(const QBitArray &bitArray);
-    static QBitArray deserializeBitArray(const QString &bitArrayString);
 };
 
 #endif // XMLSCREENIETEMPLATEMODELDAO_H

@@ -122,9 +122,8 @@ bool XmlScreenieTemplateModelDao::writeSizeFitter(const SizeFitter &sizeFitter)
     {
         QXmlStreamAttributes sizeFitterAttributes;
         sizeFitterAttributes.append("mode", QString::number(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(sizeFitter.getFitMode())));
-        QBitArray fitOptions = d->writeModel->getSizeFitter().getFitOptions();
-        QString bitOptionString = serializeBitArray(fitOptions);
-        sizeFitterAttributes.append("options", bitOptionString);
+        SizeFitter::FitOptions fitOptions = d->writeModel->getSizeFitter().getFitOptions();
+        sizeFitterAttributes.append("options", QString("%1").arg(fitOptions));
         sizeFitterAttributes.append("width", QString::number(d->writeModel->getSizeFitter().getTargetSize().width()));
         sizeFitterAttributes.append("height", QString::number(d->writeModel->getSizeFitter().getTargetSize().height()));
         streamWriter->writeAttributes(sizeFitterAttributes);
@@ -142,39 +141,21 @@ bool XmlScreenieTemplateModelDao::readSizeFitter(SizeFitter &sizeFitter)
     int mode = sizeFitterAttributes.value("mode").toString().toInt(&result);
     if (result) {
         sizeFitter.setFitMode(static_cast<SizeFitter::FitMode>(mode));
-        QString bitArrayString = sizeFitterAttributes.value("options").toString();
-        QBitArray fitOptions = deserializeBitArray(bitArrayString);
-        sizeFitter.setFitOptions(fitOptions);
-        int width = sizeFitterAttributes.value("width").toString().toInt(&result);
+        int fitOptionValue = sizeFitterAttributes.value("options").toInt(&result);
         if (result) {
-            int height = sizeFitterAttributes.value("height").toString().toInt(&result);
+            SizeFitter::FitOptions fitOptions;
+            fitOptions = static_cast<SizeFitter::FitOptions>(fitOptionValue);
+            sizeFitter.setFitOptions(fitOptions);
+            int width = sizeFitterAttributes.value("width").toString().toInt(&result);
             if (result) {
-                sizeFitter.setTargetSize(QSize(width, height));
+                int height = sizeFitterAttributes.value("height").toString().toInt(&result);
+                if (result) {
+                    sizeFitter.setTargetSize(QSize(width, height));
+                }
             }
         }
     }
     streamReader->skipCurrentElement();
-    return result;
-}
-
-QString XmlScreenieTemplateModelDao::serializeBitArray(const QBitArray &bitArray)
-{
-    QString result;
-    int n = bitArray.count();
-    for (int i = 0; i < n; ++i) {
-        result.append(bitArray.at(i) ? "1" : "0");
-    }
-    return result;
-}
-
-QBitArray XmlScreenieTemplateModelDao::deserializeBitArray(const QString &bitArrayString)
-{
-    int n = bitArrayString.length();
-    QBitArray result(n);
-    for (int i = 0; i < n; ++i) {
-        QChar ch = bitArrayString.at(i);
-        result.setBit(i, ch == '1' ? true : false);
-    }
     return result;
 }
 

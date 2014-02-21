@@ -2,7 +2,7 @@
 
 #include <QSize>
 #include <QRect>
-#include <QBitArray>
+#include <QFlags>
 
 #include "SizeFitter.h"
 
@@ -29,7 +29,7 @@ public:
     QSize targetSize;
     QSize maxTargetSize;
     SizeFitter::FitMode fitMode;
-    QBitArray fitOptions;
+    SizeFitter::FitOptions fitOptions;
 
 private:
     void copy(const SizeFitterPrivate &other)
@@ -147,23 +147,29 @@ void SizeFitter::setFitMode(FitMode fitMode)
 
 bool SizeFitter::isFitOptionEnabled(FitOption fitOption) const
 {
-    return d->fitOptions.testBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption));
+    return d->fitOptions.testFlag(fitOption);
 }
 
-QBitArray SizeFitter::getFitOptions() const
+SizeFitter::FitOptions SizeFitter::getFitOptions() const
 {
     return d->fitOptions;
 }
 
 void SizeFitter::setFitOptionEnabled(FitOption fitOption, bool enable)
 {
-    if (d->fitOptions.testBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption)) != enable) {
-        d->fitOptions.setBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption), enable);
+    // maybe also refer to http://www.reddit.com/r/cpp/comments/14oqo9/a_nice_helper_function_for_c11s_enum_classes/
+    int fitOptionValue = static_cast<typename std::underlying_type<SizeFitter::FitOption>::type>(fitOption);
+    if (d->fitOptions.testFlag(fitOption) != enable) {
+        if (enable) {
+            d->fitOptions |= static_cast<SizeFitter::FitOption>(fitOptionValue);
+        } else {
+            d->fitOptions &= static_cast<SizeFitter::FitOption>(~fitOptionValue);
+        }
         emit changed();
     }
 }
 
-void SizeFitter::setFitOptions(const QBitArray &fitOptions)
+void SizeFitter::setFitOptions(FitOptions fitOptions)
 {
     if (d->fitOptions != fitOptions) {
         d->fitOptions = fitOptions;
@@ -219,9 +225,7 @@ SizeFitter SizeFitter::operator=(const SizeFitter &other)
 
 void SizeFitter::setDefaultFitOptions()
 {
-    d->fitOptions.resize(static_cast<std::underlying_type<FitOption>::type>(FitOption::NofFitOptions)),
-    d->fitOptions.setBit(static_cast<std::underlying_type<FitOption>::type>(FitOption::RespectOrientation), true);
-    d->fitOptions.setBit(static_cast<std::underlying_type<FitOption>::type>(FitOption::Enlarge), false);
+    d->fitOptions = FitOption::RespectOrientation;
 }
 
 QSize SizeFitter::getOrientedTargetSize(const QSize &size) const

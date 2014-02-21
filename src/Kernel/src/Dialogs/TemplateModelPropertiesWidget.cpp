@@ -127,8 +127,8 @@ void TemplateModelPropertiesWidget::updateUi()
 #endif
         break;
     }
-    ui->respectOrientationCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::RespectOrientation));
-    ui->enlargeCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::Enlarge));
+    ui->respectOrientationCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::FitOption::RespectOrientation));
+    ui->enlargeCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::FitOption::Enlarge));
     ui->idLineEdit->setText(QString::number(d->screenieTemplateModel.getOrder()));
 }
 
@@ -184,10 +184,10 @@ void TemplateModelPropertiesWidget::on_fitModeComboBox_activated(int index)
 
 void TemplateModelPropertiesWidget::on_respectOrientationCheckBox_toggled(bool checked)
 {
-    d->screenieControl.setFitOptionEnabled(SizeFitter::RespectOrientation, checked, &d->screenieTemplateModel);
+    d->screenieControl.setFitOptionEnabled(SizeFitter::FitOption::RespectOrientation, checked, &d->screenieTemplateModel);
 }
 
 void TemplateModelPropertiesWidget::on_enlargeCheckBox_toggled(bool checked)
 {
-    d->screenieControl.setFitOptionEnabled(SizeFitter::Enlarge, checked, &d->screenieTemplateModel);
+    d->screenieControl.setFitOptionEnabled(SizeFitter::FitOption::Enlarge, checked, &d->screenieTemplateModel);
 }
