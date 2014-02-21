@@ -41,7 +41,9 @@ int main(int argc, char *argv[])
 #endif
 
     ScreenieApplication app(argc, argv);
+#ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
     app.show();
 
     return app.exec();
