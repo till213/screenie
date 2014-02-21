@@ -117,7 +117,7 @@ public:
      */
     KERNEL_API QMainWindow *getRecentActiveDialogMainWindow() const;
 
-    virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event) override;
 
     KERNEL_API static CloseRequest getCloseRequest();
     KERNEL_API static void setCloseRequest(CloseRequest closeRequest);

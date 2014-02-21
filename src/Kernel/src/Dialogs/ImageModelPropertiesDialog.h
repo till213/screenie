@@ -37,7 +37,7 @@ public:
     virtual ~ImageModelPropertiesDialog();
 
 protected:
-    virtual void initialiseUi();
+    virtual void initialiseUi() override;
 
 private:
     ImageModelPropertiesDialogPrivate *d;

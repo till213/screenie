@@ -56,14 +56,14 @@ public:
     explicit ScreenieFilePathModel(const ScreenieFilePathModel &other);
     virtual ~ScreenieFilePathModel();
 
-    virtual const QImage &getImage() const;
-    virtual QSize getSize() const;
-    virtual ScreenieModelInterface *copy() const;
-    virtual bool isTemplate() const;
-    virtual QString getOverlayText() const;
+    virtual const QImage &getImage() const override;
+    virtual QSize getSize() const override;
+    virtual ScreenieModelInterface *copy() const override;
+    virtual bool isTemplate() const override;
+    virtual QString getOverlayText() const override;
 
-    virtual QString getFilePath() const;
-    virtual void setFilePath(const QString &filePath);
+    QString getFilePath() const;
+    void setFilePath(const QString &filePath);
 
 private:
     ScreenieFilePathModelPrivate *d;

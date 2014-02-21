@@ -46,10 +46,10 @@ public:
     MODEL_API explicit XmlScreenieSceneDao(QIODevice &device);
     MODEL_API virtual ~XmlScreenieSceneDao();
 
-    MODEL_API virtual bool write(const ScreenieScene &screenieScene);
-    MODEL_API virtual ScreenieScene *read() const;
+    MODEL_API virtual bool write(const ScreenieScene &screenieScene) override;
+    MODEL_API virtual ScreenieScene *read() const override;
 
-    MODEL_API virtual bool write(const ScreenieScene &screenieScene, ScreenieSceneSerializer::Mode mode);
+    MODEL_API bool write(const ScreenieScene &screenieScene, ScreenieSceneSerializer::Mode mode);
 
 private:
     XmlScreenieSceneDaoPrivate *d;

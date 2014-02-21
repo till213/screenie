@@ -60,16 +60,16 @@ public:
     KERNEL_API ScreenieModelInterface &getScreenieModel() const;
 
 protected:
-    virtual int type() const;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
-    virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    virtual QRectF boundingRect() const;
+    virtual int type() const override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void wheelEvent(QGraphicsSceneWheelEvent *event) override;
+    virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
+    virtual void dropEvent(QGraphicsSceneDragDropEvent *event) override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+    virtual QRectF boundingRect() const override;
 
 private:
     ScreeniePixmapItemPrivate *d;

@@ -57,10 +57,10 @@ signals:
     void translate(qreal x, qreal y);
 
 protected:
-    virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
-    virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
-    virtual bool event(QEvent *event);
+    virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
+    virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event) override;
+    virtual void dropEvent(QGraphicsSceneDragDropEvent *event) override;
+    virtual bool event(QEvent *event) override;
 
 private:
     ScreenieGraphicsScenePrivate *d;

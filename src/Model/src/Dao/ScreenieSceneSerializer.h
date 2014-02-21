@@ -1,5 +1,5 @@
-#ifndef SCREENIESCENESERIALISATION_H
-#define SCREENIESCENESERIALISATION_H
+#ifndef SCREENIESCENESERIALISER_H
+#define SCREENIESCENESERIALISER_H
 
 #include <QByteArray>
 
@@ -20,4 +20,4 @@ public:
     virtual ScreenieScene *deserialize(QByteArray &data) const = 0;
 };
 
-#endif // SCREENIESCENESERIALISATION_H
+#endif // SCREENIESCENESERIALISER_H
