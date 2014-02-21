@@ -36,7 +36,7 @@ public:
         NofFitOptions
     };
 
-    UTILS_API SizeFitter(QSize targetSize, FitMode fitMode = Fit);
+    UTILS_API SizeFitter(QSize targetSize, FitMode fitMode = FitMode::Fit);
 
     /*!
      * Copy c'tor.

@@ -41,7 +41,7 @@ class DocumentManager : public QObject
 {
     Q_OBJECT
 public:
-    enum CloseRequest
+    enum class CloseRequest
     {
         CloseCurrent,
         Quit

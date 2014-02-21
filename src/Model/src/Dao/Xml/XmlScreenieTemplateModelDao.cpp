@@ -121,7 +121,7 @@ bool XmlScreenieTemplateModelDao::writeSizeFitter(const SizeFitter &sizeFitter)
     streamWriter->writeStartElement("sizefitter");
     {
         QXmlStreamAttributes sizeFitterAttributes;
-        sizeFitterAttributes.append("mode", QString::number(sizeFitter.getFitMode()));
+        sizeFitterAttributes.append("mode", QString::number(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(sizeFitter.getFitMode())));
         QBitArray fitOptions = d->writeModel->getSizeFitter().getFitOptions();
         QString bitOptionString = serializeBitArray(fitOptions);
         sizeFitterAttributes.append("options", bitOptionString);

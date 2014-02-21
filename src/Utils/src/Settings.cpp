@@ -82,7 +82,7 @@ const QString SettingsPrivate::DefaultLastExportDirectoryPath = SettingsPrivate:
 const QString SettingsPrivate::DefaultLastDocumentDirectoryPath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first();
 const qreal SettingsPrivate::DefaultRotationGestureSensitivity = 2.0; // these values work well on a MacBook Pro ;)
 const qreal SettingsPrivate::DefaultDistanceGestureSensitivity = 10.0;
-const Settings::EditRenderQuality SettingsPrivate::DefaultEditRenderQuality = Settings::LowQuality;
+const Settings::EditRenderQuality SettingsPrivate::DefaultEditRenderQuality = Settings::EditRenderQuality::Low;
 const bool SettingsPrivate::DefaultFullScreen = false;
 const QSize SettingsPrivate::DefaultMainWindowSize = QSize(800, 600);
 const QRect SettingsPrivate::DefaultMainWindowPosition = QRect();
@@ -281,7 +281,7 @@ void Settings::store()
     d->settings.endGroup();
     d->settings.beginGroup("UI");
     {
-        d->settings.setValue("EditRenderQuality", d->editRenderQuality);
+        d->settings.setValue("EditRenderQuality", static_cast<std::underlying_type<Settings::EditRenderQuality>::type>(d->editRenderQuality));
         d->settings.setValue("ToolBarVisible", d->toolBarVisible);
         d->settings.setValue("SidePanelVisible", d->sidePanelVisible);
         d->settings.beginGroup("Gestures");
@@ -318,7 +318,7 @@ void Settings::restore()
     d->settings.endGroup();
     d->settings.beginGroup("UI");
     {
-        d->editRenderQuality = static_cast<EditRenderQuality>(d->settings.value("EditRenderQuality", SettingsPrivate::DefaultEditRenderQuality).toInt());
+        d->editRenderQuality = static_cast<EditRenderQuality>(d->settings.value("EditRenderQuality", static_cast<std::underlying_type<Settings::EditRenderQuality>::type>(SettingsPrivate::DefaultEditRenderQuality)).toInt());
         d->toolBarVisible = d->settings.value("ToolBarVisible", SettingsPrivate::DefaultToolBarVisible).toBool();
         d->sidePanelVisible = d->settings.value("SidePanelVisible", SettingsPrivate::DefaultSidePanelVisible).toBool();
         d->settings.beginGroup("Gestures");

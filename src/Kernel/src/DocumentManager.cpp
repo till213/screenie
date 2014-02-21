@@ -60,7 +60,7 @@ public:
 
 DocumentManager *DocumentManagerPrivate::instance = nullptr;
 int DocumentManagerPrivate::nextWindowId = 1;
-DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentManager::CloseCurrent;
+DocumentManager::CloseRequest DocumentManagerPrivate::closeRequest = DocumentManager::CloseRequest::CloseCurrent;
 
 // public
 
@@ -215,7 +215,7 @@ DocumentInfo::SaveStrategy DocumentManager::getSaveStrategy(const QMainWindow &m
     if (documentInfo != nullptr) {
         result = documentInfo->getSaveStrategy();
     } else {
-        result = DocumentInfo::Discard;
+        result = DocumentInfo::SaveStrategy::Discard;
     }
     return result;
 }

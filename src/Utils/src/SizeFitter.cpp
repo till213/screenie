@@ -52,7 +52,7 @@ SizeFitter::SizeFitter(QSize targetSize, FitMode fitMode)
 }
 
 SizeFitter::SizeFitter()
-    : d(new SizeFitterPrivate(QSize(640, 480), ExactFit))
+    : d(new SizeFitterPrivate(QSize(640, 480), FitMode::ExactFit))
 {
     setDefaultFitOptions();
 }
@@ -147,7 +147,7 @@ void SizeFitter::setFitMode(FitMode fitMode)
 
 bool SizeFitter::isFitOptionEnabled(FitOption fitOption) const
 {
-    return d->fitOptions.testBit(fitOption);
+    return d->fitOptions.testBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption));
 }
 
 QBitArray SizeFitter::getFitOptions() const
@@ -157,8 +157,8 @@ QBitArray SizeFitter::getFitOptions() const
 
 void SizeFitter::setFitOptionEnabled(FitOption fitOption, bool enable)
 {
-    if (d->fitOptions.testBit(fitOption) != enable) {
-        d->fitOptions.setBit(fitOption, enable);
+    if (d->fitOptions.testBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption)) != enable) {
+        d->fitOptions.setBit(static_cast<std::underlying_type<SizeFitter::FitMode>::type>(fitOption), enable);
         emit changed();
     }
 }
@@ -176,22 +176,22 @@ bool SizeFitter::fit(QSize size, QSize &fittedSize, QRect *clippedRect) const
     bool result;
 
     // fit at all?
-    if (d->fitMode != NoFit) {
+    if (d->fitMode != FitMode::NoFit) {
 
         switch (d->fitMode) {
-        case Fit:
+        case FitMode::Fit:
             result = fitIt(size, fittedSize, clippedRect);
             break;
 
-        case FitToWidth:
+        case FitMode::FitToWidth:
             result = fitToWidth(size, fittedSize, clippedRect);
             break;
 
-        case FitToHeight:
+        case FitMode::FitToHeight:
             result = fitToHeight(size, fittedSize, clippedRect);
             break;
 
-        case ExactFit:
+        case FitMode::ExactFit:
             result = exactFit(size, fittedSize, clippedRect);
             break;
 
@@ -219,16 +219,16 @@ SizeFitter SizeFitter::operator=(const SizeFitter &other)
 
 void SizeFitter::setDefaultFitOptions()
 {
-    d->fitOptions.resize(NofFitOptions),
-    d->fitOptions.setBit(RespectOrientation, true);
-    d->fitOptions.setBit(Enlarge, false);
+    d->fitOptions.resize(static_cast<std::underlying_type<FitOption>::type>(FitOption::NofFitOptions)),
+    d->fitOptions.setBit(static_cast<std::underlying_type<FitOption>::type>(FitOption::RespectOrientation), true);
+    d->fitOptions.setBit(static_cast<std::underlying_type<FitOption>::type>(FitOption::Enlarge), false);
 }
 
 QSize SizeFitter::getOrientedTargetSize(const QSize &size) const
 {
     QSize result;
 
-    if (isFitOptionEnabled(RespectOrientation) &&
+    if (isFitOptionEnabled(FitOption::RespectOrientation) &&
         size.width() < size.height() &&
         d->targetSize.width() > d->targetSize.height()) {
         // make 'size' and 'target' have the same orientation
@@ -248,7 +248,7 @@ bool SizeFitter::fitIt(QSize size, QSize &fittedSize, QRect *clippedRect) const
     QSize orientedTargetSize = getOrientedTargetSize(size);
 
     // enlarge?
-    if (!isFitOptionEnabled(Enlarge) &&
+    if (!isFitOptionEnabled(FitOption::Enlarge) &&
         size.width() <= orientedTargetSize.width() &&
         size.height() <= orientedTargetSize.height()) {
         fittedSize = size;
@@ -321,7 +321,7 @@ bool SizeFitter::fitToWidth(QSize size, QSize &fittedSize, QRect *clippedRect) c
     bool result;
 
     // enlarge?
-    if (!isFitOptionEnabled(Enlarge) &&
+    if (!isFitOptionEnabled(FitOption::Enlarge) &&
         size.width() <= d->targetSize.width()) {
         fittedSize = size;
         if (clippedRect != nullptr) {
@@ -341,7 +341,7 @@ bool SizeFitter::fitToWidth(QSize size, QSize &fittedSize, QRect *clippedRect) c
     }
 
     if (clippedRect != nullptr) {
-        if (isFitOptionEnabled(RespectMaxTargetSize) && fittedSize.height() > d->maxTargetSize.height()) {
+        if (isFitOptionEnabled(FitOption::RespectMaxTargetSize) && fittedSize.height() > d->maxTargetSize.height()) {
             fittedSize.setHeight(d->maxTargetSize.height());
             clip(size, fittedSize, clippedRect);
         } else {
@@ -360,7 +360,7 @@ bool SizeFitter::fitToHeight(QSize size, QSize &fittedSize, QRect *clippedRect) 
     bool result;
 
     // enlarge?
-    if (!isFitOptionEnabled(Enlarge) &&
+    if (!isFitOptionEnabled(FitOption::Enlarge) &&
         size.height() <= d->targetSize.height()) {
         fittedSize = size;
         if (clippedRect != nullptr) {
@@ -380,7 +380,7 @@ bool SizeFitter::fitToHeight(QSize size, QSize &fittedSize, QRect *clippedRect) 
     }
 
     if (clippedRect != nullptr) {
-        if (isFitOptionEnabled(RespectMaxTargetSize) && fittedSize.width() > d->maxTargetSize.width()) {
+        if (isFitOptionEnabled(FitOption::RespectMaxTargetSize) && fittedSize.width() > d->maxTargetSize.width()) {
             fittedSize.setWidth(d->maxTargetSize.width());
             clip(size, fittedSize, clippedRect);
         } else {
@@ -400,7 +400,7 @@ bool SizeFitter::exactFit(QSize size, QSize &fittedSize, QRect *clippedRect) con
     QSize orientedTargetSize = getOrientedTargetSize(size);
 
     // enlarge?
-    if (!isFitOptionEnabled(Enlarge) &&
+    if (!isFitOptionEnabled(FitOption::Enlarge) &&
         size.width() <= orientedTargetSize.width() &&
         size.height() <= orientedTargetSize.height()) {
         fittedSize = size;

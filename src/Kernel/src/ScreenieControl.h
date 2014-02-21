@@ -59,10 +59,10 @@ public:
     /*!
      * Defines the QGraphicsView render quality.
      */
-    enum RenderQuality
+    enum class RenderQuality
     {
-        LowQuality, /*!< Antialiasing disabled, fast pixmap transformation */
-        MaximumQuality /*!< Antialiasing enabled, smooth pixmap transformation */
+        Low, /*!< Antialiasing disabled, fast pixmap transformation */
+        Maximum /*!< Antialiasing enabled, smooth pixmap transformation */
     };
 
     KERNEL_API ScreenieControl(ScreenieScene &screenieScene, ScreenieGraphicsScene &screenieGraphicsScene);

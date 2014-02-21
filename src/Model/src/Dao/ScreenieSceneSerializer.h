@@ -8,7 +8,7 @@ class ScreenieScene;
 class ScreenieSceneSerializer
 {
 public:
-    enum Mode {
+    enum class Mode {
         FullScene,
         SelectedItems
     };

@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
     restoreWindowGeometry();
 
     updateUi();
-    m_screenieControl->setRenderQuality(ScreenieControl::MaximumQuality);
+    m_screenieControl->setRenderQuality(ScreenieControl::RenderQuality::Maximum);
     frenchConnection();
 }
 
@@ -154,14 +154,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if (m_screenieScene->isModified()) {
         DocumentInfo::SaveStrategy saveStrategy = documentManager.getSaveStrategy(*this);
         switch (saveStrategy) {
-        case DocumentInfo::Save:
+        case DocumentInfo::SaveStrategy::Save:
             event->ignore();
             saveBeforeClose();
-        case DocumentInfo::Ask:
+        case DocumentInfo::SaveStrategy::Ask:
             event->ignore();
             askBeforeClose();
             break;
-        case DocumentInfo::Discard:
+        case DocumentInfo::SaveStrategy::Discard:
             storeWindowGeometry();
             event->accept();
             break;
@@ -450,10 +450,10 @@ void MainWindow::handleMultipleModifiedBeforeQuit()
     messageBox->exec();
     QAbstractButton *clickedButton = messageBox->clickedButton();
     if (verifyButton == clickedButton) {
-        DocumentManager::getInstance().setSaveStrategyForAll(DocumentInfo::Ask);
+        DocumentManager::getInstance().setSaveStrategyForAll(DocumentInfo::SaveStrategy::Ask);
         QApplication::closeAllWindows();
     } else if (discardButton == clickedButton) {
-        DocumentManager::getInstance().setSaveStrategyForAll(DocumentInfo::Discard);
+        DocumentManager::getInstance().setSaveStrategyForAll(DocumentInfo::SaveStrategy::Discard);
         QApplication::closeAllWindows();
     }
     delete messageBox;
@@ -737,7 +737,7 @@ void MainWindow::on_exportAction_triggered()
 
 void MainWindow::on_closeAction_triggered()
 {
-    DocumentManager::setCloseRequest(DocumentManager::CloseCurrent);
+    DocumentManager::setCloseRequest(DocumentManager::CloseRequest::CloseCurrent);
     close();
 }
 
@@ -746,7 +746,7 @@ void MainWindow::on_quitAction_triggered()
     DocumentManager &documentManager = DocumentManager::getInstance();
     QMainWindow *activeDialogMainWindow = documentManager.getRecentActiveDialogMainWindow();
     if (activeDialogMainWindow == nullptr) {
-        DocumentManager::setCloseRequest(DocumentManager::Quit);
+        DocumentManager::setCloseRequest(DocumentManager::CloseRequest::Quit);
         int count = documentManager.count();
         if (count > 1) {
             int nofModified = documentManager.getModifiedCount();
@@ -1084,7 +1084,7 @@ void MainWindow::handleFileSaveAsBeforeCloseSelected(const QString &filePath)
             Settings &settings = Settings::getInstance();
             settings.setLastDocumentDirectoryPath(lastDocumentDirectoryPath);
             RecentFile::getInstance().addRecentFile(filePath);
-            if (DocumentManager::getCloseRequest() == DocumentManager::CloseCurrent) {
+            if (DocumentManager::getCloseRequest() == DocumentManager::CloseRequest::CloseCurrent) {
                 close();
             } else {
                 QApplication::closeAllWindows();
@@ -1140,8 +1140,8 @@ void MainWindow::handleAskBeforeClose(int answer)
         saveBeforeClose();
         break;
     case QMessageBox::Discard:
-        DocumentManager::getInstance().setSaveStrategy(*this, DocumentInfo::Discard);
-        if (DocumentManager::getCloseRequest() == DocumentManager::CloseCurrent) {
+        DocumentManager::getInstance().setSaveStrategy(*this, DocumentInfo::SaveStrategy::Discard);
+        if (DocumentManager::getCloseRequest() == DocumentManager::CloseRequest::CloseCurrent) {
             close();
         } else {
             QApplication::closeAllWindows();

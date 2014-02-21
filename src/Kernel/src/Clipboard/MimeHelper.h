@@ -52,7 +52,7 @@ public:
      *
      * \sa #accept(const QMimeData *, Mode)
      */
-    enum Mode {
+    enum class Mode {
         Strict, /*!< Every Url must be a valid Url */
         Relaxed /*!< At least one Url must be a valid Url */
     };

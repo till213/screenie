@@ -53,11 +53,11 @@ public:
     /*!
      * The render quality during edit operations.
      */
-    enum EditRenderQuality {
-        LowQuality = 0, /*!< Low quality: no anti-aliasing for pixmaps and fonts */
-        MediumQuality = 1, /*!< Not implemented yet. */
-        HighQuality = 2, /*!< Not implemented yet. */
-        MaximumQuality = 3 /*!< Maximum quality: anti-aliasing for pixmaps and fonts */
+    enum class EditRenderQuality {
+        Low = 0, /*!< Low quality: no anti-aliasing for pixmaps and fonts */
+        Medium = 1, /*!< Not implemented yet. */
+        High = 2, /*!< Not implemented yet. */
+        Maximum = 3 /*!< Maximum quality: anti-aliasing for pixmaps and fonts */
     };
 
     /*!

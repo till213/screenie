@@ -37,7 +37,7 @@ class ExportImagePrivate;
 class ExportImage
 {
 public:
-    enum Selection {
+    enum class Selection {
         Scene,
         Selected
     };
@@ -45,7 +45,7 @@ public:
     KERNEL_API ExportImage(const ScreenieScene &screenieScene, QGraphicsScene &graphicsScene);
     KERNEL_API virtual ~ExportImage();
 
-    KERNEL_API bool exportImage(const QString &filePath, Selection selection = Scene) const;
+    KERNEL_API bool exportImage(const QString &filePath, Selection selection = Selection::Scene) const;
     KERNEL_API QImage exportImage(Selection selection) const;
 
 private:

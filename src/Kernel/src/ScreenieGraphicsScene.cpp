@@ -70,7 +70,7 @@ ScreenieGraphicsScene::~ScreenieGraphicsScene()
 
 void ScreenieGraphicsScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-    bool accept = MimeHelper::accept(event->mimeData(), MimeHelper::Relaxed);
+    bool accept = MimeHelper::accept(event->mimeData(), MimeHelper::Mode::Relaxed);
     event->setAccepted(accept);
 }
 

@@ -69,10 +69,10 @@ QImage ExportImage::exportImage(Selection selection) const
     QList<QGraphicsItem *> invisibleItems;
 
     switch (selection) {
-    case Scene:
+    case Selection::Scene:
         sourceRect =  d->graphicsScene.itemsBoundingRect();
         break;
-    case Selected:
+    case Selection::Selected:
         foreach(QGraphicsItem *current, items) {
             if (current->isSelected()) {
                 sourceRect = sourceRect.united(current->sceneBoundingRect());

@@ -71,7 +71,7 @@ bool Clipboard::hasData() const
     bool result;
     QClipboard *clipboard = QApplication::clipboard();
     const QMimeData *mimeData = clipboard->mimeData();
-    result = MimeHelper::accept(mimeData, MimeHelper::Relaxed);
+    result = MimeHelper::accept(mimeData, MimeHelper::Mode::Relaxed);
     return result;
 }
 
@@ -101,7 +101,7 @@ void Clipboard::paste()
     }
 #endif
 
-    if (MimeHelper::accept(mimeData, MimeHelper::Relaxed)) {
+    if (MimeHelper::accept(mimeData, MimeHelper::Mode::Relaxed)) {
         // in order of preference
         const ScreenieMimeData *screenieMimeData = qobject_cast<const ScreenieMimeData *>(mimeData);
         if (screenieMimeData != nullptr) {
@@ -161,11 +161,11 @@ void Clipboard::storeMimeData()
         QClipboard *clipboard = QApplication::clipboard();
         ScreenieMimeData *screenieMimeData = new ScreenieMimeData(copies);
         // Image data
-        QImage image = d->exportImage.exportImage(ExportImage::Selected);
+        QImage image = d->exportImage.exportImage(ExportImage::Selection::Selected);
         screenieMimeData->setImageData(image);
         ScreenieSceneSerializer *screenieSceneSerializer = new XmlScreenieSceneSerializer();
         // Serialized XML data
-        QByteArray data = screenieSceneSerializer->serialize(d->screenieControl.getScreenieScene(), ScreenieSceneSerializer::SelectedItems);
+        QByteArray data = screenieSceneSerializer->serialize(d->screenieControl.getScreenieScene(), ScreenieSceneSerializer::Mode::SelectedItems);
         screenieMimeData->setData(MimeHelper::ScreenieMimeType, data);
         screenieMimeData->setData(MimeHelper::XmlMimeType, data);
         clipboard->setMimeData(screenieMimeData);
