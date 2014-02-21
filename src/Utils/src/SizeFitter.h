@@ -21,7 +21,7 @@ public:
 
     UTILS_API static const int InvalidSize;
 
-    enum FitMode {
+    enum class FitMode {
         NoFit       = 0,
         Fit         = 1,
         FitToWidth  = 2,
