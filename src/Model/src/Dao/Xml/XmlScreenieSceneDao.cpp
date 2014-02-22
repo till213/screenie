@@ -76,7 +76,7 @@ XmlScreenieSceneDao::~XmlScreenieSceneDao()
 
 bool XmlScreenieSceneDao::write(const ScreenieScene &screenieScene)
 {
-    return write(screenieScene, ScreenieSceneSerializer::FullScene);
+    return write(screenieScene, ScreenieSceneSerializer::Mode::FullScene);
 }
 
 ScreenieScene *XmlScreenieSceneDao::read() const
@@ -151,7 +151,7 @@ bool XmlScreenieSceneDao::writeScreenieScene(const ScreenieScene &screenieScene,
     d->streamWriter->writeAttributes(sceneAttributes);
     {
         switch (mode) {
-        case ScreenieSceneSerializer::FullScene:
+        case ScreenieSceneSerializer::Mode::FullScene:
             d->streamWriter->writeStartElement("background");
             {
                 QXmlStreamAttributes backgroundAttributes;
@@ -162,7 +162,7 @@ bool XmlScreenieSceneDao::writeScreenieScene(const ScreenieScene &screenieScene,
             d->streamWriter->writeEndElement();
             result = writeScreenieModels(screenieScene, mode);
             break;
-        case ScreenieSceneSerializer::SelectedItems:
+        case ScreenieSceneSerializer::Mode::SelectedItems:
             result = writeScreenieModels(screenieScene, mode);
             break;
         default:
@@ -182,10 +182,10 @@ bool XmlScreenieSceneDao::writeScreenieModels(const ScreenieScene &screenieScene
 
     QList<ScreenieModelInterface *> screenieModels;
     switch (mode) {
-    case ScreenieSceneSerializer::FullScene:
+    case ScreenieSceneSerializer::Mode::FullScene:
         screenieModels = screenieScene.getModels();
         break;
-    case ScreenieSceneSerializer::SelectedItems:
+    case ScreenieSceneSerializer::Mode::SelectedItems:
         screenieModels = screenieScene.getSelectedModels();
         break;
     default:

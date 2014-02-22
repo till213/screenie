@@ -96,27 +96,27 @@ void TemplateModelPropertiesWidget::updateUi()
     validate(*ui->heightLineEdit, true);
     SizeFitter &sizeFitter = d->screenieTemplateModel.getSizeFitter();
     switch (sizeFitter.getFitMode()) {
-    case SizeFitter::NoFit:
+    case SizeFitter::FitMode::NoFit:
         ui->fitModeComboBox->setCurrentIndex(0);
         ui->respectOrientationCheckBox->setEnabled(false);
         ui->enlargeCheckBox->setEnabled(false);
         break;
-    case SizeFitter::Fit:
+    case SizeFitter::FitMode::Fit:
         ui->fitModeComboBox->setCurrentIndex(1);
         ui->respectOrientationCheckBox->setEnabled(true);
         ui->enlargeCheckBox->setEnabled(true);
         break;
-    case SizeFitter::FitToWidth:
+    case SizeFitter::FitMode::FitToWidth:
         ui->fitModeComboBox->setCurrentIndex(2);
         ui->respectOrientationCheckBox->setEnabled(false);
         ui->enlargeCheckBox->setEnabled(true);
         break;
-    case SizeFitter::FitToHeight:
+    case SizeFitter::FitMode::FitToHeight:
         ui->fitModeComboBox->setCurrentIndex(3);
         ui->respectOrientationCheckBox->setEnabled(false);
         ui->enlargeCheckBox->setEnabled(true);
         break;
-    case SizeFitter::ExactFit:
+    case SizeFitter::FitMode::ExactFit:
         ui->fitModeComboBox->setCurrentIndex(4);
         ui->respectOrientationCheckBox->setEnabled(true);
         ui->enlargeCheckBox->setEnabled(true);
@@ -127,8 +127,8 @@ void TemplateModelPropertiesWidget::updateUi()
 #endif
         break;
     }
-    ui->respectOrientationCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::RespectOrientation));
-    ui->enlargeCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::Enlarge));
+    ui->respectOrientationCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::FitOption::RespectOrientation));
+    ui->enlargeCheckBox->setChecked(sizeFitter.isFitOptionEnabled(SizeFitter::FitOption::Enlarge));
     ui->idLineEdit->setText(QString::number(d->screenieTemplateModel.getOrder()));
 }
 
@@ -160,19 +160,19 @@ void TemplateModelPropertiesWidget::on_fitModeComboBox_activated(int index)
 {
     switch (index) {
     case 0:
-        d->screenieControl.setFitMode(SizeFitter::NoFit, &d->screenieTemplateModel);
+        d->screenieControl.setFitMode(SizeFitter::FitMode::NoFit, &d->screenieTemplateModel);
         break;
     case 1:
-        d->screenieControl.setFitMode(SizeFitter::Fit, &d->screenieTemplateModel);
+        d->screenieControl.setFitMode(SizeFitter::FitMode::Fit, &d->screenieTemplateModel);
         break;
     case 2:
-        d->screenieControl.setFitMode(SizeFitter::FitToWidth, &d->screenieTemplateModel);
+        d->screenieControl.setFitMode(SizeFitter::FitMode::FitToWidth, &d->screenieTemplateModel);
         break;
     case 3:
-        d->screenieControl.setFitMode(SizeFitter::FitToHeight, &d->screenieTemplateModel);
+        d->screenieControl.setFitMode(SizeFitter::FitMode::FitToHeight, &d->screenieTemplateModel);
         break;
     case 4:
-        d->screenieControl.setFitMode(SizeFitter::ExactFit, &d->screenieTemplateModel);
+        d->screenieControl.setFitMode(SizeFitter::FitMode::ExactFit, &d->screenieTemplateModel);
         break;
     default:
 #ifdef DEBUG
@@ -184,10 +184,10 @@ void TemplateModelPropertiesWidget::on_fitModeComboBox_activated(int index)
 
 void TemplateModelPropertiesWidget::on_respectOrientationCheckBox_toggled(bool checked)
 {
-    d->screenieControl.setFitOptionEnabled(SizeFitter::RespectOrientation, checked, &d->screenieTemplateModel);
+    d->screenieControl.setFitOptionEnabled(SizeFitter::FitOption::RespectOrientation, checked, &d->screenieTemplateModel);
 }
 
 void TemplateModelPropertiesWidget::on_enlargeCheckBox_toggled(bool checked)
 {
-    d->screenieControl.setFitOptionEnabled(SizeFitter::Enlarge, checked, &d->screenieTemplateModel);
+    d->screenieControl.setFitOptionEnabled(SizeFitter::FitOption::Enlarge, checked, &d->screenieTemplateModel);
 }

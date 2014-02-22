@@ -40,7 +40,7 @@ public:
     /*!
      * Defines how to deal with unsaved documents before closing the window.
      */
-    enum SaveStrategy
+    enum class SaveStrategy
     {
         Discard, /*!< Discard the modifications, close the document immediatelly */
         Save, /*!< Save the modifications before closing the document */

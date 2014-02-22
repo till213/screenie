@@ -35,10 +35,10 @@ public:
         : sizeFitter(theSize),
           order(theOrder)
     {
-          sizeFitter.setFitMode(SizeFitter::Fit);
-          sizeFitter.setFitOptionEnabled(SizeFitter::Enlarge, true);
+          sizeFitter.setFitMode(SizeFitter::FitMode::Fit);
+          sizeFitter.setFitOptionEnabled(SizeFitter::FitOption::Enlarge, true);
           sizeFitter.setMaxTargetSize(Settings::getInstance().getMaximumImagePixelSize());
-          sizeFitter.setFitOptionEnabled(SizeFitter::RespectMaxTargetSize, true);
+          sizeFitter.setFitOptionEnabled(SizeFitter::FitOption::RespectMaxTargetSize, true);
     }
 
     ScreenieTemplateModelPrivate(const ScreenieTemplateModelPrivate &other)
@@ -119,19 +119,19 @@ QString ScreenieTemplateModel::getOverlayText() const
     QString result = tr("Order: %1").arg(d->order);
     QString fitMode;
     switch (d->sizeFitter.getFitMode()) {
-    case SizeFitter::NoFit:
+    case SizeFitter::FitMode::NoFit:
         fitMode = tr("No Fit", "Size Fitter fit mode option");
         break;
-    case SizeFitter::Fit:
+    case SizeFitter::FitMode::Fit:
         fitMode = tr("Fit", "Size Fitter fit mode option");
         break;
-    case SizeFitter::FitToWidth:
+    case SizeFitter::FitMode::FitToWidth:
         fitMode = tr("Fit To Width", "Size Fitter fit mode option");
         break;
-    case SizeFitter::FitToHeight:
+    case SizeFitter::FitMode::FitToHeight:
         fitMode = tr("Fit To Height", "Size Fitter fit mode option");
         break;
-    case SizeFitter::ExactFit:
+    case SizeFitter::FitMode::ExactFit:
         fitMode = tr("Exact Fit", "Size Fitter fit mode option");
         break;
     default:

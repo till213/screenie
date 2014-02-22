@@ -57,8 +57,8 @@ public:
     bool read(const QString &filePath, SecurityToken *securityToken = nullptr);
 
 protected:
-    virtual void closeEvent(QCloseEvent *event);
-    virtual void resizeEvent(QResizeEvent *event);
+    virtual void closeEvent(QCloseEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
     Q_DISABLE_COPY(MainWindow)

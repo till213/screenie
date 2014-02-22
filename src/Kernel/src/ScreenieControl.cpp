@@ -456,7 +456,7 @@ void ScreenieControl::setRenderQuality(RenderQuality renderQuality)
 {
     QList<ScreeniePixmapItem *> items = getScreeniePixmapItems();
     switch (renderQuality) {
-    case LowQuality:
+    case RenderQuality::Low:
         foreach (ScreeniePixmapItem *item, items) {
             item->setTransformationMode(Qt::FastTransformation);
         }
@@ -464,7 +464,7 @@ void ScreenieControl::setRenderQuality(RenderQuality renderQuality)
             view->setRenderHints(QPainter::NonCosmeticDefaultPen);
         }
         break;
-    case MaximumQuality:
+    case RenderQuality::Maximum:
         foreach (ScreeniePixmapItem *item, items) {
             item->setTransformationMode(Qt::SmoothTransformation);
         }
@@ -518,13 +518,13 @@ void ScreenieControl::updateEditRenderQuality()
 {
     switch (Settings::getInstance().getEditRenderQuality())
     {
-    case Settings::LowQuality: // fall-thru intended (for now)
-    case Settings::MediumQuality:
-        setRenderQuality(LowQuality);
+    case Settings::EditRenderQuality::Low: // fall-thru intended (for now)
+    case Settings::EditRenderQuality::Medium:
+        setRenderQuality(RenderQuality::Low);
         d->qualityTimer.start();
         break;
-    case Settings::HighQuality: // fall-thru intended (for now)
-    case Settings::MaximumQuality:
+    case Settings::EditRenderQuality::High: // fall-thru intended (for now)
+    case Settings::EditRenderQuality::Maximum:
        break;
     default:
 #ifdef DEBUG
@@ -731,6 +731,6 @@ void ScreenieControl::handleBackgroundChanged()
 
 void ScreenieControl::restoreRenderQuality()
 {
-    setRenderQuality(MaximumQuality);
+    setRenderQuality(RenderQuality::Maximum);
 }
 

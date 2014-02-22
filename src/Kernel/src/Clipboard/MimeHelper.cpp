@@ -55,10 +55,10 @@ bool MimeHelper::accept(const QMimeData *mimeData, Mode mode)
             foreach(QUrl url, mimeData->urls()) {
                 if (!url.toLocalFile().isEmpty()) {
                     result = true;
-                    if (mode == Relaxed) {
+                    if (mode == Mode::Relaxed) {
                         break;
                     }
-                } else if (mode == Strict) {
+                } else if (mode == Mode::Strict) {
                     result = false;
                     break;
                 }

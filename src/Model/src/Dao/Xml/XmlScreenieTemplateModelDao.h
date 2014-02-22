@@ -46,21 +46,18 @@ public:
     explicit XmlScreenieTemplateModelDao(QIODevice &device);
     virtual ~XmlScreenieTemplateModelDao();
 
-    virtual bool write(const ScreenieTemplateModel &screenieTemplateModel);
-    virtual ScreenieTemplateModel *read();
+    virtual bool write(const ScreenieTemplateModel &screenieTemplateModel) override;
+    virtual ScreenieTemplateModel *read() override;
 
 protected:
-    virtual bool writeSpecific();
-    virtual bool readSpecific();
+    virtual bool writeSpecific() override;
+    virtual bool readSpecific() override;
 
 private:
     XmlScreenieTemplateModelDaoPrivate *d;
 
     bool writeSizeFitter(const SizeFitter &sizeFitter);
     bool readSizeFitter(SizeFitter &sizeFitter);
-
-    static QString serializeBitArray(const QBitArray &bitArray);
-    static QBitArray deserializeBitArray(const QString &bitArrayString);
 };
 
 #endif // XMLSCREENIETEMPLATEMODELDAO_H

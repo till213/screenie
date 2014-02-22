@@ -41,7 +41,7 @@ class DocumentManager : public QObject
 {
     Q_OBJECT
 public:
-    enum CloseRequest
+    enum class CloseRequest
     {
         CloseCurrent,
         Quit
@@ -117,7 +117,7 @@ public:
      */
     KERNEL_API QMainWindow *getRecentActiveDialogMainWindow() const;
 
-    virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event) override;
 
     KERNEL_API static CloseRequest getCloseRequest();
     KERNEL_API static void setCloseRequest(CloseRequest closeRequest);

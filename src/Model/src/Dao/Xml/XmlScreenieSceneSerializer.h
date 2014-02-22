@@ -32,8 +32,8 @@ public:
     MODEL_API XmlScreenieSceneSerializer();
     MODEL_API virtual ~XmlScreenieSceneSerializer();
 
-    MODEL_API virtual QByteArray serialize(const ScreenieScene &screenieScene, Mode mode);
-    MODEL_API virtual ScreenieScene *deserialize(QByteArray &data) const;
+    MODEL_API virtual QByteArray serialize(const ScreenieScene &screenieScene, Mode mode) override;
+    MODEL_API virtual ScreenieScene *deserialize(QByteArray &data) const override;
 
 private:
     XmlScreenieSceneSerializerPrivate *d;

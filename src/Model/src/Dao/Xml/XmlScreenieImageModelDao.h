@@ -40,12 +40,12 @@ public:
     explicit XmlScreenieImageModelDao(QXmlStreamReader &xmlStreamReader);
     virtual ~XmlScreenieImageModelDao();
 
-    virtual bool write(const ScreenieImageModel &screeniePixmapModel);
-    virtual ScreenieImageModel *read();
+    virtual bool write(const ScreenieImageModel &screeniePixmapModel) override;
+    virtual ScreenieImageModel *read() override;
 
 protected:
-    virtual bool writeSpecific();
-    virtual bool readSpecific();
+    virtual bool writeSpecific() override;
+    virtual bool readSpecific() override;
 
 private:
     XmlScreenieImageModelDaoPrivate *d;

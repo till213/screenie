@@ -40,12 +40,12 @@ public:
     explicit XmlScreenieFilePathModelDao(QXmlStreamReader &xmlStreamReader);
     virtual ~XmlScreenieFilePathModelDao();
 
-    virtual bool write(const ScreenieFilePathModel &screenieFilePathModel);
-    virtual ScreenieFilePathModel *read();
+    virtual bool write(const ScreenieFilePathModel &screenieFilePathModel) override;
+    virtual ScreenieFilePathModel *read() override;
 
 protected:
-    virtual bool writeSpecific();
-    virtual bool readSpecific();
+    virtual bool writeSpecific() override;
+    virtual bool readSpecific() override;
 
 private:
     XmlScreenieFilePathModelDaoPrivate *d;

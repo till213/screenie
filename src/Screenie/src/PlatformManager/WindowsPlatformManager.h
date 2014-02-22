@@ -37,10 +37,10 @@ public:
     WindowsPlatformManager();
     virtual ~WindowsPlatformManager();
 
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 
 protected:
-    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
+    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi) override;
 
 private:
     WindowsPlatformManagerPrivate *d;

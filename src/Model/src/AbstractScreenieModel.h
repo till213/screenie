@@ -40,34 +40,34 @@ public:
     explicit AbstractScreenieModel(const AbstractScreenieModel &other);
     virtual ~AbstractScreenieModel();
 
-    virtual QPointF getPosition() const;
-    virtual void setPosition(QPointF position);
-    virtual void setPositionX(qreal x);
-    virtual void setPositionY(qreal y);
-    virtual void translate(qreal dx, qreal dy);
+    virtual QPointF getPosition() const override;
+    virtual void setPosition(QPointF position) override;
+    virtual void setPositionX(qreal x) override;
+    virtual void setPositionY(qreal y) override;
+    virtual void translate(qreal dx, qreal dy) override;
 
-    virtual qreal getDistance() const;
-    virtual void setDistance(qreal distance);
-    virtual void addDistance(qreal distance);
+    virtual qreal getDistance() const override;
+    virtual void setDistance(qreal distance) override;
+    virtual void addDistance(qreal distance) override;
 
-    virtual int getRotation() const;
-    virtual void setRotation(int angle);
-    virtual void rotate(int angle);
+    virtual int getRotation() const override;
+    virtual void setRotation(int angle) override;
+    virtual void rotate(int angle) override;
 
-    virtual bool isReflectionEnabled() const;
-    virtual void setReflectionEnabled(bool enable);
+    virtual bool isReflectionEnabled() const override;
+    virtual void setReflectionEnabled(bool enable) override;
 
-    virtual int getReflectionOffset() const;
-    virtual void setReflectionOffset(int reflectionOffset);
-    virtual void addReflectionOffset(int reflectionOffset);
+    virtual int getReflectionOffset() const override;
+    virtual void setReflectionOffset(int reflectionOffset) override;
+    virtual void addReflectionOffset(int reflectionOffset) override;
 
-    virtual int getReflectionOpacity() const;
-    virtual void setReflectionOpacity(int reflectionOpacity);
-    virtual void addReflectionOpacity(int reflectionOpacity);
-    virtual void setSelected(bool enable);
-    virtual bool isSelected() const;
+    virtual int getReflectionOpacity() const override;
+    virtual void setReflectionOpacity(int reflectionOpacity) override;
+    virtual void addReflectionOpacity(int reflectionOpacity) override;
+    virtual void setSelected(bool enable) override;
+    virtual bool isSelected() const override;
 
-    virtual void convert(ScreenieModelInterface &source);
+    virtual void convert(ScreenieModelInterface &source) override;
 
 protected:
     QImage fitToMaximumSize(const QImage &image) const;

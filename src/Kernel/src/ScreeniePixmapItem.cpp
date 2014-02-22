@@ -211,7 +211,7 @@ void ScreeniePixmapItem::wheelEvent(QGraphicsSceneWheelEvent *event)
 
 void ScreeniePixmapItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-    bool accept = MimeHelper::accept(event->mimeData(), MimeHelper::Strict);
+    bool accept = MimeHelper::accept(event->mimeData(), MimeHelper::Mode::Strict);
     event->setAccepted(accept);
 }
 
