@@ -43,7 +43,7 @@ public:
 
     ~DocumentManagerPrivate()
     {
-        foreach (DocumentInfo *documentInfo, documentInfos) {
+        for (DocumentInfo *documentInfo : documentInfos) {
             delete documentInfo;
         }
         delete windowActionGroup;
@@ -176,7 +176,7 @@ bool DocumentManager::activate(const QString &filePath)
     bool result;
 
     result = false;
-    foreach(DocumentInfo *documentInfo, d->documentInfos) {
+    for (DocumentInfo *documentInfo : d->documentInfos) {
         if (documentInfo->getFilePath() == filePath) {
             documentInfo->getMainWindow().activateWindow();
             documentInfo->getMainWindow().raise();
@@ -200,7 +200,7 @@ int DocumentManager::count() const
 int DocumentManager::getModifiedCount() const
 {
     int result = 0;
-    foreach (const DocumentInfo *documentInfo, d->documentInfos) {
+    for (const DocumentInfo *documentInfo : d->documentInfos) {
         if (documentInfo->isModified()) {
             result++;
         }
@@ -230,7 +230,7 @@ void DocumentManager::setSaveStrategy(const QMainWindow &mainWindow, DocumentInf
 
 void DocumentManager::setSaveStrategyForAll(DocumentInfo::SaveStrategy saveStrategy)
 {
-    foreach (DocumentInfo *documentInfo, d->documentInfos) {
+    for (DocumentInfo *documentInfo : d->documentInfos) {
        documentInfo->setSaveStrategy(saveStrategy);
     }
 }
@@ -323,7 +323,7 @@ void DocumentManager::updateActionGroup(const QMainWindow &mainWindow)
 QAction *DocumentManager::getWindowAction(int id) const
 {
     QAction *result = nullptr;
-    foreach (QAction *action, d->windowActionGroup->actions()) {
+    for (QAction *action : d->windowActionGroup->actions()) {
         if (action->data().toInt() == id) {
             result = action;
             break;
@@ -335,7 +335,7 @@ QAction *DocumentManager::getWindowAction(int id) const
 DocumentInfo *DocumentManager::getDocumentInfoFromObject(const QObject &object) const
 {
     DocumentInfo *result = nullptr;
-    foreach (DocumentInfo *documentInfo, d->documentInfos) {
+    for (DocumentInfo *documentInfo : d->documentInfos) {
         if (documentInfo->getMainWindow().objectName() == object.objectName()) {
             result = documentInfo;
             break;
@@ -350,7 +350,7 @@ void DocumentManager::remove(QObject *object)
 {
     DocumentInfo *documentInfo = getDocumentInfoFromObject(*object);
     if (documentInfo != nullptr) {
-        foreach (QAction *action, d->windowActionGroup->actions()) {
+        for (QAction *action : d->windowActionGroup->actions()) {
             if (action->data().toInt() == documentInfo->getId()) {
                 delete action;
                 break;
@@ -364,7 +364,7 @@ void DocumentManager::remove(QObject *object)
 
 void DocumentManager::activate(int id) const
 {
-    foreach(DocumentInfo *documentInfo, d->documentInfos) {
+    for (DocumentInfo *documentInfo : d->documentInfos) {
         if (documentInfo->getId() == id) {
             documentInfo->getMainWindow().activateWindow();
             documentInfo->getMainWindow().raise();

@@ -73,7 +73,7 @@ QImage ExportImage::exportImage(Selection selection) const
         sourceRect =  d->graphicsScene.itemsBoundingRect();
         break;
     case Selection::Selected:
-        foreach(QGraphicsItem *current, items) {
+        for (QGraphicsItem *current : items) {
             if (current->isSelected()) {
                 sourceRect = sourceRect.united(current->sceneBoundingRect());
             } else if (current->isVisible()) {
@@ -103,11 +103,11 @@ QImage ExportImage::exportImage(Selection selection) const
     d->graphicsScene.clearSelection();
     d->graphicsScene.render(&painter, QRectF(), sourceRect);
     // restore selection
-    foreach(QGraphicsItem *current, selectedItems) {
+    for (QGraphicsItem *current : selectedItems) {
         current->setSelected(true);
     }
     // restore visibility
-    foreach(QGraphicsItem *current, invisibleItems) {
+    for (QGraphicsItem *current : invisibleItems) {
         current->setVisible(true);
     }
     // restore background

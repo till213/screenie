@@ -99,7 +99,7 @@ void ScreenieGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             image = qvariant_cast<QImage>(event->mimeData()->imageData());
             images.append(image);
         } else {
-            foreach (QUrl url, urls) {
+            for (QUrl url : urls) {
                 /*!\todo Support for "http:// images"? For now we assume the paths can be converted to local paths. */
                 QString filePath = url.toLocalFile();
                 if (!filePath.isEmpty()) {

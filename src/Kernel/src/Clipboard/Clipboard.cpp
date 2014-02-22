@@ -81,7 +81,7 @@ void Clipboard::cut()
 {
     storeMimeData();
     QList<ScreenieModelInterface *> selectedItems = d->screenieControl.getScreenieScene().getSelectedModels();
-    foreach (ScreenieModelInterface *selectedItem, selectedItems) {
+    for (ScreenieModelInterface *selectedItem : selectedItems) {
         d->screenieControl.getScreenieScene().removeModel(selectedItem);
     }    
 }
@@ -96,7 +96,7 @@ void Clipboard::paste()
     QClipboard *clipboard = QApplication::clipboard();
     const QMimeData *mimeData = clipboard->mimeData();
 #ifdef DEBUG
-    foreach(QString format, mimeData->formats()) {
+    for (QString format : mimeData->formats()) {
         qDebug("Clipboard::paste: MIME: %s", qPrintable(format));
     }
 #endif
@@ -107,7 +107,7 @@ void Clipboard::paste()
         if (screenieMimeData != nullptr) {
             // inside the same application instance
             const QList<const ScreenieModelInterface *> copies = screenieMimeData->getScreenieModels();
-            foreach (const ScreenieModelInterface *clipboardModel, copies) {
+            for (const ScreenieModelInterface *clipboardModel : copies) {
                 ScreenieModelInterface *copy = clipboardModel->copy();
                 d->screenieControl.getScreenieScene().addModel(copy);
             }
@@ -118,7 +118,7 @@ void Clipboard::paste()
             ScreenieScene *clipboardScreenieScene = screenieSceneSerializer->deserialize(data);
             if (clipboardScreenieScene != nullptr) {
                 const QList<ScreenieModelInterface *> copies = clipboardScreenieScene->getModels();
-                foreach (const ScreenieModelInterface *clipboardModel, copies) {
+                for (const ScreenieModelInterface *clipboardModel : copies) {
                     ScreenieModelInterface *copy = clipboardModel->copy();
                     d->screenieControl.getScreenieScene().addModel(copy);
                 }
@@ -131,7 +131,7 @@ void Clipboard::paste()
         } else if (mimeData->hasUrls()) {
             // from different file application
             QList<QUrl> urls = mimeData->urls();
-            foreach(QUrl url, urls) {
+            for (QUrl url : urls) {
                 QString filePath = url.toLocalFile();
                 if (!filePath.isNull()) {
                     d->screenieControl.addImage(filePath);
@@ -153,7 +153,7 @@ void Clipboard::frenchConnection()
 void Clipboard::storeMimeData()
 {
     QList<const ScreenieModelInterface *> copies;
-    foreach (ScreenieModelInterface *screenieModel, d->screenieControl.getScreenieScene().getSelectedModels()) {
+    for (ScreenieModelInterface *screenieModel : d->screenieControl.getScreenieScene().getSelectedModels()) {
         ScreenieModelInterface *copy = screenieModel->copy();
         copies.append(copy);
     }

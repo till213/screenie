@@ -979,7 +979,7 @@ void MainWindow::updateUi()
 void MainWindow::updateRecentFileMenu()
 {
     ui->recentFilesMenu->clear();;
-    foreach (QAction *recentFileAction, m_recentFileMenu->getRecentFileActionGroup().actions()) {
+    for (QAction *recentFileAction : m_recentFileMenu->getRecentFileActionGroup().actions()) {
         ui->recentFilesMenu->addAction(recentFileAction);
     }
 }
@@ -1028,7 +1028,7 @@ void MainWindow::updateWindowMenu()
     windowMenu->addAction(m_maximizeWindowsAction);
     windowMenu->addSeparator();
     QActionGroup &actionGroup = DocumentManager::getInstance().getActionGroup();
-    foreach (QAction *action, actionGroup.actions()) {
+    for (QAction *action : actionGroup.actions()) {
         windowMenu->addAction(action);
     }
 }
@@ -1125,7 +1125,7 @@ void MainWindow::handleImagesSelected(const QStringList &filePaths)
     QString lastImageDirectoryPath;
 
     if (filePaths.count() > 0) {
-        foreach(QString filePath, filePaths) {
+        for (QString filePath : filePaths) {
             m_screenieControl->addImage(filePath, QPointF(0.0, 0.0));
         }
         lastImageDirectoryPath = QFileInfo(filePaths.last()).absolutePath();

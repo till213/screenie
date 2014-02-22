@@ -195,7 +195,7 @@ bool XmlScreenieSceneDao::writeScreenieModels(const ScreenieScene &screenieScene
         break;
     }
 
-    foreach (ScreenieModelInterface *screenieModel, screenieModels) {
+    for (ScreenieModelInterface *screenieModel : screenieModels) {
         ScreenieFilePathModel *screenieFilePathModel = qobject_cast<ScreenieFilePathModel *>(screenieModel);
         if (screenieFilePathModel != nullptr) {
             result = writeFilePathModel(*screenieFilePathModel);

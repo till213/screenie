@@ -32,7 +32,7 @@ public:
 TemplateOrganizer::TemplateOrganizer(const ScreenieScene &screenieScene)
     : d(new TemplateOrganizerPrivate(screenieScene))
 {
-    foreach (ScreenieModelInterface *screenieModel, screenieScene.getModels()) {
+    for (ScreenieModelInterface *screenieModel : screenieScene.getModels()) {
         handleModelAdded(*screenieModel);
     }
 

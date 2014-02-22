@@ -116,7 +116,7 @@ const QList<ScreenieModelInterface *> &ScreenieScene::getModels() const
 QList<ScreenieModelInterface *> ScreenieScene::getSelectedModels() const
 {
     QList<ScreenieModelInterface *> result;
-    foreach (ScreenieModelInterface *screenieModel, d->screenieModels) {
+    for (ScreenieModelInterface *screenieModel : d->screenieModels) {
         if (screenieModel->isSelected()) {
             result.append(screenieModel);
         }
@@ -158,7 +158,7 @@ void ScreenieScene::setBackgroundColor(QColor color) {
 bool ScreenieScene::hasTemplates() const
 {
     bool result = false;
-    foreach (ScreenieModelInterface *screenieModel, d->screenieModels) {
+    for (ScreenieModelInterface *screenieModel : d->screenieModels) {
         if (screenieModel->isTemplate()) {
             result = true;
             break;
@@ -170,7 +170,7 @@ bool ScreenieScene::hasTemplates() const
 bool ScreenieScene::hasTemplatesExclusively() const
 {
     bool result = true;
-    foreach (ScreenieModelInterface *screenieModel, d->screenieModels) {
+    for (ScreenieModelInterface *screenieModel : d->screenieModels) {
         if (!screenieModel->isTemplate()) {
             result = false;
             break;
