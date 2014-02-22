@@ -157,7 +157,7 @@ signals:
     void rotationChanged();
     void positionChanged();
     void changed();
-    void imageChanged(const QImage &image);
+    void imageChanged();
     void filePathChanged(const QString &filePath);
     void selectionChanged();
 };

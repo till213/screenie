@@ -88,7 +88,6 @@ private:
 private slots:
     void updateReflection();
     void updateReflectionBoundingRect();
-    void updatePixmap(const QImage &image);
     void updatePixmap();
     void updateItemGeometry();
     void updateItem();

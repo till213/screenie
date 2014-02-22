@@ -271,7 +271,7 @@ void AbstractScreenieModel::convert(ScreenieModelInterface &source)
 QImage AbstractScreenieModel::fitToMaximumSize(const QImage &image) const
 {
     QImage result;
-    QSize maximumImageSize = Settings::getInstance().getMaximumImageSize();
+    QSize maximumImageSize = Settings::getInstance().getMaximumImagePixelSize();
     QSize actualSize = image.size();
     if (actualSize.width() > maximumImageSize.width() || actualSize.height() > maximumImageSize.height()) {
         result = image.scaled(maximumImageSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);

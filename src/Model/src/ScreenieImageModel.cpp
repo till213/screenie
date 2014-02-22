@@ -85,7 +85,7 @@ void ScreenieImageModel::setImage(const QImage image)
 {
     if (d->image.cacheKey() != image.cacheKey()) {
         d->image = fitToMaximumSize(image);
-        emit imageChanged(d->image);
+        emit imageChanged();
     }
 }
 

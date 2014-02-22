@@ -34,7 +34,7 @@
 class SettingsPrivate
 {
 public:
-    static const QSize DefaultMaximumImageSize;
+    static const QSize DefaultMaximumImagePointSize;
     static const QSize DefaultTemplateSize;
     static const QString DefaultLastImageDirectoryPath;
     static const QString DefaultLastExportDirectoryPath;
@@ -49,7 +49,7 @@ public:
     static const QSize DefaultMainWindowSize;
 
     Version version;
-    QSize maximumImageSize;
+    QSize maximumImagePointSize;
     QSize templateSize;
     QString lastImageDirectoryPath;
     QString lastExportDirectoryPath;
@@ -66,7 +66,7 @@ public:
     static Settings *instance;
 
     SettingsPrivate()
-        : maximumImageSize(DefaultMaximumImageSize)
+        : maximumImagePointSize(DefaultMaximumImagePointSize)
     {}
 
     ~SettingsPrivate()
@@ -75,7 +75,7 @@ public:
 
 Settings *SettingsPrivate::instance = nullptr;
 
-const QSize SettingsPrivate::DefaultMaximumImageSize = QSize(1024, 1024);
+const QSize SettingsPrivate::DefaultMaximumImagePointSize = QSize(1024, 1024);
 const QSize SettingsPrivate::DefaultTemplateSize = QSize(400, 300);
 const QString SettingsPrivate::DefaultLastImageDirectoryPath = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).first();
 const QString SettingsPrivate::DefaultLastExportDirectoryPath = SettingsPrivate::DefaultLastImageDirectoryPath;
@@ -105,15 +105,23 @@ void Settings::destroyInstance()
     }
 }
 
-const QSize &Settings::getMaximumImageSize() const
+QSize Settings::getMaximumImagePixelSize() const
 {
-    return d->maximumImageSize;
+    QSize result;
+    qreal devicePixelRatio = qApp->devicePixelRatio();
+    result = d->maximumImagePointSize * devicePixelRatio;
+    return result;
 }
 
-void Settings::setMaximumImageSize(const QSize &maximumImageSize)
+const QSize &Settings::getMaximumImagePointSize() const
 {
-    if (d->maximumImageSize != maximumImageSize) {
-        d->maximumImageSize = maximumImageSize;
+    return d->maximumImagePointSize;
+}
+
+void Settings::setMaximumImagePointSize(const QSize &maximumImagePointSize)
+{
+    if (d->maximumImagePointSize != maximumImagePointSize) {
+        d->maximumImagePointSize = maximumImagePointSize;
         emit changed();
     }
 }
@@ -270,7 +278,7 @@ QSize Settings::getDefaultWindowSize()
 void Settings::store()
 {
     d->settings.setValue("Version", d->version.toString());
-    d->settings.setValue("Scene/MaximumImageSize", d->maximumImageSize);
+    d->settings.setValue("Scene/MaximumImagePointSize", d->maximumImagePointSize);
     d->settings.setValue("Scene/TemplateSize", d->templateSize);
     d->settings.beginGroup("Paths");
     {
@@ -307,7 +315,7 @@ void Settings::restore()
         /*!\todo Settings conversion as necessary */
 #endif
     }
-    d->maximumImageSize = d->settings.value("Scene/MaximumImageSize", SettingsPrivate::DefaultMaximumImageSize).toSize();
+    d->maximumImagePointSize = d->settings.value("Scene/MaximumImagePointSize", SettingsPrivate::DefaultMaximumImagePointSize).toSize();
     d->templateSize = d->settings.value("Scene/TemplateSize", SettingsPrivate::DefaultTemplateSize).toSize();
     d->settings.beginGroup("Paths");
     {

@@ -60,18 +60,32 @@ public:
         MaximumQuality = 3 /*!< Maximum quality: anti-aliasing for pixmaps and fonts */
     };
 
-    /*!
-     * \sa #changed()
-     */
     UTILS_API static Settings &getInstance();
     UTILS_API static void destroyInstance();
 
-    UTILS_API const QSize &getMaximumImageSize() const;
+    /*!
+     * Returns the maximum image size in pixel. The size depends on the maximum available
+     * resolution which defines the ratio between pixel and points (e.g. "Retina" displays
+     * typically have a ratio of 2.0).
+     *
+     * \return the QSize which contains the maximum image size in pixel
+     * \sa #getMaximumImagePointSize
+     */
+    UTILS_API QSize getMaximumImagePixelSize() const;
+
+    /*!
+     * Returns the maximum image size in points. The size in points is not dependent
+     * on the pixel density of the display device.
+     *
+     * \return the QSize which contains the maximum image size in point
+     * \sa #getMaximumImagePixelSize
+     */
+    UTILS_API const QSize &getMaximumImagePointSize() const;
 
     /*!
      * \sa #changed()
      */
-    UTILS_API void setMaximumImageSize(const QSize &maximumImageSize);
+    UTILS_API void setMaximumImagePointSize(const QSize &maximumImagePointSize);
 
     UTILS_API const QSize &getTemplateSize() const;
 
@@ -114,7 +128,6 @@ public:
      * \sa #changed()
      */
     UTILS_API void setDistanceGestureSensitivity(qreal distanceGestureSensitivity);
-
 
     /*!
      * \sa #changed()

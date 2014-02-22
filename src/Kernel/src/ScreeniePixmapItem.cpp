@@ -64,10 +64,13 @@ public:
           transformPixmap(true),
           ignoreUpdates(false),
           itemTransformed(false),
+          reflectionEnabled(theScreenieModel.isReflectionEnabled()),
           propertyDialogFactory(new PropertyDialogFactory(screenieControl)),
           propertyDialog(0),
           checkerPattern(PaintTools::createCheckerPattern())
-    {}
+    {
+        devicePixelRatio = qApp->devicePixelRatio();
+    }
 
     ~ScreeniePixmapItemPrivate()
     {
@@ -79,16 +82,16 @@ public:
     ScreenieControl &screenieControl;
     const ScreenieScene &screenieScene;
     Reflection *reflection;
-    QSizeF imageSize;
     QRectF reflectionBoundingRect;
     bool transformPixmap;
     bool ignoreUpdates;
     bool itemTransformed;
+    bool reflectionEnabled;
     PropertyDialogFactory *propertyDialogFactory;
     QPoint initialPoint;
     QDialog *propertyDialog;
     QBrush checkerPattern;
-    QImage alphaChannel;
+    qreal devicePixelRatio;
 
     static const int ContextActionThreshold;
 };
@@ -111,7 +114,7 @@ ScreeniePixmapItem::ScreeniePixmapItem(ScreenieModelInterface &screenieModel, Sc
     // we also want to be able to change the reflection also in the fully translucent areas
     // of the reflection
     setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-    updatePixmap(d->screenieModel.getImage());
+    updatePixmap();
     setAcceptDrops(true);
     frenchConnection();
 }
@@ -140,11 +143,6 @@ void ScreeniePixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     d->transformPixmap = isInsidePixmap(event->pos());
     d->itemTransformed = false;
     d->initialPoint = event->lastScreenPos();
-#ifdef DEBUG
-    qDebug("ScreeniePixmapItem::mousePressEvent: initial point: %d, %d",
-           d->initialPoint.x(),
-           d->initialPoint.y());
-#endif
     event->accept();
 }
 
@@ -155,13 +153,6 @@ void ScreeniePixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             ::fabs(d->initialPoint.y() - event->screenPos().y()) > ScreeniePixmapItemPrivate::ContextActionThreshold) {
             d->itemTransformed = true;
         }
-#ifdef DEBUG
-        else {
-            qDebug("ScreeniePixmapItem::mouseMoveEvent: within threshold point: %d, %d",
-                   event->screenPos().x(),
-                   event->screenPos().y());
-        }
-#endif
     } else {
         d->itemTransformed = true;
     }
@@ -246,24 +237,6 @@ QVariant ScreeniePixmapItem::itemChange(GraphicsItemChange change, const QVarian
 
 void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if (d->screenieModel.isReflectionEnabled()) {
-        if (d->screenieScene.isBackgroundEnabled()) {
-            //painter->
-            //if (d->alphaChannel.isNull()) {
-                //painter->fillRect(d->reflectionBoundingRect, d->screenieScene.getBackgroundColor());
-            //} else {
-            //    painter->drawImage(d->reflectionBoundingRect.topLeft(), d->alphaChannel);
-            //}
-            //QImage alpha = d->screenieModel.get
-        } else {
-//            QPainter::CompositionMode compositionMode = painter->compositionMode();
-//            painter->setCompositionMode(QPainter::CompositionMode_Source);
-//            painter->fillRect(d->reflectionBoundingRect, d->checkerPattern);
-//            painter->setCompositionMode(compositionMode);
-        }
-        // todo: Remove this, testing only
-
-    }
     QPainter::CompositionMode compositionMode = painter->compositionMode();
     painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     QGraphicsPixmapItem::paint(painter, option, widget);
@@ -272,7 +245,6 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (!overlayText.isNull()) {
         QRectF boundingRect = this->boundingRect();
         /*!\todo Optimise this; cache the font, re-calculate when overlay text changes (add signal) */
-        /*!\todo Take "Retina" displays into account (platform-dependent code) */
         if (boundingRect.width() > 100 && boundingRect.height() > 48) {
             boundingRect.adjust(10.0, 10.0, -10.0, -10.0);
             int length = overlayText.length();
@@ -290,6 +262,8 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
         }
     }
 #ifdef DEBUG
+    painter->setPen(Qt::green);
+    painter->drawRect(boundingRect());
     painter->setPen(Qt::red);
     painter->drawRect(d->reflectionBoundingRect);
 #endif
@@ -298,12 +272,14 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 QRectF ScreeniePixmapItem::boundingRect() const
 {
     QRectF result;
-    if (d->screenieModel.isReflectionEnabled()) {
-        result.setWidth(d->imageSize.width());
-        result.setHeight(d->imageSize.height() * 2.0);
+    QRectF boundingRect = QGraphicsPixmapItem::boundingRect();
+    if (d->devicePixelRatio != 1.0) {
+        // apparently the original boundingRect() does not consider
+        // the device pixel ratio set on the QPixmap
+        result.setWidth(boundingRect.width() / d->devicePixelRatio);
+        result.setHeight(boundingRect.height() / d->devicePixelRatio);
     } else {
-        result.setWidth(d->imageSize.width());
-        result.setHeight(d->imageSize.height());
+        result = boundingRect;
     }
     return result;
 }
@@ -322,8 +298,8 @@ void ScreeniePixmapItem::frenchConnection()
             this, SLOT(updateItemGeometry()));
     connect(&d->screenieModel, SIGNAL(reflectionChanged()),
             this, SLOT(updateReflection()));
-    connect(&d->screenieModel, SIGNAL(imageChanged(const QImage &)),
-            this, SLOT(updatePixmap(const QImage &)));
+    connect(&d->screenieModel, SIGNAL(imageChanged()),
+            this, SLOT(updatePixmap()));
     connect(&d->screenieModel, SIGNAL(filePathChanged(const QString &)),
             this, SLOT(updatePixmap()));
     connect(&d->screenieModel, SIGNAL(selectionChanged()),
@@ -352,8 +328,7 @@ bool ScreeniePixmapItem::isInsidePixmap(QPointF itemPosition)
 {
     bool result;
     if (d->screenieModel.isReflectionEnabled()) {
-        QRectF boundingRect = this->boundingRect();
-        result = itemPosition.y() < boundingRect.height() / 2.0;
+        result = itemPosition.y() < boundingRect().height() / 2.0;
     } else {
         result = true;
     }
@@ -474,6 +449,11 @@ void ScreeniePixmapItem::updateReflection()
     QColor backgroundColor;
     QImage reflection;
 
+    if (d->screenieModel.isReflectionEnabled() != d->reflectionEnabled) {
+        prepareGeometryChange();
+        d->reflectionEnabled = d->screenieModel.isReflectionEnabled();
+    }
+
     updateReflectionBoundingRect();
     if (d->screenieModel.isReflectionEnabled()) {
         reflection = d->reflection->createReflection(image, d->screenieModel.getReflectionOpacity(), d->screenieModel.getReflectionOffset());
@@ -492,19 +472,21 @@ void ScreeniePixmapItem::updateReflection()
     }
 
     pixmap.convertFromImage(imageWithReflection);
-    setPixmap(pixmap);    
+    pixmap.setDevicePixelRatio(d->devicePixelRatio);
+    setPixmap(pixmap);
 }
 
 void ScreeniePixmapItem::updateReflectionBoundingRect()
 {
-    QPointF topLeft;
-    QPointF bottomRight;
     if (d->screenieModel.isReflectionEnabled()) {
-        QSize size = d->screenieModel.getSize();
+        QPointF topLeft;
+        QPointF bottomRight;
+        QRectF boundingRect = this->boundingRect();
+        qreal height_2 = boundingRect.height() / 2.0 ;
         topLeft.setX(0.0);
-        topLeft.setY(size.height());
-        bottomRight.setX(size.width() - 1.0);
-        bottomRight.setY(size.height() + size.height() * d->screenieModel.getReflectionOffset() / 100.0 - 1.0);
+        topLeft.setY(height_2);
+        bottomRight.setX(boundingRect.width() - 1.0);
+        bottomRight.setY(height_2+ height_2 * d->screenieModel.getReflectionOffset() / 100.0 - 1.0);
         d->reflectionBoundingRect.setTopLeft(topLeft);
         d->reflectionBoundingRect.setBottomRight(bottomRight);
     } else {
@@ -512,26 +494,10 @@ void ScreeniePixmapItem::updateReflectionBoundingRect()
     }
 }
 
-void ScreeniePixmapItem::updatePixmap(const QImage &image)
-{
-    QPixmap pixmap;
-
-    d->imageSize.setWidth(image.width());
-    d->imageSize.setHeight(image.height());
-    pixmap.convertFromImage(image);
-    if (image.hasAlphaChannel()) {
-        d->alphaChannel = image.mirrored().alphaChannel();
-    } else {
-        d->alphaChannel = QImage();
-    }
-    setPixmap(pixmap);
-    updateReflection();
-    updateItemGeometry();
-}
-
 void ScreeniePixmapItem::updatePixmap()
 {
-    updatePixmap(d->screenieModel.getImage());
+    updateReflection();
+    updateItemGeometry();
 }
 
 void ScreeniePixmapItem::updateItemGeometry()
@@ -539,17 +505,20 @@ void ScreeniePixmapItem::updateItemGeometry()
     QTransform transform;
     QTransform scale;
     QTransform translateBack;
+    QRectF boundingRect;
 
     qreal centerScale = 1.0 - 0.9 * d->screenieModel.getDistance() / SceneLimits::MaxDistance;
     scale = QTransform().scale(centerScale, centerScale);
 
-    qreal dx = d->imageSize.width() / 2.0;
+    boundingRect = this->boundingRect();
+    qreal dx = boundingRect.width() / 2.0;
     qreal dy;
-    if (d->screenieModel.isReflectionEnabled()) {
-        dy =  d->imageSize.height() / 2.0;
+    if (d->reflectionEnabled) {
+        dy = boundingRect.height() / 4.0;
     } else {
-        dy = d->imageSize.height();
+        dy = boundingRect.height() / 2.0;
     }
+
     transform.translate(dx, dy);
     transform.rotate(d->screenieModel.getRotation(), Qt::YAxis);
     translateBack.translate(-dx, -dy);

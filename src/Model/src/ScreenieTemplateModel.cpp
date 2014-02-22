@@ -37,7 +37,7 @@ public:
     {
           sizeFitter.setFitMode(SizeFitter::Fit);
           sizeFitter.setFitOptionEnabled(SizeFitter::Enlarge, true);
-          sizeFitter.setMaxTargetSize(Settings::getInstance().getMaximumImageSize());
+          sizeFitter.setMaxTargetSize(Settings::getInstance().getMaximumImagePixelSize());
           sizeFitter.setFitOptionEnabled(SizeFitter::RespectMaxTargetSize, true);
     }
 
@@ -173,7 +173,7 @@ void ScreenieTemplateModel::handleSizeFitterChanged()
 {
     if (d->image.size() != d->sizeFitter.getTargetSize()) {
         d->image = QImage();
-        emit imageChanged(getImage());
+        emit imageChanged();
     }
     emit changed();
 }
