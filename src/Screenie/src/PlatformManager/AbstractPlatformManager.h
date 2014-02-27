@@ -41,7 +41,6 @@ public:
     virtual ~AbstractPlatformManager();
 
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
-    virtual bool isFullScreen() const override;
 
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi) = 0;

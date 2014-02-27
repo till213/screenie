@@ -64,38 +64,6 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
     return result;
 }
 
-bool MacPlatformManager::isFullScreen() const
-{
-    bool result;
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
-    if (isFullScreenAPISupported()) {
-        QMainWindow *mainWindow = getMainWindow();
-        if (mainWindow != nullptr) {
-            NSView *nsview = (__bridge NSView *)reinterpret_cast<void *>(mainWindow->winId());
-            NSWindow *nswindow = [nsview window];
-            NSUInteger masks = [nswindow styleMask];
-            result = masks & NSFullScreenWindowMask;
-        } else {
-            result = false;
-        }
-    } else {
-        result = AbstractPlatformManager::isFullScreen();
-    }
-#else
-    result = AbstractPlatformManager::isFullScreen();
-#endif
-
-    return result;
-}
-
-bool MacPlatformManager::isFullScreenAPISupported()
-{
-    bool result;
-
-    result = (QSysInfo::MacintoshVersion > QSysInfo::MV_SNOWLEOPARD);
-    return result;
-}
-
 // protected
 
 void MacPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)

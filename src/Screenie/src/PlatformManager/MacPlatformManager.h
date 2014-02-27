@@ -39,11 +39,8 @@ class MacPlatformManager : public QObject, public AbstractPlatformManager
 {
     Q_OBJECT
 public:
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
-    virtual bool eventFilter(QObject *object, QEvent *event);
-    virtual bool isFullScreen() const;
-
-    static bool isFullScreenAPISupported();    
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
+    virtual bool eventFilter(QObject *object, QEvent *event) override;
 
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);

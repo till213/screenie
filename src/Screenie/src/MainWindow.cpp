@@ -27,6 +27,7 @@
 #include <QList>
 #include <QSignalMapper>
 #include <QEvent>
+#include <QCloseEvent>
 #include <QApplication>
 #include <QMainWindow>
 #include <QAction>
@@ -40,12 +41,8 @@
 #include <QFileDialog>
 #include <QSlider>
 #include <QSpinBox>
-#include <QLineEdit>
 #include <QMessageBox>
-#include <QShortcut>
 #include <QKeySequence>
-#include <QCloseEvent>
-#include <QAbstractButton>
 #include <QPushButton>
 #include <QDesktopWidget>
 
@@ -183,18 +180,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event)
+void MainWindow::changeEvent(QEvent *event)
 {
-    QMainWindow::resizeEvent(event);
-    // workaround for QTBUG-36718 (OS X): use the native "isFullScreen" API: QWidget::isFullScreen
-    // reports bogus values when window size is changed with "fullscreen" arrow on OS X
-    bool fullScreen = m_platformManager->isFullScreen();
-
-    if (fullScreen && !m_isFullScreenPreviously) {
-        m_isFullScreenPreviously = true;
-        updateViewActions();
-    } else if (!fullScreen && m_isFullScreenPreviously) {
-        m_isFullScreenPreviously = false;
+    QMainWindow::changeEvent(event);
+    if (event->type() == QEvent::WindowStateChange) {
         updateViewActions();
     }
 }
@@ -385,7 +374,7 @@ void MainWindow::updateEditActions()
 void MainWindow::updateViewActions()
 {
     Settings &settings = Settings::getInstance();
-    if (m_platformManager->isFullScreen()) {
+    if (isFullScreen()) {
         ui->toggleFullScreenAction->setText((tr("Exit Full Screen")));
     } else {
         ui->toggleFullScreenAction->setText((tr("Enter Full Screen")));
@@ -443,8 +432,8 @@ void MainWindow::handleMultipleModifiedBeforeQuit()
                                               tr("If you don't review your documents, all your changes will be lost.") + QString("</font>"),
                                               QMessageBox::NoButton,
                                               this);
-    QAbstractButton *verifyButton = messageBox->addButton(tr("Verify changes..."), QMessageBox::AcceptRole);
-    QAbstractButton *discardButton = messageBox->addButton(tr("Discard changes"), QMessageBox::DestructiveRole);
+    QPushButton *verifyButton = messageBox->addButton(tr("Verify changes..."), QMessageBox::AcceptRole);
+    QPushButton *discardButton = messageBox->addButton(tr("Discard changes"), QMessageBox::DestructiveRole);
     messageBox->addButton(QMessageBox::Cancel);
     messageBox->setSizeGripEnabled(false);
     messageBox->exec();
@@ -539,23 +528,16 @@ void MainWindow::restoreWindowGeometry()
         showFullScreen();
 #else
         resize(Settings::getDefaultWindowSize());
-        if (MacPlatformManager::isFullScreenAPISupported()) {
-            // Note: With the native "Full Screen API" (since OS X 10.7) the
-            //       transition to fullscreen only looks nice if the window has
-            //       been previously shown on screen with a "normal size".
-            //       So we use a timer with a "visually pleasant"
-            //       timeout of 200 ms (we could also use 0, but then we
-            //       get window flickering!), such that the fullscreen
-            //       transition is only done once Qt has fully initialised
-            //       all data structures and the Qt event queue has made
-            //       sure that the window is shown before the timer is fired.
-            QTimer::singleShot(200, this, SLOT(showFullScreen()));
-        } else {
-            // On "Snow Leopard" we can directly call showFullScreen()
-            // since the "Full Screen API" is not supported there anyway
-            // and Qt does the full screen painting for us
-            showFullScreen();
-        }
+        // Note: With the native "Full Screen API" (since OS X 10.7) the
+        //       transition to fullscreen only looks nice if the window has
+        //       been previously shown on screen with a "normal size".
+        //       So we use a timer with a "visually pleasant"
+        //       timeout of 200 ms (we could also use 0, but then we
+        //       get window flickering!), such that the fullscreen
+        //       transition is only done once Qt has fully initialised
+        //       all data structures and the Qt event queue has made
+        //       sure that the window is shown before the timer is fired.
+        QTimer::singleShot(200, this, SLOT(showFullScreen()));
 #endif
     } else {
         resize(windowGeometry.position.size());
@@ -598,7 +580,7 @@ bool MainWindow::isFilePathRequired() const
 void MainWindow::storeWindowGeometry()
 {
     Settings::WindowGeometry windowGeometry;
-    windowGeometry.fullScreen = m_platformManager->isFullScreen();
+    windowGeometry.fullScreen = isFullScreen();
     windowGeometry.position = QRect(pos(), size());
     Settings::getInstance().setWindowGeometry(windowGeometry);
 }
@@ -824,7 +806,7 @@ void MainWindow::on_showSidePanelAction_toggled(bool enable)
 
 void MainWindow::on_toggleFullScreenAction_triggered()
 {
-    if (!m_platformManager->isFullScreen()) {
+    if (!isFullScreen()) {
         showFullScreen();
     } else {
         showNormal();

@@ -84,23 +84,6 @@ void AbstractPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow
     intializeIcons(mainWindowUi);
 }
 
-bool AbstractPlatformManager::isFullScreen() const
-{
-    bool result;
-    if (d != nullptr) {
-        result = d->mainWindow.isFullScreen();
-    } else {
-        result = false;
-#ifdef DEBUG
-        qWarning("AbstractPlatformManager::isFullScreen: Private data not initialised! Call initialise() first.");
-#endif
-    }
-#ifdef DEBUG
-        qWarning("AbstractPlatformManager::isFullScreen: %d", result);
-#endif
-    return result;
-}
-
 // protected
 
 QMainWindow *AbstractPlatformManager::getMainWindow() const
