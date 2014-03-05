@@ -39,6 +39,7 @@ public:
           reflectionEnabled(DefaultScreenieModel::ReflectionEnabled),
           reflectionOffset(DefaultScreenieModel::ReflectionOffset),
           reflectionOpacity(DefaultScreenieModel::ReflectionOpacity),
+          reflectionMode(ScreenieModelInterface::ReflectionMode::Opaque),
           selected(false)
 
     {}
@@ -50,6 +51,7 @@ public:
           reflectionEnabled(other.reflectionEnabled),
           reflectionOffset(other.reflectionOffset),
           reflectionOpacity(other.reflectionOpacity),
+          reflectionMode(other.reflectionMode),
           selected(other.selected)
     {}
 
@@ -59,6 +61,7 @@ public:
     int reflectionEnabled;
     int reflectionOffset;
     int reflectionOpacity;
+    ScreenieModelInterface::ReflectionMode reflectionMode;
     bool selected;
 
     static const qreal Epsilon;
@@ -240,6 +243,19 @@ void AbstractScreenieModel::addReflectionOpacity(int reflectionOpacity)
         if (d->reflectionOpacity != oldReflectionOpacity) {
             emit reflectionChanged();
         }
+    }
+}
+
+ScreenieModelInterface::ReflectionMode AbstractScreenieModel::getReflectionMode() const
+{
+    return d->reflectionMode;
+}
+
+void AbstractScreenieModel::setReflectionMode(ReflectionMode reflectionMode)
+{
+    if (d->reflectionMode != reflectionMode) {
+        d->reflectionMode = reflectionMode;
+        emit reflectionModeChanged(d->reflectionMode);
     }
 }
 

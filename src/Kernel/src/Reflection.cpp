@@ -62,7 +62,7 @@ Reflection::~Reflection() {
     delete d;
 }
 
-QImage Reflection::createReflection(const QImage &image, int opacity, int offset)
+QImage Reflection::createReflection(const QImage &image, int offset)
 {
     int width = image.width();
     int height = image.height();
@@ -96,16 +96,6 @@ QImage Reflection::createReflection(const QImage &image, int opacity, int offset
         }
     }
 
-//    QImage result(image.width(), image.height() * 2, QImage::Format_ARGB32_Premultiplied);
-//    result.fill(Qt::transparent);
-
-//    QPainter painter(&result);
-//    painter.drawImage(0, 0, image);
-//    painter.setOpacity(qMin(1.0, opacity / 100.0));
-//    painter.drawImage(0, image.height(), reflect(image, offset));
-//    painter.end();
-
-    //d->reflection.save("/Users/tknoll/reflection.png", "PNG");
     return d->reflection;
 }
 

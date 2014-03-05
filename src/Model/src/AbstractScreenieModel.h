@@ -64,6 +64,9 @@ public:
     virtual int getReflectionOpacity() const override;
     virtual void setReflectionOpacity(int reflectionOpacity) override;
     virtual void addReflectionOpacity(int reflectionOpacity) override;
+    virtual ReflectionMode getReflectionMode() const;
+    virtual void setReflectionMode(ReflectionMode ReflectionMode);
+
     virtual void setSelected(bool enable) override;
     virtual bool isSelected() const override;
 

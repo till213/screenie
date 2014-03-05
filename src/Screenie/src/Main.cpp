@@ -23,6 +23,7 @@
 #include <QSettings>
 #endif
 
+#include "../../Model/src/ScreenieModelInterface.h"
 #include "../../Utils/src/Version.h"
 #include "ScreenieApplication.h"
 
@@ -34,6 +35,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("till-art.net");
     QCoreApplication::setApplicationName(Version::getApplicationName());
     QCoreApplication::setApplicationVersion(Version::getApplicationVersion());
+
+    qRegisterMetaType<ScreenieModelInterface::ReflectionMode>();
 
 #ifdef Q_OS_WIN
     // On Windows prefer INI format over Registry (= NativeFormat)

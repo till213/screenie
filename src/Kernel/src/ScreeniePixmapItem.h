@@ -32,9 +32,9 @@ class QGraphicsSceneWheelEvent;
 class QGraphicsSceneDragDropEvent;
 class QImage;
 
+#include "../../Model/src/ScreenieModelInterface.h"
 #include "KernelLib.h"
 
-class ScreenieModelInterface;
 class ScreenieScene;
 class ScreenieControl;
 class Reflection;
@@ -94,6 +94,7 @@ private slots:
     void updatePosition();
     void updateSelection();
     void handlePropertyDialogDestroyed();
+    void handleReflectionModeChanged(ScreenieModelInterface::ReflectionMode reflectionMode);
 };
 
 #endif // SCREENIEPIXMAPITEM_H

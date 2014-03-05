@@ -38,17 +38,14 @@ public:
 
     /*!
      * Creates a reflected version of the \p pixmap, along with gradient translucency
-     * defined by \p opacity and \p offset.
+     * defined by \p offset.
      *
      * \param image
      *        the QImage to which the reflection is to be added
-     * \param opacity
-     *        the opacity (translucency) of the reflection in percent [0, 100];
-     *        0: fully translucent; 100: fully opaque
      * \param offset
      *        the offset of the gradient in percent [1, 100] of the \c image's height
      */
-    KERNEL_API QImage createReflection(const QImage &image, int opacity, int offset);
+    KERNEL_API QImage createReflection(const QImage &image, int offset);
 
 private:
     ReflectionPrivate *d;

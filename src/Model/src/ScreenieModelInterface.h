@@ -39,6 +39,13 @@ class ScreenieModelInterface : public QObject
     Q_OBJECT
 
 public:
+
+    enum class ReflectionMode {
+        None = 0,
+        Opaque = 1,
+        Transparent = 2
+    };
+
     virtual ~ScreenieModelInterface() {}
 
     /*!
@@ -89,7 +96,7 @@ public:
     virtual int getRotation() const = 0;
 
     /*!
-     * Rotates this instance to \p angle degrees, that is the rotation is set to the absolute value \c angle.
+     * Rotates this instance to \p angle degrees, that is the rotation is set to the absolute value \p angle.
      *
      * \param angle
      *        absolute angle to which this ScreenieModel is to be rotated in degrees; [0, 360]
@@ -121,11 +128,19 @@ public:
     virtual void addReflectionOffset(int reflectionOffset) = 0;
 
     virtual int getReflectionOpacity() const = 0;
+
     /*!
      * \sa #reflectionChanged()
      */
     virtual void setReflectionOpacity(int reflectionOpacity) = 0;
     virtual void addReflectionOpacity(int reflectionOpacity) = 0;
+
+    virtual ReflectionMode getReflectionMode() const = 0;
+
+    /*!
+     * \sa #reflectionModeChanged()
+     */
+    virtual void setReflectionMode(ReflectionMode ReflectionMode) = 0;
 
     /*!\ Emit signals? */
     virtual void convert(ScreenieModelInterface &source) = 0;
@@ -153,6 +168,7 @@ public:
 
 signals:
     void reflectionChanged();
+    void reflectionModeChanged(ScreenieModelInterface::ReflectionMode reflectionMode);
     void distanceChanged();
     void rotationChanged();
     void positionChanged();
@@ -161,5 +177,7 @@ signals:
     void filePathChanged(const QString &filePath);
     void selectionChanged();
 };
+
+Q_DECLARE_METATYPE(ScreenieModelInterface::ReflectionMode)
 
 #endif // SCREENIEMODELINTERFACE_H
