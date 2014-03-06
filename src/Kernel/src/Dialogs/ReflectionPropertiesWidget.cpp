@@ -26,6 +26,7 @@
 #include <QComboBox>
 
 #include "../../../Model/src/ScreenieModelInterface.h"
+#include "../../../Model/src/AbstractScreenieModel.h"
 #include "../../../Model/src/SceneLimits.h"
 #include "../ScreenieControl.h"
 #include "ReflectionPropertiesWidget.h"
@@ -76,6 +77,12 @@ void ReflectionPropertiesWidget::initialiseUi()
     ui->opacitySlider->setMaximum(SceneLimits::MaxReflectionOpacity);
     ui->offsetLineEdit->setValidator(integerValidator);
     ui->opacityLineEdit->setValidator(integerValidator);
+    // since this ReflectionPropertiesWidget is automatically connected
+    // with the combobox we need to disable the signals while inserting
+    // items
+    ui->reflectionModeComboBox->blockSignals(true);
+    ui->reflectionModeComboBox->addItems(AbstractScreenieModel::getReflectionModeItems());
+    ui->reflectionModeComboBox->blockSignals(false);
 }
 
 void ReflectionPropertiesWidget::frenchConnection()

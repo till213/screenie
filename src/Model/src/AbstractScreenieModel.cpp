@@ -20,6 +20,7 @@
 
 #include <cmath>
 
+#include <QStringList>
 #include <QPointF>
 #include <QImage>
 
@@ -62,9 +63,14 @@ public:
     bool selected;
 
     static const qreal Epsilon;
+    static const QStringList ReflectionModeItems;
 };
 
 const qreal AbstractScreenieModelPrivate::Epsilon = 0.001;
+const QStringList AbstractScreenieModelPrivate::ReflectionModeItems = {QT_TRANSLATE_NOOP("AbstractScreenieModel", "None"),
+                                                                       QT_TRANSLATE_NOOP("AbstractScreenieModel", "Opaque"),
+                                                                       QT_TRANSLATE_NOOP("AbstractScreenieModel", "Transparent")
+                                                                      };
 
 // public
 
@@ -284,4 +290,9 @@ QImage AbstractScreenieModel::fitToMaximumSize(const QImage &image) const
         result = image;
     }
     return result;
+}
+
+QStringList AbstractScreenieModel::getReflectionModeItems()
+{
+    return AbstractScreenieModelPrivate::ReflectionModeItems;
 }

@@ -54,6 +54,7 @@
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/SceneLimits.h"
 #include "../../Model/src/ScreenieModelInterface.h"
+#include "../../Model/src/AbstractScreenieModel.h"
 #include "../../Model/src/ScreenieTemplateModel.h"
 #include "../../Model/src/Dao/ScreenieSceneDao.h"
 #include "../../Model/src/Dao/Xml/XmlScreenieSceneDao.h"
@@ -290,6 +291,7 @@ void MainWindow::initialiseUi()
         break;
 
     }
+    ui->reflectionModeComboBox->addItems(AbstractScreenieModel::getReflectionModeItems());
     ui->reflectionModeComboBox->setCurrentIndex(index);
 
     // View menu

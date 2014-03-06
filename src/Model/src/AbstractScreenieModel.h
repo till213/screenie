@@ -21,12 +21,14 @@
 #ifndef ABSTRACTSCREENIEMODEL_H
 #define ABSTRACTSCREENIEMODEL_H
 
+#include <QStringList>
 #include <QPointF>
 #include <QImage>
 
 class AbstractScreenieModelPrivate;
 
 #include "ScreenieModelInterface.h"
+#include "ModelLib.h"
 
 class AbstractScreenieModel : public ScreenieModelInterface
 {
@@ -70,6 +72,15 @@ public:
     virtual bool isSelected() const override;
 
     virtual void convert(ScreenieModelInterface &source) override;
+
+    /*!
+     * Returns a list of reflection mode items. That list is usable for
+     * QComboBox elements.
+     *
+     * \return a QStringList containing item names for QComboBox
+     * \sa ScreenieModelInterface#ReflectionMode
+     */
+    MODEL_API static QStringList getReflectionModeItems();
 
 protected:
     QImage fitToMaximumSize(const QImage &image) const;

@@ -161,6 +161,7 @@ signals:
      * on the ScreenieModelInterface instance directly
      *
      * \sa ScreenieModelInterface#reflectionChanged()
+     * \sa ScreenieModelInterface#reflectionModeChanged(SceenieModelInterface::ReflectionMode)
      * \sa ScreenieModelInterface#changed()
      * \sa #modelAdded(ScreenieModelInterface &)
      * \sa #modelRemoved(ScreenieModelInterface &)
@@ -175,7 +176,7 @@ signals:
      * Emitted whenever the \p screenieModel has been removed from the scene. The \p screenieModel instance will be
      * \c deleted right after the signal has been emitted, so don't store and re-use the reference later on.
      *
-     * This signal is emitted <em>in addition</em> to the #changed() signal.
+     * This signal is emitted \em in addition to the #changed() signal.
      *
      * Connect to this signal in order to remove the corresponding view items from the view, which refer to this
      * \p screenieModel, for example.
