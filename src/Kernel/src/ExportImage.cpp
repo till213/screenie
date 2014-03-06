@@ -84,7 +84,7 @@ QImage ExportImage::exportImage(Selection selection) const
         break;
     default:
 #ifdef DEBUG
-        qCritical("ExportImage::exportImage: unsupported Selection: %d", selection);
+        qCritical("ExportImage::exportImage: UNSUPPORTED Selection: %d", selection);
 #endif
         sourceRect = d->graphicsScene.itemsBoundingRect();
         break;

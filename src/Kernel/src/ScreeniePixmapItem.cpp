@@ -501,14 +501,14 @@ void ScreeniePixmapItem::updateReflection()
 
         default:
 #ifdef DEBUG
-            qCritical("ScreeniePixmapItem::updateReflection: unsupported reflection mode: %d", d->screenieModel.getReflectionMode());
+            qCritical("ScreeniePixmapItem::updateReflection: UNSUPPORTED Reflection Mode: %d", d->screenieModel.getReflectionMode());
 #endif
             break;
         }
 
         // reflection
         p.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        //p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
+        p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
         p.drawImage(0, image.height(), reflection);
 
     } else {
@@ -602,10 +602,11 @@ void ScreeniePixmapItem::handlePropertyDialogDestroyed(){
 void ScreeniePixmapItem::handleReflectionModeChanged(ScreenieModelInterface::ReflectionMode reflectionMode)
 {
     if (reflectionMode == ScreenieModelInterface::ReflectionMode::Opaque) {
-        connect(&d->screenieModel, SIGNAL(backgroundChanged()),
+        connect(&d->screenieScene, SIGNAL(backgroundChanged()),
                 this, SLOT(updateReflection()));
-        updateReflection();
     } else {
-        disconnect(&d->screenieModel, SIGNAL(backgroundChanged()));
+        QObject::disconnect(&d->screenieScene, SIGNAL(backgroundChanged()),
+                            this, SLOT(updateReflection()));
     }
+    updateReflection();
 }

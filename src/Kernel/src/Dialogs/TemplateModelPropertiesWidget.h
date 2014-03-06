@@ -52,7 +52,7 @@ private slots:
 
     void on_widthLineEdit_editingFinished();
     void on_heightLineEdit_editingFinished();
-    void on_fitModeComboBox_activated(int index);
+    void on_fitModeComboBox_currentIndexChanged(int index);
     void on_respectOrientationCheckBox_toggled(bool checked);
     void on_enlargeCheckBox_toggled(bool checked);
 };

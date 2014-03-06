@@ -164,7 +164,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             break;
         default:
 #ifdef DEBUG
-            qCritical("MainWindow::closeEvent: UNHANDLED SaveStrategy: %d", saveStrategy);
+            qCritical("MainWindow::closeEvent: UNSUPPORTED SaveStrategy: %d", saveStrategy);
 #endif
             event->ignore();
         }
@@ -269,9 +269,28 @@ void MainWindow::initialiseUi()
     DefaultScreenieModel &defaultScreenieModel = m_screenieControl->getDefaultScreenieModel();
     ui->distanceSlider->setValue(defaultScreenieModel.getDistance());
     ui->rotationSlider->setValue(defaultScreenieModel.getRotation());
-    ui->reflectionGroupBox->setChecked(defaultScreenieModel.isReflectionEnabled());
     ui->reflectionOffsetSlider->setValue(defaultScreenieModel.getReflectionOffset());
     ui->reflectionOpacitySlider->setValue(defaultScreenieModel.getReflectionOpacity());
+    int index;
+    switch (defaultScreenieModel.getReflectionMode()) {
+    case ScreenieModelInterface::ReflectionMode::None:
+        index = 0;
+        break;
+    case ScreenieModelInterface::ReflectionMode::Opaque:
+        index = 1;
+        break;
+    case ScreenieModelInterface::ReflectionMode::Transparent:
+        index = 2;
+        break;
+    default:
+#ifdef DEBUG
+            qCritical("MainWindow::initialiseUi: UNSUPPORTED Reflection Mode: %d", defaultScreenieModel.getReflectionMode());
+#endif
+        index = 0;
+        break;
+
+    }
+    ui->reflectionModeComboBox->setCurrentIndex(index);
 
     // View menu
     ui->showToolBarAction->setChecked(settings.isToolBarVisible());
@@ -309,11 +328,6 @@ void MainWindow::updateReflectionUi()
         // update GUI elements according to last selected item. In case of multiple selections
         // we don't want to take the values take effect on the previously selected items while
         // selecting more items (CTRL + left-click), hence the signals are blocked
-        ui->reflectionGroupBox->blockSignals(true);
-        ui->reflectionGroupBox->setChecked(lastSelection->isReflectionEnabled());
-        ui->reflectionGroupBox->blockSignals(false);
-        ui->reflectionGroupBox->setEnabled(true);
-
         ui->reflectionOffsetSlider->blockSignals(true);
         ui->reflectionOffsetSlider->setValue(lastSelection->getReflectionOffset());
         ui->reflectionOffsetSlider->blockSignals(false);
@@ -323,10 +337,35 @@ void MainWindow::updateReflectionUi()
         ui->reflectionOpacitySlider->setValue(lastSelection->getReflectionOpacity());
         ui->reflectionOpacitySlider->blockSignals(false);
         ui->reflectionOpacitySlider->setEnabled(true);
+
+        int index;
+        switch (lastSelection->getReflectionMode()) {
+        case ScreenieModelInterface::ReflectionMode::None:
+            index = 0;
+            break;
+        case ScreenieModelInterface::ReflectionMode::Opaque:
+            index = 1;
+            break;
+        case ScreenieModelInterface::ReflectionMode::Transparent:
+            index = 2;
+            break;
+        default:
+#ifdef DEBUG
+                qCritical("MainWindow::initialiseUi: UNSUPPORTED Reflection Mode: %d", lastSelection->getReflectionMode());
+#endif
+            index = 0;
+            break;
+
+        }
+        ui->reflectionModeComboBox->blockSignals(true);
+        ui->reflectionModeComboBox->setCurrentIndex(index);
+        ui->reflectionModeComboBox->blockSignals(false);
+        ui->reflectionModeComboBox->setEnabled(true);
+
     } else {
-        ui->reflectionGroupBox->setEnabled(false);
         ui->reflectionOffsetSlider->setEnabled(false);
         ui->reflectionOpacitySlider->setEnabled(false);
+        ui->reflectionModeComboBox->setEnabled(false);
     }
 }
 
@@ -850,13 +889,6 @@ void MainWindow::on_distanceSlider_valueChanged(int value)
     m_ignoreUpdateSignals = false;
 }
 
-void MainWindow::on_reflectionGroupBox_toggled(bool enable)
-{
-    m_ignoreUpdateSignals = true;
-    m_screenieControl->setReflectionEnabled(enable);
-    m_ignoreUpdateSignals = false;
-}
-
 void MainWindow::on_reflectionOffsetSlider_valueChanged(int value)
 {
     m_ignoreUpdateSignals = true;
@@ -868,6 +900,28 @@ void MainWindow::on_reflectionOpacitySlider_valueChanged(int value)
 {
     m_ignoreUpdateSignals = true;
     m_screenieControl->setReflectionOpacity(value);
+    m_ignoreUpdateSignals = false;
+}
+
+void MainWindow::on_reflectionModeComboBox_currentIndexChanged(int index)
+{
+    m_ignoreUpdateSignals = true;
+    switch (index) {
+    case 0:
+        m_screenieControl->setReflectionMode(ScreenieModelInterface::ReflectionMode::None);
+        break;
+    case 1:
+        m_screenieControl->setReflectionMode(ScreenieModelInterface::ReflectionMode::Opaque);
+        break;
+    case 2:
+        m_screenieControl->setReflectionMode(ScreenieModelInterface::ReflectionMode::Transparent);
+        break;
+    default:
+#ifdef DEBUG
+        qCritical("MainWindow::on_reflectionModeComboBox_currentIndexChanged: UNSUPPORTED Reflection Mode: %d", index);
+#endif
+        break;
+    }
     m_ignoreUpdateSignals = false;
 }
 
@@ -971,15 +1025,33 @@ void MainWindow::updateDefaultValues()
     DefaultScreenieModel &defaultScreenieModel = m_screenieControl->getDefaultScreenieModel();
     defaultScreenieModel.setDistance(ui->distanceSlider->value());
     defaultScreenieModel.setRotation(ui->rotationSlider->value());
-    defaultScreenieModel.setReflectionEnabled(ui->reflectionGroupBox->isChecked());
     defaultScreenieModel.setReflectionOffset(ui->reflectionOffsetSlider->value());
     defaultScreenieModel.setReflectionOpacity(ui->reflectionOpacitySlider->value());
+    ScreenieModelInterface::ReflectionMode reflectionMode;
+    switch (ui->reflectionModeComboBox->currentIndex()) {
+    case 0:
+        reflectionMode = ScreenieModelInterface::ReflectionMode::None;
+        break;
+    case 1:
+        reflectionMode = ScreenieModelInterface::ReflectionMode::Opaque;
+        break;
+    case 2:
+        reflectionMode = ScreenieModelInterface::ReflectionMode::Transparent;
+        break;
+    default:
+#ifdef DEBUG
+            qCritical("MainWindow::updateDefaultValues: UNSUPPORTED Reflection Mode: %d", ui->reflectionModeComboBox->currentIndex());
+#endif
+        reflectionMode = ScreenieModelInterface::ReflectionMode::None;
+        break;
+
+    }
+    defaultScreenieModel.setReflectionMode(reflectionMode);
 }
 
 void MainWindow::handleRecentFileSelected(const QString &filePath, SecurityToken *securityToken)
 {
     DocumentManager &documentManager = DocumentManager::getInstance();
-    /*! \todo Store the 'securityToken' for further access (save!) later on - delete the token once no more access is desired (close) */
     bool ok;
     if (!documentManager.activate(filePath)) {
         if (m_screenieScene->isDefault()) {
@@ -1133,7 +1205,7 @@ void MainWindow::handleAskBeforeClose(int answer)
         break;
     default:
 #ifdef DEBUG
-        qCritical("MainWindow::handleAskBeforeClose: UNHANDLED QMessageBox answer: %d", answer);
+        qCritical("MainWindow::handleAskBeforeClose: UNSUPPORTED QMessageBox answer: %d", answer);
 #endif
         break;
     }

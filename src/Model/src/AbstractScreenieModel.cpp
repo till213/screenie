@@ -36,10 +36,9 @@ public:
         : position(QPointF(0.0, 0.0)),
           distance(DefaultScreenieModel::Distance),
           rotation(DefaultScreenieModel::Rotation),
-          reflectionEnabled(DefaultScreenieModel::ReflectionEnabled),
           reflectionOffset(DefaultScreenieModel::ReflectionOffset),
           reflectionOpacity(DefaultScreenieModel::ReflectionOpacity),
-          reflectionMode(ScreenieModelInterface::ReflectionMode::Opaque),
+          reflectionMode(DefaultScreenieModel::ReflectionMode),
           selected(false)
 
     {}
@@ -48,7 +47,6 @@ public:
         : position(other.position),
           distance(other.distance),
           rotation(other.rotation),
-          reflectionEnabled(other.reflectionEnabled),
           reflectionOffset(other.reflectionOffset),
           reflectionOpacity(other.reflectionOpacity),
           reflectionMode(other.reflectionMode),
@@ -58,7 +56,6 @@ public:
     QPointF position;
     qreal distance;
     int rotation;
-    int reflectionEnabled;
     int reflectionOffset;
     int reflectionOpacity;
     ScreenieModelInterface::ReflectionMode reflectionMode;
@@ -177,15 +174,7 @@ void AbstractScreenieModel::rotate(int angle) {
 
 bool AbstractScreenieModel::isReflectionEnabled() const
 {
-    return d->reflectionEnabled;
-}
-
-void AbstractScreenieModel::setReflectionEnabled(bool enable)
-{
-    if (d->reflectionEnabled != enable) {
-        d->reflectionEnabled = enable;
-        emit reflectionChanged();
-    }
+    return d->reflectionMode != ReflectionMode::None;
 }
 
 int AbstractScreenieModel::getReflectionOffset() const
@@ -277,9 +266,9 @@ void AbstractScreenieModel::convert(ScreenieModelInterface &source)
     d->position = source.getPosition();
     d->distance = source.getDistance();
     d->rotation = source.getRotation();
-    d->reflectionEnabled = source.isReflectionEnabled();
     d->reflectionOffset = source.getReflectionOffset();
     d->reflectionOpacity = source.getReflectionOpacity();
+    d->reflectionMode = source.getReflectionMode();
 }
 
 // protected

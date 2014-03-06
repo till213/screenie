@@ -316,14 +316,6 @@ void ScreenieControl::addDistance(qreal distance, ScreenieModelInterface *screen
     }
 }
 
-void ScreenieControl::setReflectionEnabled(bool enable, ScreenieModelInterface *screenieModel)
-{
-    QList<ScreenieModelInterface *> screenieModels = getEditableModels(screenieModel);
-    for (ScreenieModelInterface *screenieModel : screenieModels) {
-        screenieModel->setReflectionEnabled(enable);
-    }
-}
-
 void ScreenieControl::setReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel)
 {
     updateEditRenderQuality();
@@ -357,6 +349,14 @@ void ScreenieControl::addReflectionOpacity(int reflectionOpacity, ScreenieModelI
     QList<ScreenieModelInterface *> screenieModels = getEditableModels(screenieModel);
     for (ScreenieModelInterface *screenieModel : screenieModels) {
         screenieModel->addReflectionOpacity(reflectionOpacity);
+    }
+}
+
+void ScreenieControl::setReflectionMode(ScreenieModelInterface::ReflectionMode reflectionMode, ScreenieModelInterface *screenieModel)
+{
+    QList<ScreenieModelInterface *> screenieModels = getEditableModels(screenieModel);
+    for (ScreenieModelInterface *screenieModel : screenieModels) {
+        screenieModel->setReflectionMode(reflectionMode);
     }
 }
 
@@ -538,9 +538,9 @@ void ScreenieControl::applyDefaultValues(ScreenieModelInterface &screenieModelIn
 {
     screenieModelInterface.setDistance(d->defaultScreenieModel.getDistance());
     screenieModelInterface.setRotation(d->defaultScreenieModel.getRotation());
-    screenieModelInterface.setReflectionEnabled(d->defaultScreenieModel.isReflectionEnabled());
     screenieModelInterface.setReflectionOffset(d->defaultScreenieModel.getReflectionOffset());
     screenieModelInterface.setReflectionOpacity(d->defaultScreenieModel.getReflectionOpacity());
+    screenieModelInterface.setReflectionMode(d->defaultScreenieModel.getReflectionMode());
 }
 
 void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterface &screenieModel)

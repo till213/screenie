@@ -55,7 +55,6 @@ public:
     virtual void rotate(int angle) override;
 
     virtual bool isReflectionEnabled() const override;
-    virtual void setReflectionEnabled(bool enable) override;
 
     virtual int getReflectionOffset() const override;
     virtual void setReflectionOffset(int reflectionOffset) override;

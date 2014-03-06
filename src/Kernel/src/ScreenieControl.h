@@ -102,11 +102,11 @@ public slots:
     KERNEL_API void setDistance(qreal distance, ScreenieModelInterface *screenieModel = nullptr);
     KERNEL_API void addDistance(qreal distance, ScreenieModelInterface *screenieModel = nullptr);
 
-    KERNEL_API void setReflectionEnabled(bool enable, ScreenieModelInterface *screenieModel = nullptr);
     KERNEL_API void setReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = nullptr);
     KERNEL_API void addReflectionOffset(int reflectionOffset, ScreenieModelInterface *screenieModel = nullptr);
     KERNEL_API void setReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = nullptr);
     KERNEL_API void addReflectionOpacity(int reflectionOpacity, ScreenieModelInterface *screenieModel = nullptr);
+    KERNEL_API void setReflectionMode(ScreenieModelInterface::ReflectionMode reflectionMode, ScreenieModelInterface *screenieModel = nullptr);
 
     KERNEL_API void setBackgroundEnabled(bool enable);
     KERNEL_API void setBackgroundColor(QColor color);

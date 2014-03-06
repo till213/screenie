@@ -23,22 +23,24 @@
 
 #include "ModelLib.h"
 
+#include "ScreenieModelInterface.h"
+
 class DefaultScreenieModelPrivate;
 
 /*!
  * Provides default values for creating new instances of ScreenieModelInterface. The values
  * of the last selected item define the default values for the next item to be newly created.
- * The modified default values can be reset to the <em>default</em> \c Distance, \c Rotation,
+ * The modified default values can be reset to the \em default \c Distance, \c Rotation,
  * \c ReflectionEnabled etc. values.
  */
 class DefaultScreenieModel
 {
 public:
     static const qreal Distance;
-    static const int Rotation;
-    static const bool ReflectionEnabled;
+    static const int Rotation;MODEL_API
     static const int ReflectionOffset;
     static const int ReflectionOpacity;
+    static const ScreenieModelInterface::ReflectionMode ReflectionMode;
 
     MODEL_API DefaultScreenieModel();
     MODEL_API virtual ~DefaultScreenieModel();
@@ -49,14 +51,14 @@ public:
     MODEL_API int getRotation() const;
     MODEL_API void setRotation(int rotation);
 
-    MODEL_API bool isReflectionEnabled() const;
-    MODEL_API void setReflectionEnabled(bool enable);
-
     MODEL_API int getReflectionOffset() const;
     MODEL_API void setReflectionOffset(int reflectionOffset);
 
     MODEL_API int getReflectionOpacity() const;
     MODEL_API void setReflectionOpacity(int reflectionOpacity);
+
+    MODEL_API ScreenieModelInterface::ReflectionMode getReflectionMode() const;
+    MODEL_API void setReflectionMode(ScreenieModelInterface::ReflectionMode reflectionMode);
 
     /*!
      * Resets all values to the default values.

@@ -50,11 +50,11 @@ private:
 private slots:
     void updateUi();
 
-    void on_reflectionCheckBox_toggled(bool checked);
     void on_offsetSlider_valueChanged(int value);
     void on_offsetLineEdit_editingFinished();
     void on_opacitySlider_valueChanged(int value);
     void on_opacityLineEdit_editingFinished();
+    void on_reflectionModeComboBox_currentIndexChanged(int index);
 };
 
 #endif // REFLECTIONPROPERTIESWIDGET_H

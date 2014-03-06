@@ -40,10 +40,13 @@ class ScreenieModelInterface : public QObject
 
 public:
 
+    /*!
+     * Defines the reflection mode.
+     */
     enum class ReflectionMode {
-        None = 0,
-        Opaque = 1,
-        Transparent = 2
+        None = 0, /*!< No reflection */
+        Opaque = 1, /*!< The reflection is blended over the opaque background colour */
+        Transparent = 2 /*!< The reflection is blended over the scene background */
     };
 
     virtual ~ScreenieModelInterface() {}
@@ -111,8 +114,14 @@ public:
      */
     virtual void rotate(int angle) = 0;
 
+    /*!
+     * Returns whether the reflection is enabled or not. This is a convenience method which
+     * returns \c false when the \em reflection mode is set to ReflectionMode#None.
+     *
+     * \return \c true if reflection is enabled; \c false else
+     * \sa #getReflectionMode
+     */
     virtual bool isReflectionEnabled() const = 0;
-    virtual void setReflectionEnabled(bool enable) = 0;
 
     virtual int getReflectionOffset() const = 0;
 

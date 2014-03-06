@@ -23,6 +23,7 @@
 #include <QSlider>
 #include <QLineEdit>
 #include <QIntValidator>
+#include <QComboBox>
 
 #include "../../../Model/src/ScreenieModelInterface.h"
 #include "../../../Model/src/SceneLimits.h"
@@ -81,32 +82,46 @@ void ReflectionPropertiesWidget::frenchConnection()
 {
     connect(&d->screenieModel, SIGNAL(reflectionChanged()),
             this, SLOT(updateUi()));
+    connect(&d->screenieModel, SIGNAL(reflectionModeChanged(ScreenieModelInterface::ReflectionMode)),
+            this, SLOT(updateUi()));
 }
 
 // private slots
 
 void ReflectionPropertiesWidget::updateUi()
 {
-    bool enableReflection = d->screenieModel.isReflectionEnabled();
-    ui->reflectionCheckBox->setChecked(enableReflection);
+    bool reflectionEnabled = d->screenieModel.isReflectionEnabled();
     int reflectionOffset = d->screenieModel.getReflectionOffset();
     ui->offsetLineEdit->setText(QString::number(reflectionOffset));
-    ui->offsetLineEdit->setEnabled(enableReflection);
+    ui->offsetLineEdit->setEnabled(reflectionEnabled);
     validate(*ui->offsetLineEdit, true);
     ui->offsetSlider->setValue(reflectionOffset);
-    ui->offsetSlider->setEnabled(enableReflection);
+    ui->offsetSlider->setEnabled(reflectionEnabled);
     int reflectionOpacity = d->screenieModel.getReflectionOpacity();
     ui->opacityLineEdit->setText(QString::number(reflectionOpacity));
-    ui->opacityLineEdit->setEnabled(enableReflection);
+    ui->opacityLineEdit->setEnabled(reflectionEnabled);
     validate(*ui->opacityLineEdit, true);
     ui->opacitySlider->setValue(reflectionOpacity);
-    ui->opacitySlider->setEnabled(enableReflection);
+    ui->opacitySlider->setEnabled(reflectionEnabled);
+    ScreenieModelInterface::ReflectionMode reflectionMode = d->screenieModel.getReflectionMode();
+    switch (reflectionMode) {
+    case ScreenieModelInterface::ReflectionMode::None:
+        ui->reflectionModeComboBox->setCurrentIndex(0);
+        break;
+    case ScreenieModelInterface::ReflectionMode::Opaque:
+        ui->reflectionModeComboBox->setCurrentIndex(1);
+        break;
+    case ScreenieModelInterface::ReflectionMode::Transparent:
+        ui->reflectionModeComboBox->setCurrentIndex(2);
+        break;
+    default:
+#ifdef DEBUG
+        qCritical("ReflectionPropertiesWidget::updateUi: UNSUPPORTED Reflection Mode: %d", reflectionMode);
+#endif
+        break;
+    }
 }
 
-void ReflectionPropertiesWidget::on_reflectionCheckBox_toggled(bool checked)
-{
-    d->screenieControl.setReflectionEnabled(checked, &d->screenieModel);
-}
 
 void ReflectionPropertiesWidget::on_offsetSlider_valueChanged(int value)
 {
@@ -139,6 +154,26 @@ void ReflectionPropertiesWidget::on_opacityLineEdit_editingFinished()
         validate(*ui->opacityLineEdit, true);
     } else {
         validate(*ui->opacityLineEdit, false);
+    }
+}
+
+void ReflectionPropertiesWidget::on_reflectionModeComboBox_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        d->screenieControl.setReflectionMode(ScreenieModelInterface::ReflectionMode::None, &d->screenieModel);
+        break;
+    case 1:
+        d->screenieControl.setReflectionMode(ScreenieModelInterface::ReflectionMode::Opaque, &d->screenieModel);
+        break;
+    case 2:
+        d->screenieControl.setReflectionMode(ScreenieModelInterface::ReflectionMode::Transparent, &d->screenieModel);
+        break;
+    default:
+#ifdef DEBUG
+        qCritical("ReflectionPropertiesWidget::on_reflectionModeComboBox_currentIndexChanged: UNSUPPORTED Reflection Mode: %d", index);
+#endif
+        break;
     }
 }
 

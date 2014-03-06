@@ -28,23 +28,24 @@ public:
     DefaultScreenieModelPrivate()
         : distance(0.0),
           rotation(0),
-          reflectionEnabled(true),
           reflectionOffset(40),
-          reflectionOpacity(50)
+          reflectionOpacity(50),
+          reflectionMode(ScreenieModelInterface::ReflectionMode::Opaque)
     {}
 
     qreal distance;
     int rotation;
-    bool reflectionEnabled;
     int reflectionOffset;
     int reflectionOpacity;
+    ScreenieModelInterface::ReflectionMode reflectionMode;
+
 };
 
 const qreal DefaultScreenieModel::Distance = 0.0;
 const int DefaultScreenieModel::Rotation = 0;
-const bool DefaultScreenieModel::ReflectionEnabled = true;
 const int DefaultScreenieModel::ReflectionOffset = 40;
 const int DefaultScreenieModel::ReflectionOpacity = 50;
+const ScreenieModelInterface::ReflectionMode DefaultScreenieModel::ReflectionMode = ScreenieModelInterface::ReflectionMode::Opaque;
 
 // public
 
@@ -78,16 +79,6 @@ void DefaultScreenieModel::setRotation(int rotation)
     d->rotation = rotation;
 }
 
-bool DefaultScreenieModel::isReflectionEnabled() const
-{
-    return d->reflectionEnabled;
-}
-
-void DefaultScreenieModel::setReflectionEnabled(bool enable)
-{
-    d->reflectionEnabled = enable;
-}
-
 int DefaultScreenieModel::getReflectionOffset() const
 {
     return d->reflectionOffset;
@@ -107,13 +98,23 @@ void DefaultScreenieModel::setReflectionOpacity(int reflectionOpacity)
     d->reflectionOpacity = reflectionOpacity;
 }
 
+ScreenieModelInterface::ReflectionMode DefaultScreenieModel::getReflectionMode() const
+{
+    return d->reflectionMode;
+}
+
+void DefaultScreenieModel::setReflectionMode(ScreenieModelInterface::ReflectionMode reflectionMode)
+{
+    d->reflectionMode = reflectionMode;
+}
+
 void DefaultScreenieModel::reset()
 {
     d->distance = Distance;
     d->rotation = Rotation;
-    d->reflectionEnabled = ReflectionEnabled;
     d->reflectionOffset = ReflectionOffset;
     d->reflectionOpacity = ReflectionOpacity;
+    d->reflectionMode = ReflectionMode;
 }
 
 

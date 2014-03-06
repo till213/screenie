@@ -24,6 +24,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamAttributes>
 
+#include "../../ScreenieModelInterface.h"
 #include "../../AbstractScreenieModel.h"
 #include "AbstractXmlScreenieModelDao.h"
 
@@ -103,7 +104,7 @@ bool AbstractXmlScreenieModelDao::write(const AbstractScreenieModel &screenieMod
         streamWriter->writeStartElement("reflection");
         {
             QXmlStreamAttributes reflectionAttributes;
-            reflectionAttributes.append("enabled", screenieModel.isReflectionEnabled() ? "true" : "false");
+            reflectionAttributes.append("mode", QString::number(static_cast<typename std::underlying_type<ScreenieModelInterface::ReflectionMode>::type>(screenieModel.getReflectionMode())));
             reflectionAttributes.append("offset", QString::number(screenieModel.getReflectionOffset()));
             reflectionAttributes.append("opacity", QString::number(screenieModel.getReflectionOpacity()));
             streamWriter->writeAttributes(reflectionAttributes);
@@ -126,6 +127,7 @@ bool AbstractXmlScreenieModelDao::read(AbstractScreenieModel &abstractScreenieMo
         readSpecific();
 
         while (streamReader->readNextStartElement()) {
+
             if (streamReader->name() == "position") {
                 QXmlStreamAttributes positionAttributes = streamReader->attributes();
                 qreal x = positionAttributes.value("x").toString().toFloat(&ok);
@@ -156,8 +158,12 @@ bool AbstractXmlScreenieModelDao::read(AbstractScreenieModel &abstractScreenieMo
             } else if (streamReader->name() == "reflection") {
 
                 QXmlStreamAttributes reflectionAttributes = streamReader->attributes();
-                bool enabled = reflectionAttributes.value("enabled") == "true" ? true : false;
-                abstractScreenieModel.setReflectionEnabled(enabled);
+                int mode = reflectionAttributes.value("mode").toString().toInt(&ok);
+                if (!ok) {
+                    result = false;
+                    break;
+                }
+                abstractScreenieModel.setReflectionMode(static_cast<ScreenieModelInterface::ReflectionMode>(mode));
                 int offset = reflectionAttributes.value("offset").toString().toInt(&ok);
                 if (!ok) {
                     result = false;
@@ -176,6 +182,7 @@ bool AbstractXmlScreenieModelDao::read(AbstractScreenieModel &abstractScreenieMo
                 // skip unknown features
                 streamReader->skipCurrentElement();
             }
+
         }
     } else {
         result = false;

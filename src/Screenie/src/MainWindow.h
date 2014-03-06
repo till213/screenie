@@ -139,9 +139,9 @@ private slots:
 
     void on_rotationSlider_valueChanged(int value);
     void on_distanceSlider_valueChanged(int value);
-    void on_reflectionGroupBox_toggled(bool enable);
     void on_reflectionOffsetSlider_valueChanged(int value);
     void on_reflectionOpacitySlider_valueChanged(int value);
+    void on_reflectionModeComboBox_currentIndexChanged(int index);
 
     void on_backgroundColorGroupBox_toggled(bool enable);
     void on_redSlider_valueChanged(int value);
