@@ -471,7 +471,7 @@ void ScreeniePixmapItem::updateReflection()
 
 #ifdef DEBUG
 //        image.alphaChannel().save("/Users/tknoll/temp/image-alpha.png", "PNG");
-//        reflection.save("/Users/tknoll/temp/reflection.png", "PNG");
+//        reflection.mirrored().save("/Users/tknoll/temp/reflection.png", "PNG");
 //        reflection.alphaChannel().mirrored().save("/Users/tknoll/temp/reflection-alpha.png", "PNG");
 #endif
         // imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
@@ -493,6 +493,7 @@ void ScreeniePixmapItem::updateReflection()
                 backgroundBrush = QBrush(d->checkerPattern);
             }
             p.fillRect(d->reflectionBoundingRect, backgroundBrush);
+            p.setCompositionMode(QPainter::CompositionMode_SourceOver);
             /*!\todo Apply "alpha channel mask": set pixels in destinatin to fully transparent where they are fully transparent in the source */
             break;
 
@@ -507,13 +508,17 @@ void ScreeniePixmapItem::updateReflection()
         }
 
         // reflection
-        p.setCompositionMode(QPainter::CompositionMode_SourceOver);
         p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
         p.drawImage(0, image.height(), reflection);
 
     } else {
         imageWithReflection = image;
     }
+
+#ifdef DEBUG
+//    imageWithReflection.alphaChannel().save("/Users/tknoll/temp/imageWithReflection-alpha.png", "PNG");
+//    imageWithReflection.save("/Users/tknoll/temp/imageWithReflection.png", "PNG");
+#endif
 
     pixmap.convertFromImage(imageWithReflection);
     pixmap.setDevicePixelRatio(d->devicePixelRatio);

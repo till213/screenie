@@ -79,8 +79,9 @@ const QImage &ScreenieFilePathModel::getImage() const
 #endif
         if (!d->image.isNull()) {
 
+            /*!\todo Switch back to Premultiplied once reflection rendering code can deal with it */
             if (d->image.format() != QImage::Format_ARGB32_Premultiplied) {
-                d->image = d->image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+                //d->image = d->image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
             }
             if (d->sizeFitter != nullptr) {
                 QSize fittedSize;
