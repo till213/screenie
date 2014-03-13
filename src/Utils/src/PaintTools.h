@@ -37,6 +37,16 @@ class QSize;
 class PaintTools
 {
 public:
+
+    /*!
+     * Evaluation mode of image transparency.
+     */
+    enum class Transparency {
+      Unknown, /*!< Transparency not yet evaluated */
+      No, /*!< Image has no transparent pixels */
+      Yes /*!< Image has transparent pixels */
+    };
+
     /*!
      * Creates a stub image with a big '?' in the center.
      */
@@ -60,6 +70,21 @@ public:
      * \return the QBrush containing the checker pattern
      */
     UTILS_API static QBrush createCheckerPattern();
+
+    /*!
+     * Returns whether the \p image has any (semi-)transparent pixels. That is, whether an
+     * alpha channel exists and whether any alpha value is smaller than 255.
+     *
+     * \b Note: if you operate with a ScreenieModelInterface use ScreenieModelInterface#hasTransparency
+     * instead! The implementations thereof are more efficient as they cache the result of the previous
+     * operation.
+     *
+     * \param image
+     *        the QImage to be evaluated
+     * \return \c true if an alpha value < 255 exists; \c false else
+     * \sa ScreenieModelInterface#hasTransparency
+     */
+    UTILS_API static bool hasTransparency(const QImage &image);
 
 private:
     Q_DISABLE_COPY(PaintTools)

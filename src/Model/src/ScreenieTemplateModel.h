@@ -72,6 +72,7 @@ public:
     virtual void convert(ScreenieModelInterface &source) override;
     virtual ScreenieModelInterface *copy() const override;
     virtual bool isTemplate() const override;
+    virtual bool hasTransparency() const override;
     virtual QString getOverlayText() const override;
 
     SizeFitter &getSizeFitter() const;

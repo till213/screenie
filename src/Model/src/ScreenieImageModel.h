@@ -57,7 +57,8 @@ public:
     virtual QSize getSize() const override;
     virtual ScreenieModelInterface *copy() const override;
     virtual bool isTemplate() const override;
-    virtual QString getOverlayText() const override;
+    virtual bool hasTransparency() const override;
+    virtual QString getOverlayText() const override;    
 
     /*!
      * Sets the \p image data. Scales the image data as not to exceed

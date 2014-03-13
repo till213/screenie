@@ -32,7 +32,8 @@ public:
           lastWidth(-1),
           lastHeight(-1),
           lastReflectionHeight(-1),
-          lastOffset(-1) {}
+          lastOffset(-1)
+    {}
 
     ~ReflectionPrivate()
     {
@@ -68,6 +69,7 @@ QImage Reflection::createReflection(const QImage &image, int offset)
     int height = image.height();
     int reflectionHeight = qRound(height * offset / 100.0);
     int top = height - 1;
+    int red, green, blue, alpha;
     quint8 gradient;
 
     updateGradient(reflectionHeight);
@@ -83,10 +85,10 @@ QImage Reflection::createReflection(const QImage &image, int offset)
         QRgb *dst = reinterpret_cast<QRgb *>(d->reflection.scanLine(y));
 
         for (int x = 0; x < width; ++x) {
-            int red = qRed(*src);
-            int green = qGreen(*src);
-            int blue = qBlue(*src);
-            int alpha = qAlpha(*src);
+            red = qRed(*src);
+            green = qGreen(*src);
+            blue = qBlue(*src);
+            alpha = qAlpha(*src);
             if (gradient < alpha) {
                 alpha = gradient;
             }

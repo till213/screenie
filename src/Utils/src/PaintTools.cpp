@@ -72,6 +72,26 @@ QBrush PaintTools::createCheckerPattern()
     return result;
 }
 
+bool PaintTools::hasTransparency(const QImage &image)
+{
+    bool result;
+    unsigned int length;
+    int alpha;
+    const QRgb *src = reinterpret_cast<const QRgb *>(image.constBits());
+
+    result = false;
+    length = image.width() * image.height();
+    for (unsigned int p = 0; p < length; ++p) {
+        alpha = qAlpha(*src);
+        if (alpha < 255) {
+            result = true;
+            break;
+        }
+        src++;
+    }
+    return result;
+}
+
 // private
 
 void PaintTools::drawBackground(QPainter &painter, QImage &image)

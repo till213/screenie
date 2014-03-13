@@ -114,6 +114,11 @@ bool ScreenieTemplateModel::isTemplate() const
     return true;
 }
 
+bool ScreenieTemplateModel::hasTransparency() const
+{
+    return false;
+}
+
 QString ScreenieTemplateModel::getOverlayText() const
 {
     QString result = tr("Order: %1").arg(d->order);

@@ -30,20 +30,24 @@
 class ScreenieFilePathModelPrivate
 {
 public:
+
     ScreenieFilePathModelPrivate(const QString &theFilePath, const SizeFitter *theSizeFitter)
         : valid(false),
+          transparency(PaintTools::Transparency::Unknown),
           filePath(theFilePath),
           sizeFitter(theSizeFitter)
     {}
 
     ScreenieFilePathModelPrivate(const ScreenieFilePathModelPrivate &other)
         : valid(other.valid),
+          transparency(other.transparency),
           filePath(other.filePath),
           image(other.image),
           sizeFitter(other.sizeFitter)
     {}
 
     bool valid;
+    PaintTools::Transparency transparency;
     QString filePath;
     QImage image;
     const SizeFitter *sizeFitter;    
@@ -122,6 +126,29 @@ ScreenieModelInterface *ScreenieFilePathModel::copy() const
 bool ScreenieFilePathModel::isTemplate() const
 {
     return false;
+}
+
+bool ScreenieFilePathModel::hasTransparency() const
+{
+    bool result;
+    switch (d->transparency) {
+    case PaintTools::Transparency::Yes:
+        result = true;
+        break;
+    case PaintTools::Transparency::No:
+        result = false;
+        break;
+    case PaintTools::Transparency::Unknown:
+        result = PaintTools::hasTransparency(getImage());
+        d->transparency = result ? PaintTools::Transparency::Yes : PaintTools::Transparency::No;
+        break;
+    default:
+#ifdef DEBUG
+       qCritical("ScreenieFilePathModel::hasTransparency: UNSUPPORTED transparency: %d", d->transparency);
+#endif
+        break;
+    }
+    return result;
 }
 
 QString ScreenieFilePathModel::getOverlayText() const
