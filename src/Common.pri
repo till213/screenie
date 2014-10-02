@@ -3,6 +3,8 @@ APP_NAME = Screenie
 LANGUAGE = C++
 CONFIG += qt warn_on thread c++11
 
+macx:
+
 # Should match with Utils/src/Version.h
 VERSION=1.0.0
 
@@ -13,10 +15,15 @@ VERSIONS = $$split(VERSION, ".")
 VERSION_MAJ = $$member(VERSIONS, 0)
 VERSION_MIN = $$member(VERSIONS, 1)
 
-# On Mac we build 64bit Intel only
+
 macx {
+  # On Mac we build 64bit Intel only
   CONFIG += x86_64
   CONFIG -= x86 ppc
+
+  # Build against latest platform SDK
+  QMAKE_MAC_SDK = macosx10.9
+  # QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
 }
 
 DEFINES += QT_NO_COMPAT
