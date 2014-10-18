@@ -13,10 +13,13 @@ VERSIONS = $$split(VERSION, ".")
 VERSION_MAJ = $$member(VERSIONS, 0)
 VERSION_MIN = $$member(VERSIONS, 1)
 
-# On Mac we build 64bit Intel only
 macx {
+  # On Mac we build 64bit Intel only
   CONFIG += x86_64
   CONFIG -= x86 ppc
+
+  QMAKE_MAC_SDK = macosx10.10
+  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
 }
 
 DEFINES += QT_NO_COMPAT
