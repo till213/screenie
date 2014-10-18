@@ -18,7 +18,7 @@ bin
 dist
 
 # Qt Creator
-*.pro.user
+*.pro.user*
 *.autosave
 .qmake*
 
