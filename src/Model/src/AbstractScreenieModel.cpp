@@ -142,7 +142,7 @@ void AbstractScreenieModel::setDistance(qreal distance)
 
 void AbstractScreenieModel::addDistance(qreal distance)
 {
-    if (::abs(distance) > AbstractScreenieModelPrivate::Epsilon) {
+    if (qAbs(distance) > AbstractScreenieModelPrivate::Epsilon) {
         int oldDistance = d->distance;
         d->distance += distance;
         if (d->distance < 0.0) {
@@ -150,7 +150,7 @@ void AbstractScreenieModel::addDistance(qreal distance)
         } else if (d->distance > SceneLimits::MaxDistance) {
             d->distance = SceneLimits::MaxDistance;
         }
-        if (::abs(d->distance - oldDistance) > AbstractScreenieModelPrivate::Epsilon) {
+        if (qAbs(d->distance - oldDistance) > AbstractScreenieModelPrivate::Epsilon) {
             emit distanceChanged();
         }
     }

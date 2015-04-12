@@ -151,8 +151,8 @@ void ScreeniePixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void ScreeniePixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!d->itemTransformed && event->buttons() & Qt::RightButton) {
-        if (::fabs(d->initialPoint.x() - event->screenPos().x()) > ScreeniePixmapItemPrivate::ContextActionThreshold ||
-            ::fabs(d->initialPoint.y() - event->screenPos().y()) > ScreeniePixmapItemPrivate::ContextActionThreshold) {
+        if (qAbs(d->initialPoint.x() - event->screenPos().x()) > ScreeniePixmapItemPrivate::ContextActionThreshold ||
+            qAbs(d->initialPoint.y() - event->screenPos().y()) > ScreeniePixmapItemPrivate::ContextActionThreshold) {
             d->itemTransformed = true;
         }
     } else {
