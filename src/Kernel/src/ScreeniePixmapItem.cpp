@@ -68,6 +68,7 @@ public:
           propertyDialogFactory(new PropertyDialogFactory(screenieControl)),
           propertyDialog(0)
     {
+        /*!\todo  Initialise device pixel ratio from current screen maybe? */
         devicePixelRatio = qApp->devicePixelRatio();
     }
 
@@ -272,21 +273,6 @@ void ScreeniePixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 #endif
 }
 
-QRectF ScreeniePixmapItem::boundingRect() const
-{
-    QRectF result;
-    QRectF boundingRect = QGraphicsPixmapItem::boundingRect();
-    if (d->devicePixelRatio != 1.0) {
-        // apparently the original boundingRect() does not consider
-        // the device pixel ratio set on the QPixmap - see QTBUG-37008
-        result.setWidth(boundingRect.width() / d->devicePixelRatio);
-        result.setHeight(boundingRect.height() / d->devicePixelRatio);
-    } else {
-        result = boundingRect;
-    }
-    return result;
-}
-
 // private
 
 void ScreeniePixmapItem::frenchConnection()
@@ -457,6 +443,7 @@ void ScreeniePixmapItem::updateReflection()
     QPixmap pixmap;
     QImage reflection;
     QBrush backgroundBrush;
+    QRectF fillRect;
 
     if (d->screenieModel.isReflectionEnabled() != d->reflectionEnabled) {
         prepareGeometryChange();
@@ -492,7 +479,11 @@ void ScreeniePixmapItem::updateReflection()
                 }
                 backgroundBrush = QBrush(d->checkerPattern);
             }
-            p.fillRect(d->reflectionBoundingRect, backgroundBrush);
+            // The reflection bounding rectangle is measured in "points", but here we are drawing directly
+            // into the pixmap, that is, in "pixel" units
+            fillRect.setTopLeft(d->reflectionBoundingRect.topLeft() * d->devicePixelRatio);
+            fillRect.setBottomRight(d->reflectionBoundingRect.bottomRight() * d->devicePixelRatio);
+            p.fillRect(fillRect, backgroundBrush);
             /*!\todo Apply "alpha channel mask": set pixels in destinatin to fully transparent where they are fully transparent in the source */
             break;
 
@@ -524,8 +515,9 @@ void ScreeniePixmapItem::updateReflectionBoundingRect()
 {
     if (d->screenieModel.isReflectionEnabled()) {
         QImage image = d->screenieModel.getImage();
-        qreal width = image.width();
-        qreal height = image.height();
+        qreal width = image.width() / d->devicePixelRatio; // convert "pixels" to "points"
+        qreal height = image.height() / d->devicePixelRatio;
+
         QPointF topLeft;
         QPointF bottomRight;
 
@@ -533,6 +525,7 @@ void ScreeniePixmapItem::updateReflectionBoundingRect()
         topLeft.setY(height);
         bottomRight.setX(width - 1.0);
         bottomRight.setY(height + height * d->screenieModel.getReflectionOffset() / 100.0 - 1.0);
+        // The reflection bounding rectangle is measured in "points"
         d->reflectionBoundingRect.setTopLeft(topLeft);
         d->reflectionBoundingRect.setBottomRight(bottomRight);
     } else {
