@@ -2,7 +2,9 @@
 
 Authors: Oliver Knoll, Ariya Hidayat
 
-# News
+## News
+
+### June 24 2015
 
 Gitorious is dead - long live Github :)
 
