@@ -605,8 +605,11 @@ MainWindow *MainWindow::createMainWindow()
     MainWindow *result = new MainWindow();
     QPoint position = pos();
 
-    // Add a slight offset to the original position
-    position += QPoint(28, 28);
+    // Add a slight offset to the original position, but only
+    // if currently in full screen mode
+    if (!isFullScreen()) {
+        position += QPoint(28, 28);
+    }
     result->move(position);
     result->setAttribute(Qt::WA_DeleteOnClose, true);
     return result;
