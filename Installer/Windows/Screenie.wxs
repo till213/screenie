@@ -7,14 +7,14 @@
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="CompanyFolder" Name="till-art.net">
                     <Directory Id="ScreenieFolder" Name="Screenie">
-                        <Component Id="icudt51.dll" DiskId="1" Guid="89E2D415-F1BE-45E7-BEC2-C9F6C8AB2512">
-                            <File Id="icudt51.dll" Name="icudt51.dll" Source="..\..\dist\icudt51.dll" />
+                        <Component Id="icudt54.dll" DiskId="1" Guid="89E2D415-F1BE-45E7-BEC2-C9F6C8AB2512">
+                            <File Id="icudt54.dll" Name="icudt54.dll" Source="..\..\dist\icudt54.dll" />
                         </Component>
-                        <Component Id="icuin51.dll" DiskId="1" Guid="F35F4733-A275-45CA-BCCC-F0CC05C372FE">
-                            <File Id="icuin51.dll" Name="icuin51.dll" Source="..\..\dist\icuin51.dll" />
+                        <Component Id="icuin54.dll" DiskId="1" Guid="F35F4733-A275-45CA-BCCC-F0CC05C372FE">
+                            <File Id="icuin54.dll" Name="icuin54.dll" Source="..\..\dist\icuin54.dll" />
                         </Component>
-                        <Component Id="icuuc51.dll" DiskId="1" Guid="6EA52650-C53A-439C-AB9F-DFF0814452E3">
-                            <File Id="icuuc51.dll" Name="icuuc51.dll" Source="..\..\dist\icuuc51.dll" />
+                        <Component Id="icuuc54.dll" DiskId="1" Guid="6EA52650-C53A-439C-AB9F-DFF0814452E3">
+                            <File Id="icuuc51.dll" Name="icuuc54.dll" Source="..\..\dist\icuuc54.dll" />
                         </Component>
                         <Component Id="Kernel1.dll" DiskId="1" Guid="136F0F26-FEE0-49CE-A0AE-F15205543FF1">
                             <File Id="Kernel1.dll" Name="Kernel1.dll" Source="..\..\dist\Kernel1.dll" />
@@ -87,9 +87,9 @@
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
-            <ComponentRef Id="icudt51.dll" />
-            <ComponentRef Id="icuin51.dll" />
-            <ComponentRef Id="icuuc51.dll" />
+            <ComponentRef Id="icudt54.dll" />
+            <ComponentRef Id="icuin54.dll" />
+            <ComponentRef Id="icuuc54.dll" />
             <ComponentRef Id="Kernel1.dll" />
             <ComponentRef Id="libgcc_s_dw2_1.dll" />
             <ComponentRef Id="libstdc___6.dll" />
