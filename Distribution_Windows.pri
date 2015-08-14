@@ -71,6 +71,8 @@ CONFIG(debug, debug|release) {
   installer.commands += light.exe -nologo "Installer/Windows/Screenie.wixobj" -out "Installer/Windows/Screenie-$${VERSION}.msi"  -ext WixUIExtension
 }
 
-OTHER_FILES += Installer/Windows/Screenie.wxs
+OTHER_FILES += Installer/Windows/Screenie.wxs \
+               Installer/Windows/GPL3.rtf \
+               Installer/Windows/README.txt
 
 

@@ -52,5 +52,10 @@ win32 {
 
 OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt
 
+DISTFILES += \
+    ../../LICENSE.GPL3 \
+    ../../LICENSE.GPL2 \
+    ../../README.md
+
 
 
