@@ -1,3 +1,5 @@
+include (src/Common.pri)
+
 CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/debug/$${APP_NAME}.app
     message(Distributing $$APP_NAME in DEBUG mode)

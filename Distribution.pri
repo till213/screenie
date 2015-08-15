@@ -1,4 +1,3 @@
-include(src/Common.pri)
 macx {
   include(Distribution_Mac.pri)
 }
