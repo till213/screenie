@@ -1,7 +1,15 @@
 include (src/Common.pri)
 
+CONFIG(debug, debug|release) {
+    BIN_DIR = ./bin/debug
+    message(Distributing $$APP_NAME in DEBUG mode)
+} else {
+    BIN_DIR = ./bin/release
+    message(Distributing $$APP_NAME in RELEASE mode)
+}
+
 DIST_DIR = ./dist
-DIST_EXE = $${DIST_DIR}/$${TARGET}.exe
+DIST_EXE = $${DIST_DIR}/$${APP_NAME}.exe
 
 #
 # Distribution
@@ -10,9 +18,17 @@ DIST_EXE = $${DIST_DIR}/$${TARGET}.exe
 distribution.commands = @echo Making distribution for Windows;
 
 # Remove previous bundle
-#distribution.commands += test -d dist && rm -rf dist;
+distribution.commands += test -d dist && rm -rf dist;
 
-#distribution.commands += mkdir dist;
+distribution.commands += mkdir dist;
+
+# Copy compiled binaries
+distribution.commands += cp $${BIN_DIR}/Utils$${VERSION_MAJ}.dll ./$${DIST_DIR};
+distribution.commands += cp $${BIN_DIR}/Model$${VERSION_MAJ}.dll ./$${DIST_DIR};
+distribution.commands += cp $${BIN_DIR}/Kernel$${VERSION_MAJ}.dll ./$${DIST_DIR};
+distribution.commands += cp $${BIN_DIR}/Resources$${VERSION_MAJ}.dll ./$${DIST_DIR};
+distribution.commands += cp $${BIN_DIR}/$${APP_NAME}.exe ./$${DIST_EXE};
+
 distribution.commands += windeployqt --no-angle --no-translations --no-svg $${DIST_EXE};
 
 # Remove unnecessary plug-ins
@@ -21,6 +37,7 @@ distribution.commands += rm $${DIST_DIR}/imageformats/qicns.dll;
 distribution.commands += rm $${DIST_DIR}/imageformats/qico.dll;
 distribution.commands += rm $${DIST_DIR}/imageformats/qjp2.dll;
 distribution.commands += rm $${DIST_DIR}/imageformats/qmng.dll;
+distribution.commands += rm $${DIST_DIR}/imageformats/qtga.dll;
 distribution.commands += rm $${DIST_DIR}/imageformats/qwebp.dll;
 
 #

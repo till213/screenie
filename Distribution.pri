@@ -3,7 +3,7 @@ macx {
 }
 win32 {
   include(Distribution_Windows.pri)
-  distribution.depends = install
+  #distribution.depends = install
 }
 
 installer.depends = distribution
