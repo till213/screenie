@@ -38,6 +38,16 @@
                             <File Id="Screenie.exe" Name="Screenie.exe" Source="..\..\dist\Screenie.exe">
                             </File>
                             <Shortcut Id="ExeShortcut" Name="Screenie" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" Directory="ProgramMenuDir" />
+                            <ProgId Id='ScreenieModelFile' Description='Screenie Scene'>
+                              <Extension Id='xsc' ContentType='application/xsc'>
+                                <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
+                              </Extension>
+                            </ProgId>
+                            <ProgId Id='ScreenieTemplateFile' Description='Screenie Template'>
+                              <Extension Id='xst' ContentType='application/xst'>
+                                <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
+                              </Extension>
+                            </ProgId>
                         </Component>
                         <Component Id="Utils1.dll" DiskId="1" Guid="E81CD282-936C-42C6-A272-7500B26E46B5">
                             <File Id="Utils1.dll" Name="Utils1.dll" Source="..\..\dist\Utils1.dll" />
@@ -48,9 +58,6 @@
                             </Component>
                             <Component Id="qjpeg.dll" DiskId="1" Guid="6B724ACC-6D88-412E-ABB0-C436E16E1326">
                                 <File Id="qjpeg.dll" Name="qjpeg.dll" Source="..\..\dist\imageformats\qjpeg.dll" />
-                            </Component>
-                            <Component Id="qtga.dll" DiskId="1" Guid="AE1CB769-2E65-4AF9-881D-A6CE58FB298D">
-                                <File Id="qtga.dll" Name="qtga.dll" Source="..\..\dist\imageformats\qtga.dll" />
                             </Component>
                             <Component Id="qtiff.dll" DiskId="1" Guid="C6D6E372-EBD0-490D-BF6A-838F2DA48A5C">
                                 <File Id="qtiff.dll" Name="qtiff.dll" Source="..\..\dist\imageformats\qtiff.dll" />
@@ -91,7 +98,6 @@
             <ComponentRef Id="Utils1.dll" />
             <ComponentRef Id="qgif.dll" />
             <ComponentRef Id="qjpeg.dll" />
-            <ComponentRef Id="qtga.dll" />
             <ComponentRef Id="qtiff.dll" />
             <ComponentRef Id="qwbmp.dll" />
             <ComponentRef Id="qwindows.dll" />
@@ -103,4 +109,5 @@
         <Icon Id="StartMenuIcon.exe" SourceFile="..\..\dist\Screenie.exe" />
         <WixVariable Id="WixUILicenseRtf" Value="GPL3.rtf" />
     </Product>
+
 </Wix>
