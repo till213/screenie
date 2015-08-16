@@ -59,4 +59,3 @@ macx {
     # Enable ARC
     QMAKE_OBJECTIVE_CFLAGS += -fobjc-arc
 }
-
