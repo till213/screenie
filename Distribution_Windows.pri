@@ -15,6 +15,7 @@ DIST_EXE = $${DIST_DIR}/$${APP_NAME}.exe
 # Distribution
 #
 
+distribution.depends  = all
 distribution.commands = @echo Making distribution for Windows;
 
 # Remove previous bundle
