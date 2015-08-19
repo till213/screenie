@@ -38,12 +38,12 @@
                             <File Id="Screenie.exe" Name="Screenie.exe" Source="..\..\dist\Screenie.exe">
                             </File>
                             <Shortcut Id="ExeShortcut" Name="Screenie" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" Directory="ProgramMenuDir" />
-                            <ProgId Id='ScreenieModelFile' Description='Screenie Scene'>
+                            <ProgId Id='ScreenieModelFile' Description='Screenie Scene' Icon="Screenie.exe" IconIndex="1">
                               <Extension Id='xsc' ContentType='application/xsc'>
                                 <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
                               </Extension>
                             </ProgId>
-                            <ProgId Id='ScreenieTemplateFile' Description='Screenie Template'>
+                            <ProgId Id='ScreenieTemplateFile' Description='Screenie Template' Icon="Screenie.exe" IconIndex="2">
                               <Extension Id='xst' ContentType='application/xst'>
                                 <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
                               </Extension>
@@ -108,6 +108,6 @@
         <UIRef Id="WixUI_Minimal" />
         <Icon Id="StartMenuIcon.exe" SourceFile="..\..\dist\Screenie.exe" />
         <WixVariable Id="WixUILicenseRtf" Value="GPL3.rtf" />
+        <Property Id="ARPPRODUCTICON" Value="StartMenuIcon.exe" />
     </Product>
-
 </Wix>

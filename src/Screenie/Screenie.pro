@@ -50,7 +50,11 @@ win32 {
    RC_FILE = res/Screenie.rc
 }
 
-OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt
+OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt \
+               $$PWD/res/Screenie.rc \
+               $$PWD/res/ApplicationIcon.ico \
+               $$PWD/res/SceneIcon.ico \
+               $$PWD/res/TemplateIcon.ico \
 
 DISTFILES += \
     ../../LICENSE.GPL3 \
