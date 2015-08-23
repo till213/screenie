@@ -58,6 +58,33 @@ void WindowsPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow 
 
 void WindowsPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
-    Q_UNUSED(mainWindowUi);
+    // File menu
+    QIcon newIcon(":/img/document-new.png");
+    mainWindowUi.newAction->setIcon(QIcon::fromTheme("document-new", newIcon));
+
+    QIcon openIcon(":/img/document-open.png");
+    mainWindowUi.openAction->setIcon(QIcon::fromTheme("document-open", openIcon));
+
+    QIcon saveIcon(":/img/document-save.png");
+    mainWindowUi.saveAction->setIcon(QIcon::fromTheme("document-save", saveIcon));
+
+    QIcon saveAsIcon(":/img/document-save-as.png");
+    mainWindowUi.saveAsAction->setIcon(QIcon::fromTheme("document-save-as", saveAsIcon));
+
+    QIcon exitIcon(":/img/application-exit.png");
+    mainWindowUi.quitAction->setIcon(QIcon::fromTheme("application-exit", exitIcon));
+
+    // Edit menu
+    QIcon cutIcon(":/img/edit-cut.png");
+    mainWindowUi.cutAction->setIcon(QIcon::fromTheme("edit-cut", cutIcon));
+
+    QIcon copyIcon(":/img/edit-copy.png");
+    mainWindowUi.copyAction->setIcon(QIcon::fromTheme("edit-copy", copyIcon));
+
+    QIcon pasteIcon(":/img/edit-paste.png");
+    mainWindowUi.pasteAction->setIcon(QIcon::fromTheme("edit-paste", pasteIcon));
+
+    QIcon deleteIcon(":/img/edit-delete.png");
+    mainWindowUi.deleteAction->setIcon(QIcon::fromTheme("edit-delete", deleteIcon));
 }
 

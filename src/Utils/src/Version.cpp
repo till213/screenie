@@ -51,7 +51,7 @@ const int VersionPrivate::MajorNo = 1;
 const int VersionPrivate::MinorNo = 0;
 const int VersionPrivate::SubMinorNo = 0;
 const QString VersionPrivate::CodeName = QString("Anarchic Amoeba");
-const QString VersionPrivate::UserVersion = QString("14.01");
+const QString VersionPrivate::UserVersion = QString("15.08");
 const QString VersionPrivate::ApplicationTitle = QString("Screenie"); // note: no translation here (i18n)
 
 // public
