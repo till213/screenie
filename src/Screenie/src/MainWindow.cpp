@@ -112,7 +112,7 @@ MainWindow::~MainWindow()
     delete m_screenieScene;
     delete m_screenieControl;
     delete m_platformManager;
-    delete ui;
+    delete ui;    
 }
 
 bool MainWindow::read(const QString &filePath, SecurityToken *securityToken)

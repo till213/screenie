@@ -20,18 +20,32 @@
 
 #include <QAction>
 #include <QKeySequence>
+#include <QSysInfo>
 
 #include "ui_MainWindow.h"
 #include "WindowsPlatformManager.h"
+#include "Windows8ProxyStyle.h"
 
 class WindowsPlatformManagerPrivate
 {
 public:
     WindowsPlatformManagerPrivate(Ui::MainWindow &theMainWindow)
-        : mainWindow(theMainWindow)
+        : mainWindow(theMainWindow),
+          windows8ProxyStyle(new Windows8ProxyStyle) // must be allocated on heap
     {}
 
+    ~WindowsPlatformManagerPrivate()
+    {
+        // This is a bit tricky: first we need to restore the style
+        // to the default one...
+        mainWindow.menubar->setStyle(QApplication::style());
+        // ... before we delete the proxy style, as calls are still
+        // being made to QStyle during QWidget deletion later on
+        delete windows8ProxyStyle;
+    }
+
     Ui::MainWindow &mainWindow;
+    Windows8ProxyStyle *windows8ProxyStyle;
 };
 
 // public
@@ -58,6 +72,13 @@ void WindowsPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow 
 
 void WindowsPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
 {
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_6_2) {
+        // Windows 8 and above: Use larger menu icons and brighter background
+        mainWindowUi.menubar->setStyle(d->windows8ProxyStyle);
+        // Windows 10 menu background - padding: top right bottom left
+        mainWindowUi.menubar->setStyleSheet("QMenu { background-color: rgb(251, 252, 253) } QMenu::item { padding: 6px 25px 6px 40px}");
+    }
+
     // File menu
     QIcon newIcon(":/img/document-new.png");
     mainWindowUi.newAction->setIcon(QIcon::fromTheme("document-new", newIcon));
