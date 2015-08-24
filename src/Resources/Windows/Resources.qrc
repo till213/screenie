@@ -1,15 +1,24 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/">        
         <file>img/insert-image.png</file>
-        <file>img/application-exit.png</file>
-        <file>img/document-save-as.png</file>
-        <file>img/document-save.png</file>
-        <file>img/document-open.png</file>
-        <file>img/edit-paste.png</file>
-        <file>img/edit-copy.png</file>
-        <file>img/edit-cut.png</file>
-        <file>img/edit-delete.png</file>
         <file>img/insert-template.png</file>
-        <file>img/document-new.png</file>
+        <file>10/img/application-exit.png</file>
+        <file>10/img/document-new.png</file>
+        <file>10/img/document-open.png</file>
+        <file>10/img/document-save.png</file>
+        <file>10/img/document-save-as.png</file>
+        <file>10/img/edit-copy.png</file>
+        <file>10/img/edit-cut.png</file>
+        <file>10/img/edit-delete.png</file>
+        <file>10/img/edit-paste.png</file>
+        <file>XP/img/application-exit.png</file>
+        <file>XP/img/document-new.png</file>
+        <file>XP/img/document-open.png</file>
+        <file>XP/img/document-save.png</file>
+        <file>XP/img/document-save-as.png</file>
+        <file>XP/img/edit-copy.png</file>
+        <file>XP/img/edit-cut.png</file>
+        <file>XP/img/edit-delete.png</file>
+        <file>XP/img/edit-paste.png</file>
     </qresource>
 </RCC>
