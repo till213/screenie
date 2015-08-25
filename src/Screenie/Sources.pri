@@ -36,10 +36,10 @@ if (macx) {
 
 } else:win32 {
     HEADERS += $$PWD/src/PlatformManager/WindowsPlatformManager.h \
-               $$PWD/src/PlatformManager/Windows8ProxyStyle.h
+               $$PWD/src/PlatformManager/Windows10ProxyStyle.h
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Windows.cpp \
                $$PWD/src/PlatformManager/WindowsPlatformManager.cpp \
-               $$PWD/src/PlatformManager/Windows8ProxyStyle.cpp
+               $$PWD/src/PlatformManager/Windows10ProxyStyle.cpp
 } else:linux-* {
     HEADERS += $$PWD/src/PlatformManager/LinuxPlatformManager.h
     SOURCES += $$PWD/src/PlatformManager/PlatformManagerFactory_Linux.cpp \

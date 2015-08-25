@@ -20,25 +20,26 @@
 
 #include <QProxyStyle>
 
-#include "Windows8ProxyStyle.h"
+#include "Windows10ProxyStyle.h"
 
 // Public
 
-Windows8ProxyStyle::Windows8ProxyStyle()
+Windows10ProxyStyle::Windows10ProxyStyle()
 {
 }
 
-Windows8ProxyStyle::~Windows8ProxyStyle()
+Windows10ProxyStyle::~Windows10ProxyStyle()
 {
 #ifdef DEBUG
-    qDebug("Windows8ProxyStyle::~Windows8ProxyStyle: called.");
+    qDebug("Windows10ProxyStyle::~Windows10ProxyStyle: called.");
 #endif
 }
 
-int Windows8ProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
+int Windows10ProxyStyle::pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const
 {
     int pixelMetric;
     if (metric == QStyle::PM_SmallIconSize) {
+        // Return large icons
         pixelMetric = 32;
     } else {
         pixelMetric = QProxyStyle::pixelMetric(metric, option, widget);

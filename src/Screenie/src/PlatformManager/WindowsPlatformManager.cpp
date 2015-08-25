@@ -24,28 +24,36 @@
 
 #include "ui_MainWindow.h"
 #include "WindowsPlatformManager.h"
-#include "Windows8ProxyStyle.h"
+#include "Windows10ProxyStyle.h"
 
 class WindowsPlatformManagerPrivate
 {
 public:
     WindowsPlatformManagerPrivate(Ui::MainWindow &theMainWindow)
-        : mainWindow(theMainWindow),
-          windows8ProxyStyle(new Windows8ProxyStyle) // must be allocated on heap
-    {}
+        : mainWindow(theMainWindow)
+    {
+        if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10) {
+            windows10ProxyStyle = new Windows10ProxyStyle;
+        } else {
+            windows10ProxyStyle = nullptr;
+        }
+
+    }
 
     ~WindowsPlatformManagerPrivate()
     {
-        // This is a bit tricky: first we need to restore the style
-        // to the default one...
-        mainWindow.menubar->setStyle(QApplication::style());
-        // ... before we delete the proxy style, as calls are still
-        // being made to QStyle during QWidget deletion later on
-        delete windows8ProxyStyle;
+        if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10) {
+            // This is a bit tricky: first we need to restore the style
+            // to the default one...
+            mainWindow.menubar->setStyle(QApplication::style());
+            // ... before we delete the proxy style, as calls are still
+            // being made to QStyle during QWidget deletion later on
+            delete windows10ProxyStyle;
+        }
     }
 
     Ui::MainWindow &mainWindow;
-    Windows8ProxyStyle *windows8ProxyStyle;
+    Windows10ProxyStyle *windows10ProxyStyle;
 };
 
 // public
@@ -82,9 +90,9 @@ void WindowsPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowU
     QIcon pasteIcon;
     QIcon deleteIcon;
 
-    if (QSysInfo::windowsVersion() >= QSysInfo::WV_6_2) {
+    if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10) {
         // Windows 8 and above: Use larger menu icons and brighter background
-        mainWindowUi.menubar->setStyle(d->windows8ProxyStyle);
+        mainWindowUi.menubar->setStyle(d->windows10ProxyStyle);
         // Windows 10 menu background - padding: top right bottom left
         mainWindowUi.menubar->setStyleSheet("QMenu { background-color: rgb(251, 252, 253) } QMenu::item { padding: 6px 25px 6px 40px}");
 
