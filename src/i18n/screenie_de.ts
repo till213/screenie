@@ -93,7 +93,7 @@
     </message>
     <message>
         <source>Reflection</source>
-        <translation type="unfinished">Reflektion</translation>
+        <translation>Reflektion</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -105,7 +105,7 @@
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Hintergrund</translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <source>Red</source>

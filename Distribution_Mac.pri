@@ -27,13 +27,9 @@ ENTITLEMENTS = src/Screenie/Screenie-Entitlements.plist
 # Distribution
 #
 
-distribution.depends  = all
 distribution.commands += @echo Making distribution for Mac;
 
-# Remove previous bundle
-distribution.commands += test -d dist && rm -rf dist;
-
-distribution.commands += mkdir dist;
+# Copy compiled binaries
 distribution.commands += cp -R ./$${APP_BUNDLE} ./$${DIST_APP_BUNDLE};
 distribution.commands += macdeployqt $${DIST_APP_BUNDLE};
 # qt.conf

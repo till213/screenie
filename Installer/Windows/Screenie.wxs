@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="9C717168-DCA4-49F0-894F-2C5CEAF0A0C4" Name="Screenie" Language="1033" Version="1.0.0" Manufacturer="till-art.net" UpgradeCode="479C1D6F-20B5-4EBE-B97E-1157A9563348">
+    <Product Id="*" Name="Screenie" Language="1033" Version="1.0.0" Manufacturer="till-art.net" UpgradeCode="479C1D6F-20B5-4EBE-B97E-1157A9563348">
         <Package Description="Screenie - A Fancy Screenshot Composer" Comments="Screenie" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -71,6 +71,11 @@
                                 <File Id="qwindows.dll" Name="qwindows.dll" Source="..\..\dist\platforms\qwindows.dll" />
                             </Component>
                         </Directory>
+                        <Directory Id="i18n" Name="i18n">
+                            <Component Id="screenie_de.qm" DiskId="1" Guid="ED8889B7-434B-4217-987C-EEB6C0A89332">
+                                <File Id="screenie_de.qm" Name="screenie_de.qm" Source="..\..\dist\i18n\screenie_de.qm" />
+                            </Component>
+                        </Directory>
                     </Directory>
                 </Directory>
             </Directory>
@@ -101,6 +106,7 @@
             <ComponentRef Id="qtiff.dll" />
             <ComponentRef Id="qwbmp.dll" />
             <ComponentRef Id="qwindows.dll" />
+            <ComponentRef Id="screenie_de.qm" />
             <ComponentRef Id="StartMenuShortcuts" />
         </Feature>
         <UI>

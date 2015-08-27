@@ -15,13 +15,7 @@ DIST_EXE = $${DIST_DIR}/$${APP_NAME}.exe
 # Distribution
 #
 
-distribution.depends  = all
-distribution.commands = @echo Making distribution for Windows;
-
-# Remove previous bundle
-distribution.commands += test -d dist && rm -rf dist;
-
-distribution.commands += mkdir dist;
+distribution.commands += @echo Making distribution for Windows;
 
 # Copy compiled binaries
 distribution.commands += cp $${BIN_DIR}/Utils$${VERSION_MAJ}.dll ./$${DIST_DIR};

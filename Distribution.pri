@@ -3,10 +3,18 @@ macx {
 }
 win32 {
   include(Distribution_Windows.pri)
-  #distribution.depends = install
 }
 
 installer.depends = distribution
+
+# Remove previous bundle
+i18n.commands += test -d dist && rm -rf dist;
+i18n.commands += mkdir dist;
+i18n.commands += mkdir $${DIST_DIR}/i18n;
+i18n.commands += lrelease \"$$PWD/src/i18n/screenie_de.ts\" -qm $${DIST_DIR}/i18n/screenie_de.qm;
+i18n.depends = all
+
+distribution.depends  = i18n
 
 help.commands += @echo 'Available Custom Commands:';
 help.commands += echo 'distribution - Copy all files required for distribution into directory dist';
@@ -20,4 +28,4 @@ doxygen.depends  =
 doxygen.target   = dox
 doxygen.commands = doxygen Doxyfile
 
-QMAKE_EXTRA_TARGETS += distribution installer doxygen help
+QMAKE_EXTRA_TARGETS += i18n distribution installer doxygen help

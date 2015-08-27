@@ -12,8 +12,5 @@ include(Resources/Sources.pri)
 include(Kernel/Sources.pri)
 include(Screenie/Sources.pri)
 
-TRANSLATIONS = i18n/screenie_fr.ts \
-               i18n/screenie_pl.ts \
-               i18n/screenie_ru.ts \
-               i18n/screenie_de.ts
+TRANSLATIONS = i18n/screenie_de.ts
 

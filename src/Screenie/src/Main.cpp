@@ -19,6 +19,8 @@
  */
 
 #include <QCoreApplication>
+#include <QTranslator>
+#include <QLocale>
 #ifdef Q_OS_WIN
 #include <QSettings>
 #endif
@@ -44,6 +46,14 @@ int main(int argc, char *argv[])
 #endif
 
     ScreenieApplication app(argc, argv);
+
+    QTranslator translator;
+    translator.load(QCoreApplication::applicationDirPath() + "/i18n/screenie_" + QLocale::system().name());
+#ifdef DEBUG
+    qDebug("Loaded translation from %s", qPrintable(QCoreApplication::applicationDirPath() + "/i18n/screenie_" + QLocale::system().name()));
+#endif
+    app.installTranslator(&translator);
+
 #ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
