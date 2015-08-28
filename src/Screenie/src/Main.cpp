@@ -47,12 +47,19 @@ int main(int argc, char *argv[])
 
     ScreenieApplication app(argc, argv);
 
-    QTranslator translator;
-    translator.load(QCoreApplication::applicationDirPath() + "/i18n/screenie_" + QLocale::system().name());
+    QTranslator qtTranslator;
+    bool res = qtTranslator.load(QCoreApplication::applicationDirPath() + "/translations/qt_" + QLocale::system().name());
 #ifdef DEBUG
-    qDebug("Loaded translation from %s", qPrintable(QCoreApplication::applicationDirPath() + "/i18n/screenie_" + QLocale::system().name()));
+    qDebug("Loaded Qt translation from %s, result: %d", qPrintable(QCoreApplication::applicationDirPath() + "/translations/qt_" + QLocale::system().name()), res);
 #endif
-    app.installTranslator(&translator);
+    app.installTranslator(&qtTranslator);
+
+    QTranslator appTranslator;
+    res = appTranslator.load(QCoreApplication::applicationDirPath() + "/translations/screenie_" + QLocale::system().name());
+#ifdef DEBUG
+    qDebug("Loaded translation from %s, result: %d", qPrintable(QCoreApplication::applicationDirPath() + "/translations/screenie_" + QLocale::system().name()), res);
+#endif
+    app.installTranslator(&appTranslator);
 
 #ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
