@@ -21,6 +21,7 @@
 #include <QCoreApplication>
 #include <QTranslator>
 #include <QLocale>
+#include <QLibraryInfo>
 #ifdef Q_OS_WIN
 #include <QSettings>
 #endif
@@ -48,17 +49,11 @@ int main(int argc, char *argv[])
     ScreenieApplication app(argc, argv);
 
     QTranslator qtTranslator;
-    bool res = qtTranslator.load(QCoreApplication::applicationDirPath() + "/translations/qt_" + QLocale::system().name());
-#ifdef DEBUG
-    qDebug("Loaded Qt translation from %s, result: %d", qPrintable(QCoreApplication::applicationDirPath() + "/translations/qt_" + QLocale::system().name()), res);
-#endif
+    qtTranslator.load(QLocale::system(), "qtbase", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    res = appTranslator.load(QCoreApplication::applicationDirPath() + "/translations/screenie_" + QLocale::system().name());
-#ifdef DEBUG
-    qDebug("Loaded translation from %s, result: %d", qPrintable(QCoreApplication::applicationDirPath() + "/translations/screenie_" + QLocale::system().name()), res);
-#endif
+    appTranslator.load(QLocale::system(), "screenie", "_", QCoreApplication::applicationDirPath() + "/translations");
     app.installTranslator(&appTranslator);
 
 #ifdef Q_OS_MAC

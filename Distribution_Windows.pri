@@ -26,6 +26,9 @@ distribution.commands += cp $${BIN_DIR}/$${APP_NAME}.exe ./$${DIST_EXE};
 
 distribution.commands += windeployqt --no-angle --no-translations --no-svg $${DIST_EXE};
 
+# qt.conf
+distribution.commands += echo \"[Paths] Translations = translations\" | cat > $${DIST_DIR}/qt.conf;
+
 # Remove unnecessary plug-ins
 distribution.commands += rm $${DIST_DIR}/imageformats/qdds.dll;
 distribution.commands += rm $${DIST_DIR}/imageformats/qicns.dll;
