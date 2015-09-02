@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    appTranslator.load(QLocale::system(), "screenie", "_", QCoreApplication::applicationDirPath() + "/translations");
+    appTranslator.load(QLocale::system(), "screenie", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&appTranslator);
 
 #ifdef Q_OS_MAC
