@@ -50,6 +50,8 @@ CONFIG(debug, debug|release) {
 unix:linux* {
     # Pick up libraries in the same path as the executable
     QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
+    #QMAKE_RPATHDIR = =\'\$\$ORIGIN\'
+
 }
 
 win32-g++ {

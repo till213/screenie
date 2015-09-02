@@ -71,9 +71,12 @@
                                 <File Id="qwindows.dll" Name="qwindows.dll" Source="..\..\dist\platforms\qwindows.dll" />
                             </Component>
                         </Directory>
-                        <Directory Id="i18n" Name="i18n">
+                        <Directory Id="translations" Name="translations">
                             <Component Id="screenie_de.qm" DiskId="1" Guid="ED8889B7-434B-4217-987C-EEB6C0A89332">
-                                <File Id="screenie_de.qm" Name="screenie_de.qm" Source="..\..\dist\i18n\screenie_de.qm" />
+                                <File Id="screenie_de.qm" Name="screenie_de.qm" Source="..\..\dist\translations\screenie_de.qm" />
+                            </Component>
+                            <Component Id="qtbase_de.qm" DiskId="1" Guid="D281AEC9-589D-4C65-A45C-D48C24E4DD09">
+                                <File Id="qtbase_de.qm" Name="qtbase_de.qm" Source="..\..\dist\translations\qtbase_de.qm" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -107,6 +110,7 @@
             <ComponentRef Id="qwbmp.dll" />
             <ComponentRef Id="qwindows.dll" />
             <ComponentRef Id="screenie_de.qm" />
+            <ComponentRef Id="qtbase_de.qm" />
             <ComponentRef Id="StartMenuShortcuts" />
         </Feature>
         <UI>

@@ -27,6 +27,11 @@ Installer Creation
 
 Alternatively use the WiX tools "candle.exe" and "light.exe" directly.
 
+GUIDs
+-----
+
+https://www.guidgenerator.com/
+
 
 License Text
 ------------
@@ -51,4 +56,4 @@ Links
 - Other installers: https://secure.wikimedia.org/wikipedia/en/wiki/List_of_installation_software
 - Yet another (free) MSI installer: http://www.advancedinstaller.com/
 - "What is the best installer": http://stackoverflow.com/questions/3767/what-is-the-best-choice-for-building-windows-installers
-
+- https://www.guidgenerator.com/
