@@ -13,7 +13,7 @@ i18n.commands += mkdir dist;
 i18n.commands += mkdir $${DIST_DIR}/translations;
 i18n.commands += lrelease \"$$PWD/src/translations/screenie_de.ts\" -qm $${DIST_DIR}/translations/screenie_de.qm;
 i18n.commands += cp $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm $${DIST_DIR}/translations/qtbase_de.qm
-i18n.depends = all
+i18n.depends = release
 
 distribution.depends  = i18n
 

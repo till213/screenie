@@ -33,7 +33,7 @@ distribution.commands += @echo Making distribution for Mac;
 distribution.commands += cp -R ./$${APP_BUNDLE} ./$${DIST_APP_BUNDLE};
 distribution.commands += macdeployqt $${DIST_APP_BUNDLE};
 # qt.conf
-distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $${DIST_APP_BUNDLE}/Contents/Resources/qt.conf;
+distribution.commands += cp ./src/Resources/Windows/qt.conf $${DIST_APP_BUNDLE}/Contents/Resources/qt.conf;
 
 # Remove unnecessary plug-ins
 distribution.commands += rm -r $${DIST_APP_BUNDLE}/Contents/PlugIns/printsupport;
