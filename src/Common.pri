@@ -1,4 +1,9 @@
-APP_NAME = Screenie
+!linux {
+  APP_NAME = Screenie
+} else {
+  # Prefer lower case app name on Linux
+  APP_NAME = screenie
+}
 
 LANGUAGE = C++
 CONFIG += qt warn_on thread c++11
