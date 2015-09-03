@@ -11,11 +11,13 @@ linux {
 installer.depends = distribution
 
 # Remove previous bundle
-i18n.commands += test -d dist && rm -rf dist;
+i18n.commands += test -d $${DIST_DIR} && rm -rf $${DIST_DIR};
 i18n.commands += mkdir dist;
 i18n.commands += mkdir $${DIST_DIR}/translations;
 i18n.commands += lrelease \"$$PWD/src/translations/screenie_de.ts\" -qm $${DIST_DIR}/translations/screenie_de.qm;
-i18n.commands += cp $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm $${DIST_DIR}/translations/qtbase_de.qm
+!linux {
+  i18n.commands += test -f $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm && cp $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm $${DIST_DIR}/translations/qtbase_de.qm;
+}
 i18n.depends = all
 
 distribution.depends  = i18n

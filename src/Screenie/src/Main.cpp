@@ -40,21 +40,33 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(Version::getApplicationVersion());
 
     qRegisterMetaType<ScreenieModelInterface::ReflectionMode>();
-
 #ifdef Q_OS_WIN
     // On Windows prefer INI format over Registry (= NativeFormat)
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
     ScreenieApplication app(argc, argv);
+#ifdef Q_OS_WIN
+    QString appTranslationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#elif defined Q_OS_LINUX
+    QString appTranslationPath = QCoreApplication::applicationDirPath() + "/translations";
+#elif defined Q_OS_MAC
+    QString appTranslationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#else
+    QString appTranslationPath = QCoreApplication::applicationDirPath() + "/translations";
+#endif
 
     QTranslator qtTranslator;
     qtTranslator.load(QLocale::system(), "qtbase", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    appTranslator.load(QLocale::system(), "screenie", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    appTranslator.load(QLocale::system(), "screenie", "_", appTranslationPath);
     app.installTranslator(&appTranslator);
+
+#ifdef DEBUG
+    qDebug("System LOCALE: %s, app translation path: %s, Qt translation path: %s", qPrintable(QLocale::system().name()), qPrintable(appTranslationPath), qPrintable(QLibraryInfo::location(QLibraryInfo::TranslationsPath)));
+#endif
 
 #ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
