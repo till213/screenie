@@ -21,8 +21,6 @@
 #ifndef ABSTRACTPLATFORMMANAGER_H
 #define ABSTRACTPLATFORMMANAGER_H
 
-#include <QByteArray>
-
 class QMainWindow;
 class QString;
 

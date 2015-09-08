@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2015 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,43 +18,14 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QAction>
-#include <QKeySequence>
+#include <QString>
+#include <QLibraryInfo>
 
-#include "ui_MainWindow.h"
-#include "DefaultPlatformManager.h"
+#include "PlatformManager.h"
 
-class DefaultPlatformManagerPrivate
-{
-public:
-    DefaultPlatformManagerPrivate(Ui::MainWindow &theMainWindow)
-        : mainWindow(theMainWindow)
-    {}
+// Public
 
-    Ui::MainWindow &mainWindow;
-};
-
-// public
-
-DefaultPlatformManager::DefaultPlatformManager()
-    :d(nullptr)
-{}
-
-DefaultPlatformManager::~DefaultPlatformManager()
-{
-    if (d != nullptr) {
-        delete d;
-    }
-}
-
-void DefaultPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
-{
-    d = new DefaultPlatformManagerPrivate(mainWindowUi);
-    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
-    mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F11));
-}
-
-QString DefaultPlatformManager::getTranslationsPath(Translation translation) const
+QString PlatformManager::getTranslationsPath(Translation translation)
 {
     QString translationPath;
 
@@ -67,17 +38,10 @@ QString DefaultPlatformManager::getTranslationsPath(Translation translation) con
         break;
     default:
 #ifdef DEBUG
-        qDebug("getTranslationsPath: Unsupported Translation Path option: %d", translation);
+        qDebug("PlatformManager::getTranslationsPath: Unsupported Translation Path option: %d", translation);
 #endif
         break;
     }
 
     return translationPath;
-}
-
-// protected
-
-void DefaultPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)
-{
-    Q_UNUSED(mainWindowUi);
 }

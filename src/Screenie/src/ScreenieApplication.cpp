@@ -31,6 +31,7 @@
 #include "../../Utils/src/RecentFile.h"
 #include "../../Kernel/src/DocumentManager.h"
 #include "PlatformManager/PlatformManagerFactory.h"
+#include "PlatformManager/PlatformManager.h"
 #include "MainWindow.h"
 #include "ScreenieApplication.h"
 
@@ -67,7 +68,9 @@ bool ScreenieApplication::event(QEvent *event)
     switch (event->type()) {
     case QEvent::FileOpen:
         result = true;
+#ifdef DEBUG
         qDebug("ScreenieApplication::event: %s", qPrintable(static_cast<QFileOpenEvent *>(event)->file()));
+#endif
         m_mainWindow->read(static_cast<QFileOpenEvent *>(event)->file());
         event->accept();
         break;
@@ -83,6 +86,20 @@ void ScreenieApplication::frenchConnection()
 {
     connect(QApplication::instance(), SIGNAL(lastWindowClosed()),
             this, SLOT(handleLastWindowClosed()));
+}
+
+void ScreenieApplication::initialiseTranslations()
+{
+    QString qtTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Qt);
+    QString appTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Application);
+
+    QTranslator qtTranslator;
+    qtTranslator.load(QLocale::system(), "qtbase", "_", qtTranslationPath);
+    QCoreApplication::instance()->installTranslator(&qtTranslator);
+
+    QTranslator appTranslator;
+    appTranslator.load(QLocale::system(), "screenie", "_", appTranslationPath);
+    QCoreApplication::instance()->installTranslator(&appTranslator);
 }
 
 // private slots

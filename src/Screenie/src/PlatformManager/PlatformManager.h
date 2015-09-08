@@ -21,7 +21,7 @@
 #ifndef PLATFORMMANAGER_H
 #define PLATFORMMANAGER_H
 
-#include <QByteArray>
+#include <QString>
 
 class QMainWindow;
 class QString;
@@ -31,15 +31,21 @@ namespace Ui {
 }
 
 /*!
- * The PlatformManager applies platform-specific GUI settings. Among them
- * are icons, stylesheets and shortcuts.
+ * The PlatformManager provides platform-specific settings. Among them
+ * are icons, stylesheets, shortcuts and translation paths.
  */
 class PlatformManager
 {
 public:
+    enum Translation {
+        Qt,
+        Application
+    };
+
     virtual ~PlatformManager() {}
 
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) = 0;
+    static QString getTranslationsPath(Translation translation);
 };
 
 #endif // PLATFORMMANAGER_H

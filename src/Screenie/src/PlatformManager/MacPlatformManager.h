@@ -39,8 +39,10 @@ class MacPlatformManager : public QObject, public AbstractPlatformManager
 {
     Q_OBJECT
 public:
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
     virtual bool eventFilter(QObject *object, QEvent *event) override;
+
+    // Interface PlatformManager
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);

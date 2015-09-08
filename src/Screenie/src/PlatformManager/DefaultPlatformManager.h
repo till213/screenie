@@ -37,7 +37,9 @@ public:
     DefaultPlatformManager();
     virtual ~DefaultPlatformManager();
 
+    // Interface PlatformManager
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
+    virtual QString getTranslationsPath(Translation translation) const override;
 
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi) override;

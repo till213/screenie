@@ -62,6 +62,7 @@ private:
     MainWindow *m_mainWindow;
 
     void frenchConnection();
+    void initialiseTranslations();
 
 private slots:
     void handleLastWindowClosed();

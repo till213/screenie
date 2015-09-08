@@ -21,6 +21,8 @@
 #include <QAction>
 #include <QKeySequence>
 #include <QSysInfo>
+#include <QString>
+#include <QLibraryInfo>
 
 #include "ui_MainWindow.h"
 #include "WindowsPlatformManager.h"

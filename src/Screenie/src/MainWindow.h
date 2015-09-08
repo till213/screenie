@@ -50,6 +50,12 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
+    /*!
+      * \brief Creates a new MainWindow.
+      *
+      * \param parent
+      *        the parent QWidget
+      */
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 

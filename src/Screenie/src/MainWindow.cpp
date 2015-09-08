@@ -97,6 +97,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createScene();
     updateDocumentManager();
     initialiseUi();
+
     m_platformManager = PlatformManagerFactory::getInstance().create();
     m_platformManager->initialise(*this, *ui);
 

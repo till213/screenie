@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2015 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,35 +17,30 @@
    with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-
-#ifndef LINUXPLATFORMMANAGER_H
-#define LINUXPLATFORMMANAGER_H
-
 #include <QString>
+#include <QLibraryInfo>
 
-class QMainWindow;
+#include "PlatformManager.h"
 
-#include "AbstractPlatformManager.h"
+// Public
 
-class LinuxPlatformManagerPrivate;
-
-namespace Ui {
-    class MainWindow;
-}
-
-class LinuxPlatformManager : public AbstractPlatformManager
+QString PlatformManager::getTranslationsPath(Translation translation)
 {
-public:
-    LinuxPlatformManager();
-    virtual ~LinuxPlatformManager();
+    QString translationPath;
 
-    // Interface PlatformManager
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
-protected:
-    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
+    switch(translation) {
+    case Translation::Qt:
+        translationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        break;
+    case Translation::Application:
+        translationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        break;
+    default:
+#ifdef DEBUG
+        qDebug("PlatformManager::getTranslationsPath: Unsupported Translation Path option: %d", translation);
+#endif
+        break;
+    }
 
-private:
-    LinuxPlatformManagerPrivate *d;
-};
-
-#endif // LINUXPLATFORMMANAGER_H
+    return translationPath;
+}
