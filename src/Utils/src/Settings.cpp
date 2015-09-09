@@ -339,7 +339,7 @@ void Settings::store()
     d->settings.endGroup();
     d->settings.beginGroup("i18n");
     {
-        d->settings.setValue("Locale", d->locale);
+        d->settings.setValue("Locale", d->locale.name());
         d->settings.setValue("SystemLocaleEnabled", d->systemLocaleEnabled);
     }
     d->settings.endGroup();
@@ -382,7 +382,7 @@ void Settings::restore()
     d->settings.endGroup();
     d->settings.beginGroup("i18n");
     {
-        d->locale = d->settings.value("Locale", SettingsPrivate::DefaultLocale).toLocale();
+        d->locale = QLocale(d->settings.value("Locale", SettingsPrivate::DefaultLocale.name()).toString());
         d->systemLocaleEnabled = d->settings.value("SystemLocaleEnabled", SettingsPrivate::DefaultSystemLocaleEnabled).toBool();
     }
     d->settings.endGroup();
