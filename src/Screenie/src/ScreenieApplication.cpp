@@ -27,6 +27,10 @@
 #include <QEvent>
 #include <QFileOpenEvent>
 
+
+// @todo KNO REMOVE ME
+#include <QMessageBox>
+
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/RecentFile.h"
 #include "../../Kernel/src/DocumentManager.h"
@@ -41,6 +45,7 @@ ScreenieApplication::ScreenieApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
     frenchConnection();
+    initialiseTranslations();
 }
 
 void ScreenieApplication::show()
@@ -93,13 +98,14 @@ void ScreenieApplication::initialiseTranslations()
     QString qtTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Qt);
     QString appTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Application);
 
-    QTranslator qtTranslator;
-    qtTranslator.load(QLocale::system(), "qtbase", "_", qtTranslationPath);
-    QCoreApplication::instance()->installTranslator(&qtTranslator);
+    QLocale locale = Settings::getInstance().getLocale();
+    m_qtTranslator.load(locale, "qtbase", "_", qtTranslationPath);
+    QCoreApplication::instance()->installTranslator(&m_qtTranslator);
 
-    QTranslator appTranslator;
-    appTranslator.load(QLocale::system(), "screenie", "_", appTranslationPath);
-    QCoreApplication::instance()->installTranslator(&appTranslator);
+    bool loadSuccess = m_appTranslator.load(locale, "screenie", "_", appTranslationPath);
+    bool installSuccess = QCoreApplication::instance()->installTranslator(&m_appTranslator);
+    QMessageBox::information(nullptr, "Debug", QString("Load %1 Install %2 Path: %3 Locale %4")
+                             .arg(loadSuccess).arg(installSuccess).arg(appTranslationPath).arg(locale.name()));
 }
 
 // private slots

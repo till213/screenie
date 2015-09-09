@@ -26,6 +26,7 @@
 #include <QSize>
 #include <QRect>
 #include <QSettings>
+#include <QLocale>
 
 #include "UtilsLib.h"
 
@@ -168,6 +169,20 @@ public:
     UTILS_API void setWindowGeometry(const WindowGeometry windowGeometry);
 
     UTILS_API static QSize getDefaultWindowSize();
+
+    UTILS_API QLocale getLocale() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setLocale(const QLocale &locale);
+
+    UTILS_API bool isSystemLocaleEnabled() const;
+
+    /*!
+     * \sa #changed()
+     */
+    UTILS_API void setSystemLocaleEnaled(bool enable);
 
 public slots:
     /*!

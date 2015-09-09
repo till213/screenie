@@ -27,6 +27,7 @@
 #include <QStandardPaths>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QLocale>
 
 #include "Version.h"
 #include "Settings.h"
@@ -47,6 +48,8 @@ public:
     static const bool DefaultFullScreen;
     static const QRect DefaultMainWindowPosition;
     static const QSize DefaultMainWindowSize;
+    static const QLocale DefaultLocale;
+    static const bool DefaultSystemLocaleEnabled;
 
     Version version;
     QSize maximumImagePointSize;
@@ -60,6 +63,9 @@ public:
     Settings::EditRenderQuality editRenderQuality;
     bool toolBarVisible;
     bool sidePanelVisible;
+
+    QLocale locale;
+    bool systemLocaleEnabled;
 
     QSettings settings;
 
@@ -86,6 +92,8 @@ const Settings::EditRenderQuality SettingsPrivate::DefaultEditRenderQuality = Se
 const bool SettingsPrivate::DefaultFullScreen = false;
 const QSize SettingsPrivate::DefaultMainWindowSize = QSize(800, 600);
 const QRect SettingsPrivate::DefaultMainWindowPosition = QRect();
+const QLocale SettingsPrivate::DefaultLocale = QLocale::system();
+const bool SettingsPrivate::DefaultSystemLocaleEnabled = true;
 
 // public
 
@@ -268,6 +276,35 @@ void Settings::setWindowGeometry(const WindowGeometry windowGeometry)
     d->settings.endGroup();
 }
 
+QLocale Settings::getLocale() const
+{
+    return d->locale;
+}
+
+void Settings::setLocale(const QLocale &locale)
+{
+    if (d->locale != locale) {
+        d->locale = locale;
+        emit changed();
+    }
+}
+
+bool Settings::isSystemLocaleEnabled() const
+{
+    return d->systemLocaleEnabled;
+}
+
+void Settings::setSystemLocaleEnaled(bool enable)
+{
+    if (d->systemLocaleEnabled != enable) {
+        d->systemLocaleEnabled = enable;
+        if (d->systemLocaleEnabled) {
+            d->locale = QLocale::system();
+        }
+        emit changed();
+    }
+}
+
 QSize Settings::getDefaultWindowSize()
 {
     return SettingsPrivate::DefaultMainWindowSize;
@@ -298,6 +335,12 @@ void Settings::store()
             d->settings.setValue("DistanceSensitivity", d->distanceGestureSensitivity);
         }
         d->settings.endGroup();
+    }
+    d->settings.endGroup();
+    d->settings.beginGroup("i18n");
+    {
+        d->settings.setValue("Locale", d->locale);
+        d->settings.setValue("SystemLocaleEnabled", d->systemLocaleEnabled);
     }
     d->settings.endGroup();
 }
@@ -335,6 +378,12 @@ void Settings::restore()
             d->distanceGestureSensitivity = d->settings.value("DistanceSensitivity", SettingsPrivate::DefaultDistanceGestureSensitivity).toReal();
         }
         d->settings.endGroup();
+    }
+    d->settings.endGroup();
+    d->settings.beginGroup("i18n");
+    {
+        d->locale = d->settings.value("Locale", SettingsPrivate::DefaultLocale).toLocale();
+        d->systemLocaleEnabled = d->settings.value("SystemLocaleEnabled", SettingsPrivate::DefaultSystemLocaleEnabled).toBool();
     }
     d->settings.endGroup();
 }
