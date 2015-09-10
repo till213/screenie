@@ -287,15 +287,16 @@
     </message>
     <message>
         <source>&amp;Open ...</source>
-        <translation>&amp;Öffnen</translation>
+        <translation>&amp;Öffnen ...
+</translation>
     </message>
     <message>
         <source>Save &amp;As ...</source>
-        <translation>Speichern &amp;unter</translation>
+        <translation>Speichern &amp;unter ...</translation>
     </message>
     <message>
         <source>&amp;Export Image ...</source>
-        <translation>Bild &amp;exportieren</translation>
+        <translation>Bild &amp;exportieren ...</translation>
     </message>
     <message>
         <source>Export Image ...</source>
