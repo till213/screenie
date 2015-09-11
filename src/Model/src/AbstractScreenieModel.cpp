@@ -19,10 +19,12 @@
  */
 
 #include <cmath>
+#include <vector>
 
 #include <QStringList>
 #include <QPointF>
 #include <QImage>
+#include <QCoreApplication>
 
 #include "../../Utils/src/Settings.h"
 #include "SceneLimits.h"
@@ -63,14 +65,14 @@ public:
     bool selected;
 
     static const qreal Epsilon;
-    static const QStringList ReflectionModeItems;
+    static const std::vector<char const *> ReflectionModeItems;
 };
 
 const qreal AbstractScreenieModelPrivate::Epsilon = 0.001;
-const QStringList AbstractScreenieModelPrivate::ReflectionModeItems = {QT_TRANSLATE_NOOP("AbstractScreenieModel", "None"),
-                                                                       QT_TRANSLATE_NOOP("AbstractScreenieModel", "Opaque"),
-                                                                       QT_TRANSLATE_NOOP("AbstractScreenieModel", "Transparent")
-                                                                      };
+const std::vector<char const *> AbstractScreenieModelPrivate::ReflectionModeItems = {QT_TRANSLATE_NOOP("AbstractScreenieModel", "None"),
+                                                                   QT_TRANSLATE_NOOP("AbstractScreenieModel", "Opaque"),
+                                                                   QT_TRANSLATE_NOOP("AbstractScreenieModel", "Transparent")
+                                                                  };
 
 // public
 
@@ -294,5 +296,9 @@ QImage AbstractScreenieModel::fitToMaximumSize(const QImage &image) const
 
 QStringList AbstractScreenieModel::getReflectionModeItems()
 {
-    return AbstractScreenieModelPrivate::ReflectionModeItems;
+    QStringList result;
+    for (auto &&string : AbstractScreenieModelPrivate::ReflectionModeItems) {
+        result.append(QCoreApplication::instance()->translate("AbstractScreenieModel", string));
+    }
+    return result;
 }

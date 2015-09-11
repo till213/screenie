@@ -292,7 +292,7 @@ void MainWindow::initialiseUi()
         break;
 
     }
-    ui->reflectionModeComboBox->addItems(AbstractScreenieModel::getReflectionModeItems());
+    ui->reflectionModeComboBox->addItems( AbstractScreenieModel::getReflectionModeItems());
     ui->reflectionModeComboBox->setCurrentIndex(index);
 
     // View menu
