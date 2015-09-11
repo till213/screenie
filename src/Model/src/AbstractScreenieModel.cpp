@@ -70,9 +70,9 @@ public:
 
 const qreal AbstractScreenieModelPrivate::Epsilon = 0.001;
 const std::vector<char const *> AbstractScreenieModelPrivate::ReflectionModeItems = {QT_TRANSLATE_NOOP("AbstractScreenieModel", "None"),
-                                                                   QT_TRANSLATE_NOOP("AbstractScreenieModel", "Opaque"),
-                                                                   QT_TRANSLATE_NOOP("AbstractScreenieModel", "Transparent")
-                                                                  };
+                                                                                     QT_TRANSLATE_NOOP("AbstractScreenieModel", "Opaque"),
+                                                                                     QT_TRANSLATE_NOOP("AbstractScreenieModel", "Transparent")
+                                                                                    };
 
 // public
 
