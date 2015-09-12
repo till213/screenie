@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2014 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -78,7 +78,6 @@ private:
     Clipboard *m_clipboard;
     QAction *m_minimizeWindowsAction;
     QAction *m_maximizeWindowsAction;
-    bool m_isFullScreenPreviously;
     QString m_errorMessage;
 
     void frenchConnection();
@@ -157,6 +156,7 @@ private slots:
     void on_greenSpinBox_valueChanged(int value);
     void on_blueSpinBox_valueChanged(int value);
     void on_htmlBGColorLineEdit_editingFinished();
+    void on_colorPushButton_triggered();
 
     void updateUi();
     void updateRecentFileMenu();
