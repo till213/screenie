@@ -1002,7 +1002,7 @@ void MainWindow::on_htmlBGColorLineEdit_editingFinished()
     ui->htmlBGColorLineEdit->setPalette(palette);
 }
 
-void MainWindow::on_colorPushButton_triggered()
+void MainWindow::on_colorSelectorPushButton_clicked()
 {
     QColor initial = m_screenieScene->getBackgroundColor();
     QColor color = QColorDialog::getColor(initial, this);

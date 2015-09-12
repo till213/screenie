@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>Add Template</source>
-        <translation>Vorlage hinzufü¨gen</translation>
+        <translation>Vorlage hinzufügen</translation>
     </message>
     <message>
         <source>Select &amp;All</source>
@@ -442,12 +442,24 @@
         <source>Could not export image to file &quot;%1&quot;!</source>
         <translation>Konnte das Bild nicht nach Datei &quot;%1&quot; exportieren!</translation>
     </message>
+    <message>
+        <source>C</source>
+        <translation>F</translation>
+    </message>
+    <message>
+        <source>Choose Colour</source>
+        <translation type="vanished">Farbe wählen</translation>
+    </message>
+    <message>
+        <source>Choose colour</source>
+        <translation>Farbe wählen</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Template Properties</source>
-        <translation>Vorlageeigenschaften</translation>
+        <translation>Vorlageneigenschaften</translation>
     </message>
     <message>
         <source>Image Properties</source>

@@ -156,7 +156,7 @@ private slots:
     void on_greenSpinBox_valueChanged(int value);
     void on_blueSpinBox_valueChanged(int value);
     void on_htmlBGColorLineEdit_editingFinished();
-    void on_colorPushButton_triggered();
+    void on_colorSelectorPushButton_clicked();
 
     void updateUi();
     void updateRecentFileMenu();
