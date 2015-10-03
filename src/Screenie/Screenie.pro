@@ -52,7 +52,7 @@ win32 {
 
 OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt \
                $$PWD/../Translation.pro \
-               $$PWD/../i18n/screenie_de.ts \
+               $$PWD/../translations/screenie_de.ts \
                $$PWD/res/Screenie.rc \
                $$PWD/res/ApplicationIcon.ico \
                $$PWD/res/SceneIcon.ico \

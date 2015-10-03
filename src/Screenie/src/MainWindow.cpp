@@ -1,7 +1,7 @@
 /* This file is part of the Screenie project.
    Screenie is a fancy screenshot composer.
 
-   Copyright (C) 2011 Oliver Knoll <till.oliver.knoll@gmail.com>
+   Copyright (C) 2014 Oliver Knoll <till.oliver.knoll@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include <QMenu>
 #include <QWidget>
 #include <QColor>
+#include <QColorDialog>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
@@ -81,8 +82,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_ignoreUpdateSignals(false),
-    m_isFullScreenPreviously(false)
+    m_ignoreUpdateSignals(false)
 {
     ui->setupUi(this);
     m_recentFileMenu = new RecentFileMenu(this);
@@ -934,7 +934,7 @@ void MainWindow::on_reflectionModeComboBox_currentIndexChanged(int index)
 void MainWindow::on_backgroundColorGroupBox_toggled(bool enable)
 {
     m_ignoreUpdateSignals = true;
-    this->m_screenieScene->setBackgroundEnabled(enable);
+    m_screenieScene->setBackgroundEnabled(enable);
     m_ignoreUpdateSignals = false;
 }
 
@@ -1000,6 +1000,15 @@ void MainWindow::on_htmlBGColorLineEdit_editingFinished()
         palette.setColor(ui->htmlBGColorLineEdit->foregroundRole(), Qt::red);
     }
     ui->htmlBGColorLineEdit->setPalette(palette);
+}
+
+void MainWindow::on_colorSelectorPushButton_clicked()
+{
+    QColor initial = m_screenieScene->getBackgroundColor();
+    QColor color = QColorDialog::getColor(initial, this);
+    if (color.isValid()) {
+        m_screenieControl->setBackgroundColor(color);
+    }
 }
 
 void MainWindow::updateUi()
