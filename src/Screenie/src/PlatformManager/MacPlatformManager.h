@@ -45,7 +45,7 @@ public:
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 
 protected:
-    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
+    virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi) override;
 
 private:
     void initialiseToolBar(Ui::MainWindow &mainWindowUi);
