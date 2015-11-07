@@ -1,11 +1,11 @@
 macx {
   include(Distribution_Mac.pri)
-}
-win32 {
+} else:win32 {
   include(Distribution_Windows.pri)
-}
-linux {
+} else:linux {
   include(Distribution_Linux.pri)
+} else {
+  include(Distribution_Default.pri)
 }
 
 installer.depends = distribution
@@ -15,7 +15,7 @@ i18n.commands += test -d $${DIST_DIR} && rm -rf $${DIST_DIR};
 i18n.commands += mkdir dist;
 i18n.commands += mkdir $${DIST_DIR}/translations;
 i18n.commands += lrelease \"$$PWD/src/translations/screenie_de.ts\" -qm $${DIST_DIR}/translations/screenie_de.qm;
-!linux {
+win32|macx {
   i18n.commands += test -f $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm && cp $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm $${DIST_DIR}/translations/qtbase_de.qm;
 }
 i18n.depends = all

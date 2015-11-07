@@ -1,8 +1,8 @@
-!linux {
-  APP_NAME = Screenie
-} else {
-  # Prefer lower case app name on Linux
+linux|freebsd {
+  # Prefer lower case app name on Linux and FreeBSD
   APP_NAME = screenie
+} else {  
+  APP_NAME = Screenie
 }
 
 LANGUAGE = C++
@@ -56,7 +56,7 @@ CONFIG(debug, debug|release) {
     INSTALLS += target
 }
 
-linux {
+linux|freebsd {
     # Pick up libraries in the same path as the executable
     QMAKE_LFLAGS += -Wl,--enable-new-dtags,--rpath=\'\$\$ORIGIN\'
     #QMAKE_RPATHDIR = =\'\$\$ORIGIN\'
