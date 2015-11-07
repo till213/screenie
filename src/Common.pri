@@ -32,28 +32,19 @@ DEFINES += QT_NO_COMPAT
 
 CONFIG(debug, debug|release) {
     # For a reason yet to figure out make on FreeBSD does not seem to like
-    # relative paths - even the mere existence of a subfolder called "obj"
-    # makes it claim that "source file not found"
-    !freebsd {
-        OBJECTS_DIR    = obj/debug
-    }
+    # subfolders named "obj": even the mere existence of a subfolder called "obj"
+    # makes it claim that "source file not found" (even without specifying any
+    # OBJECTS_DIR)
+    OBJECTS_DIR    = objects/debug
     MOC_DIR        = GeneratedFiles/debug
     UI_DIR         = GeneratedFiles/debug
     INCLUDEPATH   += GeneratedFiles/debug
     DEFINES += DEBUG
 } else {
-    !freebsd {
-        OBJECTS_DIR    = obj/release
-    }
+    OBJECTS_DIR    = objects/release
     MOC_DIR        = GeneratedFiles/release
     UI_DIR         = GeneratedFiles/release
     INCLUDEPATH   += GeneratedFiles/release
-}
-
-
-!macx {
-    target.path = $$PWD/../dist
-    INSTALLS += target
 }
 
 linux|freebsd {
