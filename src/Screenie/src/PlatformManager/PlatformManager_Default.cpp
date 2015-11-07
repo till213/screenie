@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QLibraryInfo>
+#include <QCoreApplication>
 
 #include "PlatformManager.h"
 

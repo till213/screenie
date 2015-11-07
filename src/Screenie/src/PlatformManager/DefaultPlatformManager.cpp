@@ -54,27 +54,6 @@ void DefaultPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow 
     mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F11));
 }
 
-QString DefaultPlatformManager::getTranslationsPath(Translation translation) const
-{
-    QString translationPath;
-
-    switch(translation) {
-    case Translation::Qt:
-        translationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-        break;
-    case Translation::Application:
-        translationPath = QCoreApplication::applicationDirPath() + "/translations";
-        break;
-    default:
-#ifdef DEBUG
-        qDebug("getTranslationsPath: Unsupported Translation Path option: %d", translation);
-#endif
-        break;
-    }
-
-    return translationPath;
-}
-
 // protected
 
 void DefaultPlatformManager::initialisePlatformIcons(Ui::MainWindow &mainWindowUi)

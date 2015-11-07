@@ -42,8 +42,6 @@ macx {
    OTHER_FILES += $$PWD/Info.plist \
                   $$PWD/Screenie.sdef \
                   $$PWD/Screenie-Entitlements.plist
-    # http://qihome.org/qiliang/2013/05/28/how-to-embedded-a-info-plist-into-arbitrary-binaries/
-    QMAKE_LFLAGS += -sectcreate __TEXT __info_plist $$PWD/Info.plist
 }
 
 win32 {
