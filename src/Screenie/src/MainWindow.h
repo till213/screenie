@@ -72,7 +72,7 @@ private:
     RecentFileMenu *m_recentFileMenu;
     PlatformManager *m_platformManager;
     ScreenieGraphicsScene *m_screenieGraphicsScene;
-    ScreenieScene *m_screenieScene;
+   // ScreenieScene *m_screenieScene;
     ScreenieControl *m_screenieControl;
     bool m_ignoreUpdateSignals;
     Clipboard *m_clipboard;

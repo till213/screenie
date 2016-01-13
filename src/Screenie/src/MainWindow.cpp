@@ -57,8 +57,6 @@
 #include "../../Model/src/ScreenieModelInterface.h"
 #include "../../Model/src/AbstractScreenieModel.h"
 #include "../../Model/src/ScreenieTemplateModel.h"
-#include "../../Model/src/Dao/ScreenieSceneDao.h"
-#include "../../Model/src/Dao/Xml/XmlScreenieSceneDao.h"
 #include "../../Kernel/src/ExportImage.h"
 #include "../../Kernel/src/Clipboard/Clipboard.h"
 #include "../../Kernel/src/ScreenieControl.h"
@@ -70,9 +68,6 @@
 #include "../../Kernel/src/PropertyDialogFactory.h"
 #include "PlatformManager/PlatformManagerFactory.h"
 #include "PlatformManager/PlatformManager.h"
-#ifdef Q_OS_MAC
-#include "PlatformManager/MacPlatformManager.h"
-#endif
 #include "RecentFileMenu.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -110,7 +105,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete m_screenieScene;
     delete m_screenieControl;
     delete m_platformManager;
     delete ui;    
@@ -150,7 +144,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     DocumentManager &documentManager = DocumentManager::getInstance();
     SecurityToken *securityToken;
-    if (m_screenieScene->isModified()) {
+    if (m_screenieControl->isModified()) {
         DocumentInfo::SaveStrategy saveStrategy = documentManager.getSaveStrategy(*this);
         switch (saveStrategy) {
         case DocumentInfo::SaveStrategy::Save:
@@ -196,7 +190,7 @@ void MainWindow::frenchConnection()
 {
     connect(m_screenieGraphicsScene, SIGNAL(selectionChanged()),
             this, SLOT(updateUi()));
-    connect(m_screenieScene, SIGNAL(changed()),
+    connect(m_screenieControl, SIGNAL(changed()),
             this, SLOT(updateUi()));
     connect(m_clipboard, SIGNAL(dataChanged()),
             this, SLOT(updateUi()));

@@ -28,6 +28,7 @@
 #include <QMimeData>
 #include <QUrl>
 #include <QDir>
+#include <QFile>
 #include <QColor>
 #include <QGraphicsView>
 #include <QGraphicsItem>
@@ -39,11 +40,14 @@
 
 #include "../../Utils/src/PaintTools.h"
 #include "../../Utils/src/Settings.h"
+#include "../../Utils/src/SecurityToken.h"
 #include "../../Model/src/ScreenieScene.h"
 #include "../../Model/src/ScreenieModelInterface.h"
 #include "../../Model/src/ScreenieFilePathModel.h"
 #include "../../Model/src/ScreenieImageModel.h"
 #include "../../Model/src/ScreenieTemplateModel.h"
+#include "../../Model/src/Dao/ScreenieSceneDao.h"
+#include "../../Model/src/Dao/Xml/XmlScreenieSceneDao.h"
 #include "TemplateOrganizer.h"
 #include "ScreenieGraphicsScene.h"
 #include "ScreeniePixmapItem.h"
@@ -62,17 +66,18 @@ namespace
 class ScreenieControlPrivate
 {
 public:
-    ScreenieControlPrivate(ScreenieScene &theScreenieScene, ScreenieGraphicsScene &theScreenieGraphicsScene)
-        : screenieScene(theScreenieScene),
+    ScreenieControlPrivate(ScreenieGraphicsScene &theScreenieGraphicsScene)
+        : screenieScene(new ScreenieScene),
           screenieGraphicsScene(theScreenieGraphicsScene),
-          templateOrganizer(theScreenieScene)
+          templateOrganizer(*screenieScene)
     {}
 
     ~ScreenieControlPrivate()
     {
+        delete screenieScene;
     }
 
-    ScreenieScene &screenieScene;
+    ScreenieScene *screenieScene;
     ScreenieGraphicsScene &screenieGraphicsScene;
     QBrush checkerBoardBrush;
     QTimer qualityTimer;
@@ -82,9 +87,9 @@ public:
 
 // public
 
-ScreenieControl::ScreenieControl(ScreenieScene &screenieScene, ScreenieGraphicsScene &screenieGraphicsScene)
+ScreenieControl::ScreenieControl(ScreenieGraphicsScene &screenieGraphicsScene)
     : QObject(),
-      d(new ScreenieControlPrivate(screenieScene, screenieGraphicsScene))
+      d(new ScreenieControlPrivate(screenieGraphicsScene))
 {
     d->qualityTimer.setSingleShot(true);
     d->qualityTimer.setInterval(300);
@@ -149,7 +154,7 @@ void ScreenieControl::updateScene()
 {
    d->screenieGraphicsScene.clear();
    handleBackgroundChanged();
-   for (ScreenieModelInterface *screenieModel : d->screenieScene.getModels()) {
+   for (ScreenieModelInterface *screenieModel : d->screenieScene->getModels()) {
        handleModelAdded(*screenieModel);
    }
 }
@@ -166,9 +171,52 @@ void ScreenieControl::updateModel(const QMimeData *mimeData, ScreenieModelInterf
     }
 }
 
+bool ScreenieControl::isModified() const
+{
+    return d->screenieScene->isModified();
+}
+
+bool ScreenieControl::read(const QString &filePath, SecurityToken *securityToken)
+{
+    bool result;
+    QFile file(filePath);
+    if (securityToken != nullptr) {
+        // start access to recent file
+        securityToken->retain();
+    }
+    ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
+    ScreenieScene *screenieScene = screenieSceneDao->read();
+    if (screenieScene != nullptr) {
+        newScene(*screenieScene);
+        result = true;
+    } else {
+        result = false;
+        if (securityToken != nullptr) {
+            // stop access to failed recent file
+            securityToken->release();
+            securityToken = nullptr;
+        }
+    }
+    return result;
+}
+
+bool ScreenieControl::write(const QString &filePath)
+{
+    bool result;
+    QFile file(filePath);
+    ScreenieSceneDao *screenieSceneDao = new XmlScreenieSceneDao(file);
+    result = screenieSceneDao->write(*d->screenieScene);
+
+    if (result) {
+        d->screenieScene->setModified(false);
+    }
+
+    return result;
+}
+
 ScreenieScene &ScreenieControl::getScreenieScene() const
 {
-    return d->screenieScene;
+    return *d->screenieScene;
 }
 
 ScreenieGraphicsScene &ScreenieControl::getScreenieGraphicsScene() const
@@ -193,7 +241,7 @@ void ScreenieControl::addImages(QStringList filePaths, QPointF centerPosition)
         QPointF itemPosition = SceneGeometry::calculateItemPosition(*screenieModel, position);
         position += QPointF(20.0, 20.0);
         screenieModel->setPosition(itemPosition);
-        d->screenieScene.addModel(screenieModel);
+        d->screenieScene->addModel(screenieModel);
     }
 }
 
@@ -213,7 +261,7 @@ void ScreenieControl::addImages(QList<QImage> images, QPointF centerPosition)
         QPointF itemPosition = SceneGeometry::calculateItemPosition(*screenieModel, position);
         position += QPointF(20.0, 20.0);
         screenieModel->setPosition(itemPosition);
-        d->screenieScene.addModel(screenieModel);
+        d->screenieScene->addModel(screenieModel);
     }
 }
 
@@ -223,14 +271,14 @@ void ScreenieControl::addTemplate(QPointF centerPosition)
     ScreenieTemplateModel *screenieModel = new ScreenieTemplateModel(size);
     applyDefaultValues(*screenieModel);
     screenieModel->setPosition(centerPosition);
-    d->screenieScene.addModel(screenieModel);
+    d->screenieScene->addModel(screenieModel);
 }
 
 void ScreenieControl::removeAll()
 {
     QList<ScreenieModelInterface *> screenieModels = getSelectedScreenieModels();
     for (ScreenieModelInterface *screenieModel : screenieModels) {
-        d->screenieScene.removeModel(screenieModel);
+        d->screenieScene->removeModel(screenieModel);
     }
 }
 
@@ -362,33 +410,33 @@ void ScreenieControl::setReflectionMode(ScreenieModelInterface::ReflectionMode r
 
 void ScreenieControl::setBackgroundEnabled(bool enable)
 {
-    d->screenieScene.setBackgroundEnabled(enable);
+    d->screenieScene->setBackgroundEnabled(enable);
 }
 
 void ScreenieControl::setBackgroundColor(QColor color)
 {
-    d->screenieScene.setBackgroundColor(color);
+    d->screenieScene->setBackgroundColor(color);
 }
 
 void ScreenieControl::setRedBackgroundComponent(int red)
 {
-    QColor backgroundColor = d->screenieScene.getBackgroundColor();
+    QColor backgroundColor = d->screenieScene->getBackgroundColor();
     backgroundColor.setRed(red);
-    d->screenieScene.setBackgroundColor(backgroundColor);
+    d->screenieScene->setBackgroundColor(backgroundColor);
 }
 
 void ScreenieControl::setGreenBackgroundComponent(int green)
 {
-    QColor backgroundColor = d->screenieScene.getBackgroundColor();
+    QColor backgroundColor = d->screenieScene->getBackgroundColor();
     backgroundColor.setGreen(green);
-    d->screenieScene.setBackgroundColor(backgroundColor);
+    d->screenieScene->setBackgroundColor(backgroundColor);
 }
 
 void ScreenieControl::setBlueBackgroundComponent(int blue)
 {
-    QColor backgroundColor = d->screenieScene.getBackgroundColor();
+    QColor backgroundColor = d->screenieScene->getBackgroundColor();
     backgroundColor.setBlue(blue);
-    d->screenieScene.setBackgroundColor(backgroundColor);
+    d->screenieScene->setBackgroundColor(backgroundColor);
 }
 
 void ScreenieControl::setFilePath(const QString &filePath, ScreenieFilePathModel *screenieFilePathModel)
@@ -480,14 +528,17 @@ void ScreenieControl::setRenderQuality(RenderQuality renderQuality)
 
 void ScreenieControl::frenchConnection()
 {
-    connect(&d->screenieScene, SIGNAL(distanceChanged()),
+    connect(d->screenieScene, SIGNAL(distanceChanged()),
             this, SLOT(handleDistanceChanged()));
-    connect(&d->screenieScene, SIGNAL(modelAdded(ScreenieModelInterface &)),
+    connect(d->screenieScene, SIGNAL(modelAdded(ScreenieModelInterface &)),
             this, SLOT(handleModelAdded(ScreenieModelInterface &)));
-    connect(&d->screenieScene, SIGNAL(modelRemoved(ScreenieModelInterface &)),
+    connect(d->screenieScene, SIGNAL(modelRemoved(ScreenieModelInterface &)),
             this, SLOT(handleModelRemoved(ScreenieModelInterface &)));
-    connect(&d->screenieScene, SIGNAL(backgroundChanged()),
+    connect(d->screenieScene, SIGNAL(backgroundChanged()),
             this, SLOT(handleBackgroundChanged()));
+    connect(d->screenieScene, SIGNAL(changed()),
+            this, SIGNAL(changed()));
+
     connect(&d->screenieGraphicsScene, SIGNAL(imagesDropped(QList<QImage>, QPointF)),
             this, SLOT(handleImageDrop(QList<QImage>, QPointF)));
     connect(&d->screenieGraphicsScene, SIGNAL(filePathsDropped(QStringList, QPointF)),
@@ -498,6 +549,7 @@ void ScreenieControl::frenchConnection()
             this, SLOT(addDistance(qreal)));
     connect(&d->screenieGraphicsScene, SIGNAL(translate(qreal, qreal)),
             this, SLOT(translate(qreal, qreal)));
+
     connect(&d->qualityTimer, SIGNAL(timeout()),
             this, SLOT(restoreRenderQuality()));
 }
@@ -566,8 +618,8 @@ void ScreenieControl::updateImageModel(const QImage &image, ScreenieModelInterfa
             QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), actualImage.size());
             screenieImageModel->convert(screenieModel);
             screenieImageModel->setPosition(itemPosition);
-            d->screenieScene.removeModel(&screenieModel);
-            d->screenieScene.addModel(screenieImageModel);
+            d->screenieScene->removeModel(&screenieModel);
+            d->screenieScene->addModel(screenieImageModel);
         }
     }
 }
@@ -594,8 +646,8 @@ void ScreenieControl::updateFilePathModel(const QString &filePath, ScreenieModel
         QPointF itemPosition = SceneGeometry::calculateItemPosition(screenieModel.getPosition(), screenieModel.getSize(), size);
         screenieFilePathModel->convert(screenieModel);
         screenieFilePathModel->setPosition(itemPosition);
-        d->screenieScene.removeModel(&screenieModel);
-        d->screenieScene.addModel(screenieFilePathModel);
+        d->screenieScene->removeModel(&screenieModel);
+        d->screenieScene->addModel(screenieFilePathModel);
     }
 }
 
@@ -637,7 +689,7 @@ QList<ScreenieTemplateModel *> ScreenieControl::getEditableTemplateModels(Screen
 void ScreenieControl::handleFilePathsDrop(QStringList filePaths, QPointF centerPosition)
 {
     ScreenieTemplateModel *templateModel;
-    if (!d->screenieScene.hasTemplates()) {
+    if (!d->screenieScene->hasTemplates()) {
         addImages(filePaths, centerPosition);
     } else {
         QList<ScreenieTemplateModel *> templateModels = d->templateOrganizer.getOrderedTemplates();
@@ -657,7 +709,7 @@ void ScreenieControl::handleFilePathsDrop(QStringList filePaths, QPointF centerP
 void ScreenieControl::handleImageDrop(QList<QImage> images, QPointF centerPosition)
 {
     ScreenieTemplateModel *templateModel;
-    if (!d->screenieScene.hasTemplates()) {
+    if (!d->screenieScene->hasTemplates()) {
         addImages(images, centerPosition);
     } else {
         QList<ScreenieTemplateModel *> templateModels = d->templateOrganizer.getOrderedTemplates();
@@ -692,7 +744,7 @@ void ScreenieControl::handleDistanceChanged()
 
 void ScreenieControl::handleModelAdded(ScreenieModelInterface &screenieModel)
 {
-    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, d->screenieScene);
+    ScreeniePixmapItem *screeniePixmapItem = new ScreeniePixmapItem(screenieModel, *this, *d->screenieScene);
     screeniePixmapItem->setPos(screenieModel.getPosition());
     d->screenieGraphicsScene.clearSelection();
     screeniePixmapItem->setSelected(true);
@@ -717,8 +769,8 @@ void ScreenieControl::handleModelRemoved(ScreenieModelInterface &screenieModel)
 void ScreenieControl::handleBackgroundChanged()
 {
     QBrush backgroundBrush;
-    if (d->screenieScene.isBackgroundEnabled()) {
-        QColor backgroundColor = d->screenieScene.getBackgroundColor();
+    if (d->screenieScene->isBackgroundEnabled()) {
+        QColor backgroundColor = d->screenieScene->getBackgroundColor();
         backgroundBrush = QBrush(backgroundColor);
     } else {
         if (d->checkerBoardBrush.style() == Qt::NoBrush) {

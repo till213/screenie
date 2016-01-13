@@ -44,6 +44,7 @@ class ScreenieFilePathModel;
 class ScreenieTemplateModel;
 class Reflection;
 class ScreenieControlPrivate;
+class SecurityToken;
 
 #include "../../Utils/src/SizeFitter.h"
 #include "../../Model/src/DefaultScreenieModel.h"
@@ -65,7 +66,7 @@ public:
         Maximum /*!< Antialiasing enabled, smooth pixmap transformation */
     };
 
-    KERNEL_API ScreenieControl(ScreenieScene &screenieScene, ScreenieGraphicsScene &screenieGraphicsScene);
+    KERNEL_API ScreenieControl(ScreenieGraphicsScene &screenieGraphicsScene);
     KERNEL_API virtual ~ScreenieControl();
 
     KERNEL_API QList<ScreenieModelInterface *> getSelectedScreenieModels() const;
@@ -79,6 +80,11 @@ public:
      */
     KERNEL_API void updateScene();
     KERNEL_API void updateModel(const QMimeData *mimeData, ScreenieModelInterface &screenieModel);
+
+    KERNEL_API bool isModified() const;
+
+    KERNEL_API bool read(const QString &filePath, SecurityToken *securityToken);
+    KERNEL_API bool write(const QString &filePath);
 
     ScreenieScene &getScreenieScene() const;
     ScreenieGraphicsScene &getScreenieGraphicsScene() const;
@@ -123,6 +129,9 @@ public slots:
 
     KERNEL_API void convertItemsToTemplate(ScreenieScene &screenieScene);
     KERNEL_API void setRenderQuality(RenderQuality renderQuality);
+
+signals:
+    KERNEL_API void changed();
 
 private:
     ScreenieControlPrivate *d;
