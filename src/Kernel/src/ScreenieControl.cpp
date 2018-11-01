@@ -89,6 +89,7 @@ ScreenieControl::ScreenieControl(ScreenieScene &screenieScene, ScreenieGraphicsS
     d->qualityTimer.setSingleShot(true);
     d->qualityTimer.setInterval(300);
     frenchConnection();
+    handleBackgroundChanged();
 }
 
 ScreenieControl::~ScreenieControl()

@@ -26,8 +26,8 @@
 class SceneDefaults
 {
 public:
-    static QColor BackgroundColor;
-    static bool BackgroundEnabled;
+    static const bool BackgroundEnabled;
+    static QColor backgroundColor;
 };
 
 #endif // SCENEDEFAULTS_H

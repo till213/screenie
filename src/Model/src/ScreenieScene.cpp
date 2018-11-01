@@ -30,8 +30,8 @@ class ScreenieScenePrivate
 {
 public:
     ScreenieScenePrivate()
-        : backgroundEnabled(true),
-          backgroundColor(QColor(255, 255, 255)),
+        : backgroundEnabled(SceneDefaults::BackgroundEnabled),
+          backgroundColor(SceneDefaults::backgroundColor),
           modified(false),
           isTemplate(false)
     {}
@@ -205,7 +205,7 @@ bool ScreenieScene::isDefault() const
 {
     bool result;
     result = d->screenieModels.count() == 0 &&
-             d->backgroundColor == SceneDefaults::BackgroundColor &&
+             d->backgroundColor == SceneDefaults::backgroundColor &&
              d->backgroundEnabled == SceneDefaults::BackgroundEnabled;
     return result;
 }

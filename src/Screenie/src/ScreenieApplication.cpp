@@ -18,6 +18,7 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QTranslator>
 #include <QString>
 #include <QLocale>
@@ -26,9 +27,11 @@
 #include <QIcon>
 #include <QEvent>
 #include <QFileOpenEvent>
+#include <QPalette>
 
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/RecentFile.h"
+#include "../../Model/src/SceneDefaults.h"
 #include "../../Kernel/src/DocumentManager.h"
 #include "PlatformManager/PlatformManagerFactory.h"
 #include "PlatformManager/PlatformManager.h"
@@ -42,6 +45,9 @@ ScreenieApplication::ScreenieApplication(int &argc, char **argv)
 {
     frenchConnection();
     initialiseTranslations();
+
+    SceneDefaults::backgroundColor = QApplication::palette().color(QPalette::Background);
+
 }
 
 void ScreenieApplication::show()

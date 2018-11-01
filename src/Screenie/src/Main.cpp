@@ -21,6 +21,7 @@
 #include <QCoreApplication>
 #include <QTranslator>
 #include <QLocale>
+
 #ifdef Q_OS_WIN
 #include <QSettings>
 #endif
