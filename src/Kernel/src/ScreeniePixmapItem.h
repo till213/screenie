@@ -69,7 +69,6 @@ protected:
     virtual void dropEvent(QGraphicsSceneDragDropEvent *event) override;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
-    virtual QRectF boundingRect() const override;
 
 private:
     ScreeniePixmapItemPrivate *d;

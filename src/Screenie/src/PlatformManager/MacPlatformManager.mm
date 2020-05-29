@@ -36,14 +36,6 @@
 
 // public
 
-void MacPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
-{
-    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
-    mainWindow.installEventFilter(this);
-    mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
-    initialiseToolBar(mainWindowUi);
-}
-
 bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
 {
     bool result;
@@ -62,6 +54,14 @@ bool MacPlatformManager::eventFilter(QObject *object, QEvent *event)
         result = QObject::eventFilter(object, event);
     }
     return result;
+}
+
+void MacPlatformManager::initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi)
+{
+    AbstractPlatformManager::initialise(mainWindow, mainWindowUi);
+    mainWindow.installEventFilter(this);
+    mainWindowUi.toggleFullScreenAction->setShortcut(QKeySequence(Qt::Key_F + Qt::CTRL + Qt::META));
+    initialiseToolBar(mainWindowUi);
 }
 
 // protected

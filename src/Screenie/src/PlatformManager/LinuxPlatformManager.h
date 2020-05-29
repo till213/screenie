@@ -21,6 +21,8 @@
 #ifndef LINUXPLATFORMMANAGER_H
 #define LINUXPLATFORMMANAGER_H
 
+#include <QString>
+
 class QMainWindow;
 
 #include "AbstractPlatformManager.h"
@@ -37,8 +39,8 @@ public:
     LinuxPlatformManager();
     virtual ~LinuxPlatformManager();
 
-    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi);
-
+    // Interface PlatformManager
+    virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 protected:
     virtual void initialisePlatformIcons(Ui::MainWindow &mainWindowUi);
 

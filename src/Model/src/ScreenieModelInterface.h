@@ -34,7 +34,7 @@ class QString;
  *
  * \sa SceneLimits
  */
-class ScreenieModelInterface : public QObject
+class MODEL_API ScreenieModelInterface : public QObject
 {
     Q_OBJECT
 

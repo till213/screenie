@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="9C717168-DCA4-49F0-894F-2C5CEAF0A0C4" Name="Screenie" Language="1033" Version="1.0.0" Manufacturer="till-art.net" UpgradeCode="479C1D6F-20B5-4EBE-B97E-1157A9563348">
+    <Product Id="*" Name="Screenie" Language="1033" Version="1.0.0" Manufacturer="till-art.net" UpgradeCode="479C1D6F-20B5-4EBE-B97E-1157A9563348">
         <Package Description="Screenie - A Fancy Screenshot Composer" Comments="Screenie" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="CompanyFolder" Name="till-art.net">
                     <Directory Id="ScreenieFolder" Name="Screenie">
-                        <Component Id="icudt51.dll" DiskId="1" Guid="89E2D415-F1BE-45E7-BEC2-C9F6C8AB2512">
-                            <File Id="icudt51.dll" Name="icudt51.dll" Source="..\..\dist\icudt51.dll" />
-                        </Component>
-                        <Component Id="icuin51.dll" DiskId="1" Guid="F35F4733-A275-45CA-BCCC-F0CC05C372FE">
-                            <File Id="icuin51.dll" Name="icuin51.dll" Source="..\..\dist\icuin51.dll" />
-                        </Component>
-                        <Component Id="icuuc51.dll" DiskId="1" Guid="6EA52650-C53A-439C-AB9F-DFF0814452E3">
-                            <File Id="icuuc51.dll" Name="icuuc51.dll" Source="..\..\dist\icuuc51.dll" />
-                        </Component>
                         <Component Id="Kernel1.dll" DiskId="1" Guid="136F0F26-FEE0-49CE-A0AE-F15205543FF1">
                             <File Id="Kernel1.dll" Name="Kernel1.dll" Source="..\..\dist\Kernel1.dll" />
                         </Component>
@@ -47,6 +38,16 @@
                             <File Id="Screenie.exe" Name="Screenie.exe" Source="..\..\dist\Screenie.exe">
                             </File>
                             <Shortcut Id="ExeShortcut" Name="Screenie" Advertise="yes" Icon="StartMenuIcon.exe" IconIndex="0" Directory="ProgramMenuDir" />
+                            <ProgId Id='ScreenieModelFile' Description='Screenie Scene' Icon="Screenie.exe" IconIndex="1">
+                              <Extension Id='xsc' ContentType='application/xsc'>
+                                <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
+                              </Extension>
+                            </ProgId>
+                            <ProgId Id='ScreenieTemplateFile' Description='Screenie Template' Icon="Screenie.exe" IconIndex="2">
+                              <Extension Id='xst' ContentType='application/xst'>
+                                <Verb Id='open' Command='Open' TargetFile='Screenie.exe' Argument='"%1"' />
+                              </Extension>
+                            </ProgId>
                         </Component>
                         <Component Id="Utils1.dll" DiskId="1" Guid="E81CD282-936C-42C6-A272-7500B26E46B5">
                             <File Id="Utils1.dll" Name="Utils1.dll" Source="..\..\dist\Utils1.dll" />
@@ -58,9 +59,6 @@
                             <Component Id="qjpeg.dll" DiskId="1" Guid="6B724ACC-6D88-412E-ABB0-C436E16E1326">
                                 <File Id="qjpeg.dll" Name="qjpeg.dll" Source="..\..\dist\imageformats\qjpeg.dll" />
                             </Component>
-                            <Component Id="qtga.dll" DiskId="1" Guid="AE1CB769-2E65-4AF9-881D-A6CE58FB298D">
-                                <File Id="qtga.dll" Name="qtga.dll" Source="..\..\dist\imageformats\qtga.dll" />
-                            </Component>
                             <Component Id="qtiff.dll" DiskId="1" Guid="C6D6E372-EBD0-490D-BF6A-838F2DA48A5C">
                                 <File Id="qtiff.dll" Name="qtiff.dll" Source="..\..\dist\imageformats\qtiff.dll" />
                             </Component>
@@ -71,6 +69,14 @@
                         <Directory Id="platforms" Name="platforms">
                             <Component Id="qwindows.dll" DiskId="1" Guid="D96A43FD-0AE6-4223-AB06-6263EE179C89">
                                 <File Id="qwindows.dll" Name="qwindows.dll" Source="..\..\dist\platforms\qwindows.dll" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="translations" Name="translations">
+                            <Component Id="screenie_de.qm" DiskId="1" Guid="ED8889B7-434B-4217-987C-EEB6C0A89332">
+                                <File Id="screenie_de.qm" Name="screenie_de.qm" Source="..\..\dist\translations\screenie_de.qm" />
+                            </Component>
+                            <Component Id="qtbase_de.qm" DiskId="1" Guid="D281AEC9-589D-4C65-A45C-D48C24E4DD09">
+                                <File Id="qtbase_de.qm" Name="qtbase_de.qm" Source="..\..\dist\translations\qtbase_de.qm" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -87,9 +93,6 @@
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
-            <ComponentRef Id="icudt51.dll" />
-            <ComponentRef Id="icuin51.dll" />
-            <ComponentRef Id="icuuc51.dll" />
             <ComponentRef Id="Kernel1.dll" />
             <ComponentRef Id="libgcc_s_dw2_1.dll" />
             <ComponentRef Id="libstdc___6.dll" />
@@ -103,10 +106,11 @@
             <ComponentRef Id="Utils1.dll" />
             <ComponentRef Id="qgif.dll" />
             <ComponentRef Id="qjpeg.dll" />
-            <ComponentRef Id="qtga.dll" />
             <ComponentRef Id="qtiff.dll" />
             <ComponentRef Id="qwbmp.dll" />
             <ComponentRef Id="qwindows.dll" />
+            <ComponentRef Id="screenie_de.qm" />
+            <ComponentRef Id="qtbase_de.qm" />
             <ComponentRef Id="StartMenuShortcuts" />
         </Feature>
         <UI>
@@ -114,5 +118,6 @@
         <UIRef Id="WixUI_Minimal" />
         <Icon Id="StartMenuIcon.exe" SourceFile="..\..\dist\Screenie.exe" />
         <WixVariable Id="WixUILicenseRtf" Value="GPL3.rtf" />
+        <Property Id="ARPPRODUCTICON" Value="StartMenuIcon.exe" />
     </Product>
 </Wix>

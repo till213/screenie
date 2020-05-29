@@ -1,1 +1,3 @@
-IDI_ICON	ICON DISCARDABLE "ApplicationIcon.ico"
+IDI_ICON1	ICON DISCARDABLE "ApplicationIcon.ico"
+IDI_ICON2	ICON DISCARDABLE "SceneIcon.ico"
+IDI_ICON3	ICON DISCARDABLE "TemplateIcon.ico"

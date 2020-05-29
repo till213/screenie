@@ -18,6 +18,7 @@
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QTranslator>
 #include <QString>
 #include <QLocale>
@@ -26,11 +27,14 @@
 #include <QIcon>
 #include <QEvent>
 #include <QFileOpenEvent>
+#include <QPalette>
 
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/RecentFile.h"
+#include "../../Model/src/SceneDefaults.h"
 #include "../../Kernel/src/DocumentManager.h"
 #include "PlatformManager/PlatformManagerFactory.h"
+#include "PlatformManager/PlatformManager.h"
 #include "MainWindow.h"
 #include "ScreenieApplication.h"
 
@@ -40,6 +44,10 @@ ScreenieApplication::ScreenieApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
     frenchConnection();
+    initialiseTranslations();
+
+    SceneDefaults::backgroundColor = QApplication::palette().color(QPalette::Background);
+
 }
 
 void ScreenieApplication::show()
@@ -67,7 +75,9 @@ bool ScreenieApplication::event(QEvent *event)
     switch (event->type()) {
     case QEvent::FileOpen:
         result = true;
+#ifdef DEBUG
         qDebug("ScreenieApplication::event: %s", qPrintable(static_cast<QFileOpenEvent *>(event)->file()));
+#endif
         m_mainWindow->read(static_cast<QFileOpenEvent *>(event)->file());
         event->accept();
         break;
@@ -83,6 +93,19 @@ void ScreenieApplication::frenchConnection()
 {
     connect(QApplication::instance(), SIGNAL(lastWindowClosed()),
             this, SLOT(handleLastWindowClosed()));
+}
+
+void ScreenieApplication::initialiseTranslations()
+{
+    QString qtTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Qt);
+    QString appTranslationPath = PlatformManager::getTranslationsPath(PlatformManager::Translation::Application);
+
+    QLocale locale = Settings::getInstance().getLocale();
+    m_qtTranslator.load(locale, "qtbase", "_", qtTranslationPath);
+    QCoreApplication::instance()->installTranslator(&m_qtTranslator);
+
+    m_appTranslator.load(locale, "screenie", "_", appTranslationPath);
+    QCoreApplication::instance()->installTranslator(&m_appTranslator);
 }
 
 // private slots

@@ -37,6 +37,7 @@ public:
     DefaultPlatformManager();
     virtual ~DefaultPlatformManager();
 
+    // Interface PlatformManager
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 
 protected:

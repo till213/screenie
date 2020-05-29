@@ -24,5 +24,5 @@
 
 // public
 
-QColor SceneDefaults::BackgroundColor = Qt::white;
-bool SceneDefaults::BackgroundEnabled = true;
+QColor SceneDefaults::backgroundColor = Qt::white;
+const bool SceneDefaults::BackgroundEnabled = true;

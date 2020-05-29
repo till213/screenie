@@ -50,7 +50,11 @@ void PlatformManagerFactory::destroyInstance()
 // protected
 
 PlatformManagerFactory::~PlatformManagerFactory()
-{}
+{
+#ifdef DEBUG
+    qDebug("PlatformManagerFactory::~PlatformManagerFactory: CALLED.");
+#endif
+}
 
 // private
 

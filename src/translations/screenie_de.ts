@@ -5,15 +5,15 @@
     <name>AbstractScreenieModel</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine</translation>
     </message>
     <message>
         <source>Opaque</source>
-        <translation type="unfinished"></translation>
+        <translation>Opak</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparent</translation>
     </message>
 </context>
 <context>
@@ -21,67 +21,69 @@
     <message>
         <source>New %1</source>
         <comment>New document title + ID</comment>
-        <translation type="unfinished"></translation>
+        <translation>Neu %1</translation>
     </message>
 </context>
 <context>
     <name>FilePathModelPropertiesDialog</name>
     <message>
         <source>&amp;File Path</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Dateipfad</translation>
     </message>
 </context>
 <context>
     <name>FilePathModelPropertiesWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Form</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Filepath:</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Dateipfad:</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Select Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild auswählen</translation>
     </message>
 </context>
 <context>
     <name>GeometryPropertiesWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <source>Position:</source>
-        <translation type="unfinished"></translation>
+        <translation>Position:</translation>
     </message>
     <message>
         <source>X</source>
-        <translation type="unfinished"></translation>
+        <translation>X</translation>
     </message>
     <message>
         <source>Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Y</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotation:</translation>
     </message>
     <message>
         <source>Distance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanz:</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Screenie</source>
-        <translation type="unfinished">Screenie</translation>
+        <translation>Screenie</translation>
     </message>
     <message>
         <source>Rotation</source>
@@ -93,7 +95,7 @@
     </message>
     <message>
         <source>Reflection</source>
-        <translation type="unfinished">Reflektion</translation>
+        <translation>Reflektion</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -105,7 +107,7 @@
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Hintergrund</translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <source>Red</source>
@@ -121,11 +123,11 @@
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Datei</translation>
+        <translation>&amp;Datei</translation>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;Info</translation>
+        <translation>&amp;Info</translation>
     </message>
     <message>
         <source>toolBar</source>
@@ -133,11 +135,11 @@
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Beenden</translation>
+        <translation>&amp;Beenden</translation>
     </message>
     <message>
         <source>Add Image</source>
-        <translation type="unfinished">Bild hinzufügen</translation>
+        <translation>Bild hinzufügen</translation>
     </message>
     <message>
         <source>&amp;Open</source>
@@ -145,7 +147,7 @@
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Speichern</translation>
+        <translation>&amp;Speichern</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
@@ -157,7 +159,7 @@
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">&amp;Qt Info</translation>
+        <translation>&amp;Qt Info</translation>
     </message>
     <message>
         <source>Export &amp;PDF</source>
@@ -181,298 +183,311 @@
     </message>
     <message>
         <source>&amp;Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Einfügen</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ansicht</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bearbeiten</translation>
     </message>
     <message>
         <source>Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorlage</translation>
     </message>
     <message>
         <source>Add Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorlage hinzufügen</translation>
     </message>
     <message>
         <source>Select &amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Alles auswählen</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus&amp;schneiden</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopieren</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Einfügen</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Löschen</translation>
     </message>
     <message>
         <source>Save As</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern unter</translation>
     </message>
     <message>
         <source>Export Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild exportieren</translation>
     </message>
     <message>
         <source>Rotation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotation:</translation>
     </message>
     <message>
         <source>Distance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Distanz:</translation>
     </message>
     <message>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Abstand:</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opazität:</translation>
     </message>
     <message>
         <source>Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modus:</translation>
     </message>
     <message>
         <source>Red:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rot:</translation>
     </message>
     <message>
         <source>Green:</source>
-        <translation type="unfinished"></translation>
+        <translation>Grün:</translation>
     </message>
     <message>
         <source>Blue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Blau:</translation>
     </message>
     <message>
         <source>HTML:</source>
-        <translation type="unfinished"></translation>
+        <translation>HTML:</translation>
     </message>
     <message>
         <source>&amp;Recent Files</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Letzte Dateien</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hilfe</translation>
     </message>
     <message>
         <source>&amp;Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fenster</translation>
     </message>
     <message>
         <source>Tool Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>Werkzeugleiste</translation>
     </message>
     <message>
         <source>Image ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild ...</translation>
     </message>
     <message>
         <source>&amp;Open ...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Öffnen ...
+</translation>
     </message>
     <message>
         <source>Save &amp;As ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern &amp;unter ...</translation>
     </message>
     <message>
         <source>&amp;Export Image ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild &amp;exportieren ...</translation>
     </message>
     <message>
         <source>Export Image ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild exportieren ...</translation>
     </message>
     <message>
         <source>Enter &amp;Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vollbildmodus</translation>
     </message>
     <message>
         <source>Enter Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vollbildmodus</translation>
     </message>
     <message>
         <source>Toggle Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vollbildmodus wechseln</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Neu</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Schliessen</translation>
     </message>
     <message>
         <source>Save As &amp;Template ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Als &amp;Vorlage speichern ...</translation>
     </message>
     <message>
         <source>Show &amp;Tool Bar</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Werkzeugleiste anzeigen</translation>
     </message>
     <message>
         <source>Show Side &amp;Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seitenpanel anzeigen</translation>
     </message>
     <message>
         <source>Minimize</source>
         <comment>Window menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Minimieren</translation>
     </message>
     <message>
         <source>Maximize</source>
         <comment>Window menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maximieren</translation>
     </message>
     <message>
         <source>Exit Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vollbildmodus verlassen</translation>
     </message>
     <message>
         <source>You have %1 documents with unsaved changes. Do you want to review these changes before quitting?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben %1 Dokumente mit ungesicherten Änderungen. Wollen sie die Änderungen vor dem Beenden überprüfen?</translation>
     </message>
     <message>
         <source>If you don&apos;t review your documents, all your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungeprüfte Änderungen in den Dokumenten gehen verloren.</translation>
     </message>
     <message>
         <source>Verify changes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen überprüfen...</translation>
     </message>
     <message>
         <source>Discard changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen verwerfen</translation>
     </message>
     <message>
         <source>Do you want to save the changes you made in the document &quot;%1&quot;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wollen sie die Änderungen in Dokument %1 speichern?</translation>
     </message>
     <message>
         <source>Your changes will be lost if you don&apos;t save them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Änderungen gehen verloren, wenn sie nicht gespeichert werden.</translation>
     </message>
     <message>
         <source>Could not save document &quot;%1&quot; to file &quot;%2&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Dokument &quot;%1&quot; konnte nicht in Datei &quot;%2&quot; gespeichert werden!</translation>
     </message>
     <message>
         <source>Screenie Scene (*.%1)</source>
         <comment>Save As dialog filter</comment>
-        <translation type="unfinished"></translation>
+        <translation>Screenie Szene (*.%1)</translation>
     </message>
     <message>
         <source>Screenie Scenes (*.%1 *.%2)</source>
         <comment>Open dialog filter</comment>
-        <translation type="unfinished"></translation>
+        <translation>Screenie Szenen (*.%1 *.%2)</translation>
     </message>
     <message>
         <source>Screenie Scene (*.%1)</source>
         <comment>Open dialog filter</comment>
-        <translation type="unfinished"></translation>
+        <translation>Screenie Szene (*.%1)</translation>
     </message>
     <message>
         <source>Screenie Template (*.%1)</source>
         <comment>Open dialog filter</comment>
-        <translation type="unfinished"></translation>
+        <translation>Screenie Vorlage (*.%1)</translation>
     </message>
     <message>
         <source>Open</source>
         <comment>Open file dialog</comment>
-        <translation type="unfinished"></translation>
+        <translation>Datei Öffnen Dialog</translation>
     </message>
     <message>
         <source>Could not read document &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte das Dokument &quot;%1&quot; nicht lesen!</translation>
     </message>
     <message>
         <source>Screenie Template (*.%1)</source>
         <comment>Save As Template dialog filter</comment>
-        <translation type="unfinished"></translation>
+        <translation>Screenie Vorlage (*.%1)</translation>
     </message>
     <message>
         <source>Save As Template</source>
-        <translation type="unfinished"></translation>
+        <translation>Als Vorlage speichern</translation>
     </message>
     <message>
         <source>A fancy screenshot composer</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Developed by Till Oliver Knoll</source>
-        <translation type="unfinished"></translation>
+        <translation>Entwickelt von Till Oliver Knoll</translation>
     </message>
     <message>
         <source>Idea by Ariya Hidayat</source>
-        <translation type="unfinished"></translation>
+        <translation>Idee von Ariya Hidayat</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Version %1</translation>
     </message>
     <message>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Info über %1</translation>
     </message>
     <message>
         <source>Could not save template &quot;%1&quot; to file &quot;%2&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte die Vorlage &quot;%1&quot; nicht in Datei &quot;%2&quot; speichern!</translation>
     </message>
     <message>
         <source>Could not export image to file &quot;%1&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte das Bild nicht nach Datei &quot;%1&quot; exportieren!</translation>
+    </message>
+    <message>
+        <source>C</source>
+        <translation>F</translation>
+    </message>
+    <message>
+        <source>Choose Colour</source>
+        <translation type="vanished">Farbe wählen</translation>
+    </message>
+    <message>
+        <source>Choose colour</source>
+        <translation>Farbe wählen</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Template Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorlageneigenschaften</translation>
     </message>
     <message>
         <source>Image Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildeigenschaften</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilder</translation>
     </message>
     <message>
         <source>JPEG</source>
-        <translation type="unfinished"></translation>
+        <translation>JPEG</translation>
     </message>
     <message>
         <source>Portable Network Graphics</source>
-        <translation type="unfinished"></translation>
+        <translation>Portable Network Graphics</translation>
     </message>
     <message>
         <source>Windows Bitmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows Bitmap</translation>
     </message>
     <message>
         <source>Tagged Image File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagged Image File Format</translation>
     </message>
     <message>
         <source>All Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Dateien</translation>
     </message>
 </context>
 <context>
@@ -480,139 +495,139 @@
     <message>
         <source>Clear &amp;menu</source>
         <comment>Clear the recent files menu</comment>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lösche Einträge</translation>
     </message>
 </context>
 <context>
     <name>ReflectionPropertiesWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Versatz:</translation>
     </message>
     <message>
         <source>Opacity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opazität:</translation>
     </message>
     <message>
         <source>Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modus:</translation>
     </message>
 </context>
 <context>
     <name>ScreenieModelPropertiesDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <source>&amp;Geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Geometrie</translation>
     </message>
     <message>
         <source>&amp;Reflection</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Reflektion</translation>
     </message>
 </context>
 <context>
     <name>ScreenieTemplateModel</name>
     <message>
         <source>Order: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Reihenfolge: %1</translation>
     </message>
     <message>
         <source>No Fit</source>
         <comment>Size Fitter fit mode option</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nicht einpassen</translation>
     </message>
     <message>
         <source>Fit</source>
         <comment>Size Fitter fit mode option</comment>
-        <translation type="unfinished"></translation>
+        <translation>Passend</translation>
     </message>
     <message>
         <source>Fit To Width</source>
         <comment>Size Fitter fit mode option</comment>
-        <translation type="unfinished"></translation>
+        <translation>Auf Breite</translation>
     </message>
     <message>
         <source>Fit To Height</source>
         <comment>Size Fitter fit mode option</comment>
-        <translation type="unfinished"></translation>
+        <translation>Auf Höhe</translation>
     </message>
     <message>
         <source>Exact Fit</source>
         <comment>Size Fitter fit mode option</comment>
-        <translation type="unfinished"></translation>
+        <translation>Genau</translation>
     </message>
     <message>
         <source>Fit Mode: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Einpassmodus: %1</translation>
     </message>
 </context>
 <context>
     <name>TemplateModelPropertiesDialog</name>
     <message>
         <source>&amp;Template</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vorlage</translation>
     </message>
 </context>
 <context>
     <name>TemplateModelPropertiesWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <source>Width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Breite:</translation>
     </message>
     <message>
         <source>Fit Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>Einpassmodus:</translation>
     </message>
     <message>
         <source>Order:</source>
-        <translation type="unfinished"></translation>
+        <translation>Reihenfolge:</translation>
     </message>
     <message>
         <source>Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Höhe:</translation>
     </message>
     <message>
         <source>Fit Options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Einpassoptionen:</translation>
     </message>
     <message>
         <source>Enlarge</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergrössern</translation>
     </message>
     <message>
         <source>Orientation</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientierung</translation>
     </message>
     <message>
         <source>No Fit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht einpassen</translation>
     </message>
     <message>
         <source>Fit</source>
-        <translation type="unfinished"></translation>
+        <translation>Passend</translation>
     </message>
     <message>
         <source>Fit To Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Breite</translation>
     </message>
     <message>
         <source>Fit To Height</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Höhe</translation>
     </message>
     <message>
         <source>Exact Fit</source>
-        <translation type="unfinished"></translation>
+        <translation>Genau</translation>
     </message>
 </context>
 </TS>

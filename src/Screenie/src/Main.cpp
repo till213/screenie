@@ -19,6 +19,9 @@
  */
 
 #include <QCoreApplication>
+#include <QTranslator>
+#include <QLocale>
+
 #ifdef Q_OS_WIN
 #include <QSettings>
 #endif
@@ -37,13 +40,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(Version::getApplicationVersion());
 
     qRegisterMetaType<ScreenieModelInterface::ReflectionMode>();
-
 #ifdef Q_OS_WIN
     // On Windows prefer INI format over Registry (= NativeFormat)
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
     ScreenieApplication app(argc, argv);
+
 #ifdef Q_OS_MAC
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif

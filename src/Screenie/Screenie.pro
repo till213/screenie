@@ -42,15 +42,24 @@ macx {
    OTHER_FILES += $$PWD/Info.plist \
                   $$PWD/Screenie.sdef \
                   $$PWD/Screenie-Entitlements.plist
-    # http://qihome.org/qiliang/2013/05/28/how-to-embedded-a-info-plist-into-arbitrary-binaries/
-    QMAKE_LFLAGS += -sectcreate __TEXT __info_plist $$PWD/Info.plist
 }
 
 win32 {
    RC_FILE = res/Screenie.rc
 }
 
-OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt
+OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt \
+               $$PWD/../Translation.pro \
+               $$PWD/../translations/screenie_de.ts \
+               $$PWD/res/Screenie.rc \
+               $$PWD/res/ApplicationIcon.ico \
+               $$PWD/res/SceneIcon.ico \
+               $$PWD/res/TemplateIcon.ico \
+
+DISTFILES += \
+    ../../LICENSE.GPL3 \
+    ../../LICENSE.GPL2 \
+    ../../README.md
 
 
 

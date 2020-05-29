@@ -23,6 +23,7 @@
 
 #include <QStringList>
 #include <QApplication>
+#include <QTranslator>
 
 class QEvent;
 
@@ -60,8 +61,11 @@ protected:
 
 private:
     MainWindow *m_mainWindow;
+    QTranslator m_qtTranslator;
+    QTranslator m_appTranslator;
 
     void frenchConnection();
+    void initialiseTranslations();
 
 private slots:
     void handleLastWindowClosed();

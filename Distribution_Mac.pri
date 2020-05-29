@@ -1,3 +1,5 @@
+include (src/Common.pri)
+
 CONFIG(debug, debug|release) {
     APP_BUNDLE = bin/debug/$${APP_NAME}.app
     message(Distributing $$APP_NAME in DEBUG mode)
@@ -6,6 +8,7 @@ CONFIG(debug, debug|release) {
     message(Distributing $$APP_NAME in RELEASE mode)
 }
 
+DIST_DIR = ./dist
 DIST_APP_BUNDLE = dist/$${TARGET}.app
 
 # Name of the application signing certificate
@@ -25,17 +28,15 @@ ENTITLEMENTS = src/Screenie/Screenie-Entitlements.plist
 # Distribution
 #
 
-distribution.depends  = all
 distribution.commands += @echo Making distribution for Mac;
 
-# Remove previous bundle
-distribution.commands += test -d dist && rm -rf dist;
-
-distribution.commands += mkdir dist;
+# Copy compiled binaries
 distribution.commands += cp -R ./$${APP_BUNDLE} ./$${DIST_APP_BUNDLE};
 distribution.commands += macdeployqt $${DIST_APP_BUNDLE};
 # qt.conf
-distribution.commands += echo \"[Paths]\\nPlugins = PlugIns\" | cat > $${DIST_APP_BUNDLE}/Contents/Resources/qt.conf;
+distribution.commands += cp ./src/Resources/Mac/qt.conf $${DIST_APP_BUNDLE}/Contents/Resources/qt.conf;
+# Translations
+distribution.commands += cp -r $${DIST_DIR}/translations $${DIST_APP_BUNDLE}/Contents/Resources/translations;
 
 # Remove unnecessary plug-ins
 distribution.commands += rm -r $${DIST_APP_BUNDLE}/Contents/PlugIns/printsupport;

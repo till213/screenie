@@ -37,6 +37,7 @@ public:
     WindowsPlatformManager();
     virtual ~WindowsPlatformManager();
 
+    // Interface PlatformManager
     virtual void initialise(QMainWindow &mainWindow, Ui::MainWindow &mainWindowUi) override;
 
 protected:
