@@ -33,7 +33,7 @@ class TemplateModelPropertiesDialog : public ScreenieModelPropertiesDialog
 {
     Q_OBJECT
 public:
-    TemplateModelPropertiesDialog(ScreenieTemplateModel &templateModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
+    TemplateModelPropertiesDialog(ScreenieTemplateModel &templateModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
     virtual ~TemplateModelPropertiesDialog();
 
 protected:

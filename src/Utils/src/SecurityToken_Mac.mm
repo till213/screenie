@@ -41,7 +41,7 @@ namespace
         bool result;
 
         if (!securityTokenData.isNull()) {
-            bookmarkData = QtMac::toNSData(securityTokenData);
+            bookmarkData = securityTokenData.toNSData();
             url = [NSURL URLByResolvingBookmarkData:bookmarkData
                                             options:NSURLBookmarkResolutionWithSecurityScope
                                       relativeToURL:nil
@@ -68,7 +68,7 @@ namespace
         NSURL *url;
 
         if (!securityTokenData.isNull()) {
-            bookmarkData = QtMac::toNSData(securityTokenData);
+            bookmarkData = securityTokenData.toNSData();
             url = [NSURL URLByResolvingBookmarkData:bookmarkData
                                             options:NSURLBookmarkResolutionWithSecurityScope
                                       relativeToURL:nil
@@ -138,7 +138,7 @@ QByteArray SecurityToken::createSecurityTokenData(const QString &filePath)
                               relativeToURL:nil // app-scoped bookmark
                                       error:&error];
     if (bookmarkData != nil) {
-        result = QtMac::fromNSData(bookmarkData);
+        result.fromNSData(bookmarkData);
     }
 
     return result;
@@ -153,7 +153,7 @@ void SecurityToken::debugTokenToFilePath(const QByteArray &securityTokenData)
     NSURL *url;
 
     if (!securityTokenData.isNull()) {
-        bookmarkData = QtMac::toNSData(securityTokenData);
+        bookmarkData = securityTokenData.toNSData();
         url = [NSURL URLByResolvingBookmarkData:bookmarkData
                                         options:NSURLBookmarkResolutionWithSecurityScope
                                   relativeToURL:nil

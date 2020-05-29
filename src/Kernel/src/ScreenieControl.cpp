@@ -684,7 +684,7 @@ void ScreenieControl::handleDistanceChanged()
             screeniePixmapItems.append(screeniePixmapItem);
         }
     }
-    ::qSort(screeniePixmapItems.begin(), screeniePixmapItems.end(), zSort);
+    std::sort(screeniePixmapItems.begin(), screeniePixmapItems.end(), zSort);
     int z = 0;
     for (QGraphicsItem *graphicsItem : screeniePixmapItems) {
         graphicsItem->setZValue(z++);

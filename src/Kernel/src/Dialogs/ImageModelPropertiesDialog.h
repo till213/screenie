@@ -33,7 +33,7 @@ class ImageModelPropertiesDialog : public ScreenieModelPropertiesDialog
 {
     Q_OBJECT
 public:
-    ImageModelPropertiesDialog(ScreenieImageModel &pixmapModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
+    ImageModelPropertiesDialog(ScreenieImageModel &pixmapModel, ScreenieControl &screenieControl, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
     virtual ~ImageModelPropertiesDialog();
 
 protected:

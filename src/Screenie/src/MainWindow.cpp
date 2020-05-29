@@ -46,6 +46,7 @@
 #include <QKeySequence>
 #include <QPushButton>
 #include <QDesktopWidget>
+#include <QScreen>
 
 #include "../../Utils/src/Settings.h"
 #include "../../Utils/src/Version.h"
@@ -558,7 +559,7 @@ void MainWindow::restoreWindowGeometry()
 
     if (windowGeometry.position.isNull()) {
         // Center on primary screen
-        availableGeometry = QApplication::desktop()->availableGeometry();
+        availableGeometry = QGuiApplication::screens().first()->geometry();
         defaultWindowSize = settings.getDefaultWindowSize();
         windowGeometry.position = QRect(  availableGeometry.center()
                                         - QPoint(defaultWindowSize.width(), defaultWindowSize.height()) / 2,

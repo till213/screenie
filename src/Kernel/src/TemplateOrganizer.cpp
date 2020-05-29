@@ -47,7 +47,7 @@ TemplateOrganizer::~TemplateOrganizer()
 QList<ScreenieTemplateModel *> TemplateOrganizer::getOrderedTemplates() const
 {
     if (!d->ordered) {
-        ::qSort(d->templates.begin(), d->templates.end(), orderSort);
+        std::sort(d->templates.begin(), d->templates.end(), orderSort);
         d->ordered = true;
     }
     return d->templates;
