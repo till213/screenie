@@ -23,7 +23,9 @@
 
 #include <QColor>
 
-class SceneDefaults
+#include "ModelLib.h"
+
+class MODEL_API SceneDefaults
 {
 public:
     static const bool BackgroundEnabled;
