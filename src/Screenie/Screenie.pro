@@ -49,12 +49,13 @@ win32 {
 }
 
 OTHER_FILES += $$PWD/../../misc/LicenseTemplate.txt \
+               $$PWD/../../Doxyfile \
                $$PWD/../Translation.pro \
                $$PWD/../translations/screenie_de.ts \
                $$PWD/res/Screenie.rc \
                $$PWD/res/ApplicationIcon.ico \
                $$PWD/res/SceneIcon.ico \
-               $$PWD/res/TemplateIcon.ico \
+               $$PWD/res/TemplateIcon.ico
 
 DISTFILES += \
     ../../LICENSE.GPL3 \

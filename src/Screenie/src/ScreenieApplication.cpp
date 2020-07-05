@@ -47,7 +47,6 @@ ScreenieApplication::ScreenieApplication(int &argc, char **argv)
     initialiseTranslations();
 
     SceneDefaults::backgroundColor = QApplication::palette().color(QPalette::Background);
-
 }
 
 void ScreenieApplication::show()

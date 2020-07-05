@@ -8,6 +8,8 @@ linux|freebsd {
 LANGUAGE = C++
 CONFIG += qt warn_on thread c++11
 
+macx:
+
 # Should match with Utils/src/Version.h
 VERSION=1.0.0
 
@@ -23,12 +25,12 @@ macx {
   CONFIG += x86_64
   CONFIG -= x86 ppc
 
-  # QMAKE_MAC_SDK = macosx10.11
-  QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
+  # Build against latest platform SDK
+  QMAKE_MAC_SDK = macosx10.15
+  # QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
 }
 
 DEFINES += QT_NO_COMPAT
-
 
 CONFIG(debug, debug|release) {
     # For a reason yet to figure out make on FreeBSD does not seem to like

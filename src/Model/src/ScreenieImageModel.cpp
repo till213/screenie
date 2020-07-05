@@ -28,10 +28,15 @@
 class ScreenieImageModelPrivate
 {
 public:
-    ScreenieImageModelPrivate() {}
-    ScreenieImageModelPrivate(const ScreenieImageModelPrivate &other)
-        : image(other.image) {}
+    ScreenieImageModelPrivate()
+        : transparency(PaintTools::Transparency::Unknown)
+    {}
 
+    ScreenieImageModelPrivate(const ScreenieImageModelPrivate &other)
+        : image(other.image)
+    {}
+
+    PaintTools::Transparency transparency;
     QImage image;
 };
 
@@ -74,6 +79,29 @@ ScreenieModelInterface *ScreenieImageModel::copy() const
 bool ScreenieImageModel::isTemplate() const
 {
     return false;
+}
+
+bool ScreenieImageModel::hasTransparency() const
+{
+    bool result;
+    switch (d->transparency) {
+    case PaintTools::Transparency::Yes:
+        result = true;
+        break;
+    case PaintTools::Transparency::No:
+        result = false;
+        break;
+    case PaintTools::Transparency::Unknown:
+        result = PaintTools::hasTransparency(getImage());
+        d->transparency = result ? PaintTools::Transparency::Yes : PaintTools::Transparency::No;
+        break;
+    default:
+#ifdef DEBUG
+       qCritical("ScreenieImageModel::hasTransparency: UNSUPPORTED transparency: %d", d->transparency);
+#endif
+        break;
+    }
+    return result;
 }
 
 QString ScreenieImageModel::getOverlayText() const

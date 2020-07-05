@@ -32,8 +32,8 @@
 QImage PaintTools::createDefaultImage()
 {
     /*!\todo Switch back to Premultiplied once reflection rendering code can deal with it */
-    QImage result = QImage(400, 300, QImage::Format_ARGB32_Premultiplied);
-    //QImage result = QImage(400, 300, QImage::Format_ARGB32);
+    //QImage result = QImage(400, 300, QImage::Format_ARGB32_Premultiplied);
+    QImage result = QImage(400, 300, QImage::Format_ARGB32);
     QPainter painter(&result);
     drawBackground(painter, result);
     drawText("?", painter, result);
@@ -42,8 +42,8 @@ QImage PaintTools::createDefaultImage()
 
 QImage PaintTools::createTemplateImage(const QSize &size)
 {
-    QImage result = QImage(size, QImage::Format_ARGB32_Premultiplied);
-    //QImage result = QImage(size, QImage::Format_ARGB32);
+    //QImage result = QImage(size, QImage::Format_ARGB32_Premultiplied);
+    QImage result = QImage(size, QImage::Format_ARGB32);
     QPainter painter(&result);
     drawBackground(painter, result);
     drawText("T", painter, result);
@@ -59,7 +59,8 @@ QBrush PaintTools::createCheckerPattern()
 {
     QBrush result;
 
-    QImage checker(16, 16, QImage::Format_ARGB32_Premultiplied);
+    //QImage checker(16, 16, QImage::Format_ARGB32_Premultiplied);
+    QImage checker(16, 16, QImage::Format_ARGB32);
     QPainter painter(&checker);
     // Inspired by The GIMP ;)
     painter.fillRect(checker.rect(), QColor(153, 153, 153));
@@ -68,6 +69,26 @@ QBrush PaintTools::createCheckerPattern()
     painter.end();
     result.setTextureImage(checker);
 
+    return result;
+}
+
+bool PaintTools::hasTransparency(const QImage &image)
+{
+    bool result;
+    unsigned int length;
+    int alpha;
+    const QRgb *src = reinterpret_cast<const QRgb *>(image.constBits());
+
+    result = false;
+    length = image.width() * image.height();
+    for (unsigned int p = 0; p < length; ++p) {
+        alpha = qAlpha(*src);
+        if (alpha < 255) {
+            result = true;
+            break;
+        }
+        src++;
+    }
     return result;
 }
 

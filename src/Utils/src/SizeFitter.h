@@ -32,7 +32,7 @@ public:
     enum class FitOption {
         RespectOrientation   = 1 << 1,
         Enlarge              = 2 << 1,
-        RespectMaxTargetSize = 3 << 1, /*!< Respects the values as set by #setMaxTargetSize() by clipping the resulting image as needed. */
+        RespectMaxTargetSize = 3 << 1 /*!< Respects the values as set by #setMaxTargetSize() by clipping the resulting image as needed. */
     };
     Q_DECLARE_FLAGS(FitOptions, FitOption)
 

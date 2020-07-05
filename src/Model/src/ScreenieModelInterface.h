@@ -171,6 +171,14 @@ public:
     virtual bool isTemplate() const = 0;
 
     /*!
+     * Returns whether the image has any (semi-)transparent pixels. That is, whether an
+     * alpha channel exists and whether any alpha value is smaller than 255.
+     *
+     * \return \c true if an alpha value < 255 exists; \c false else
+     */
+    virtual bool hasTransparency() const = 0;
+
+    /*!
      * \return a QString containing the overlay text to be drawn over the pixmap; a \em null QString if nothing to draw
      */
     virtual QString getOverlayText() const = 0;

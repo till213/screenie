@@ -66,7 +66,7 @@ public:
           itemTransformed(false),
           reflectionEnabled(theScreenieModel.isReflectionEnabled()),
           propertyDialogFactory(new PropertyDialogFactory(screenieControl)),
-          propertyDialog(0)
+          propertyDialog(nullptr)
     {
         /*!\todo  Initialise device pixel ratio from current screen maybe? */
         devicePixelRatio = qApp->devicePixelRatio();
@@ -458,7 +458,7 @@ void ScreeniePixmapItem::updateReflection()
 
 #ifdef DEBUG
 //        image.alphaChannel().save("/Users/tknoll/temp/image-alpha.png", "PNG");
-//        reflection.save("/Users/tknoll/temp/reflection.png", "PNG");
+//        reflection.mirrored().save("/Users/tknoll/temp/reflection.png", "PNG");
 //        reflection.alphaChannel().mirrored().save("/Users/tknoll/temp/reflection-alpha.png", "PNG");
 #endif
         // imageWithReflection = QImage(image.width(), image.height() << 1, QImage::Format_ARGB32_Premultiplied);
@@ -498,13 +498,17 @@ void ScreeniePixmapItem::updateReflection()
         }
 
         // reflection
-        p.setCompositionMode(QPainter::CompositionMode_SourceOver);
         p.setOpacity(d->screenieModel.getReflectionOpacity() / 100.0);
         p.drawImage(0, image.height(), reflection);
 
     } else {
         imageWithReflection = image;
     }
+
+#ifdef DEBUG
+//    imageWithReflection.alphaChannel().save("/Users/tknoll/temp/imageWithReflection-alpha.png", "PNG");
+//    imageWithReflection.save("/Users/tknoll/temp/imageWithReflection.png", "PNG");
+#endif
 
     pixmap.convertFromImage(imageWithReflection);
     pixmap.setDevicePixelRatio(d->devicePixelRatio);
