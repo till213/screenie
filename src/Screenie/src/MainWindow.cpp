@@ -156,6 +156,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         case DocumentInfo::SaveStrategy::Save:
             event->ignore();
             saveBeforeClose();
+            break;
         case DocumentInfo::SaveStrategy::Ask:
             event->ignore();
             askBeforeClose();
